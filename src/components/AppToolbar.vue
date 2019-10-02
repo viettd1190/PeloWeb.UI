@@ -1,0 +1,167 @@
+<template>
+    <div>
+        <v-toolbar color="primary" fixed dark app class="full-nav">
+            <!-- <v-toolbar-title class="ml-0">
+                <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
+            </v-toolbar-title>-->
+            <v-toolbar-title class="ml-0">
+                <span>&nbsp;&nbsp;&nbsp; {{pageTitle}}</span>
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-toolbar-items>
+                <v-btn
+                    v-for="(item,index) in navItems"
+                    :key="index"
+                    flat
+                    :to="item.url"
+                >{{item.title}}</v-btn>
+            </v-toolbar-items>
+            <v-menu offset-y origin="center center" :nudge-bottom="16" :nudge-right="12">
+                <v-toolbar-title class="ml-0 logged-user" slot="activator">
+                    <span>
+                        <small v-if="loggedUser">
+                            {{loggedUser.u}}
+                            <v-icon>expand_more</v-icon>
+                        </small>
+                    </span>
+                </v-toolbar-title>
+                <v-list class="pa-0">
+                  <v-list-tile @click="changePassword()" ripple="ripple" rel="noopener">
+                        <v-list-tile-action>
+                            <v-icon>loop</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>Đổi mật khấu</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                    <v-list-tile @click="logout()" ripple="ripple" rel="noopener">
+                        <v-list-tile-action>
+                            <v-icon>fullscreen_exit</v-icon>
+                        </v-list-tile-action>
+                        <v-list-tile-content>
+                            <v-list-tile-title>Đăng xuất</v-list-tile-title>
+                        </v-list-tile-content>
+                    </v-list-tile>
+                </v-list>
+            </v-menu>
+        </v-toolbar>
+    </div>
+</template>
+
+<script>
+import Util from '@/utils';
+import { mapActions,  mapMutations, mapGetters } from 'vuex';
+import menu from '@/api/menu';
+import validate from '@/utils/validate';
+
+export default {
+  name: 'app-toolbar',
+  data: () => ({
+    pageTitle: 'Dvr Maptool',
+    menuItems: [
+      {
+        icon: 'person',
+        title: 'Phone',
+        click: e => {}
+      },
+      {
+        icon: 'fullscreen_exit',
+        href: '#',
+        title: 'Đăng xuất',
+        click: e => {
+          window.getApp.$emit('APP_LOGOUT');
+        }
+      }
+    ],
+    navItems: [
+      {
+        title: 'Bản đồ',
+        url: '/home'
+       },
+       {
+        title: 'Đường/Điểm',
+        url: '/mapping'
+       },
+      {
+        title: 'Người dùng',
+        url: '/user'
+      },
+    ],
+    searchText: '',
+    loading: false
+  }),
+  computed: {
+    toolbarColor () {
+      return this.$vuetify.options.extra.mainNav;
+    },
+    ...mapGetters(['loggedUser'])
+  },
+  watch: {
+    $route (to, from) {
+      let path = this.$route.path;
+      let item =  this.navItems.filter(a => a.url === path)[0];
+      if (item) {
+        this.pageTitle = item.title;
+      }
+    }
+  },
+  mounted () {
+    this.menuItems[0].title = this.loggedUser ? this.loggedUser.u : '';
+  },
+  methods: {
+    ...mapActions(['getUserInfo', 'SeachCompanyRequest']),
+    ...mapMutations(['SET_SEARCH_TEXT']),
+
+    handleDrawerToggle () {
+      window.getApp.$emit('APP_DRAWER_TOGGLED');
+    },
+    
+    handleFullScreen () {
+      Util.toggleFullScreen();
+    },
+    
+    logout () {
+      window.getApp.$emit('APP_LOGOUT');
+    },
+    changePassword(){
+      window.getApp.updatePassword();
+    },
+    search () {
+      if (this.searchText) {
+        let keywordRemovedVietnamese = validate.transferVietnamese(this.searchText);
+        this.loading = true;
+        this.SET_SEARCH_TEXT(keywordRemovedVietnamese);
+        this.SeachCompanyRequest({ Key: keywordRemovedVietnamese })
+          .catch(_ => {
+            window.getApp.showMessage('Có lỗi xảy ra, vui lòng thử lại sau', 'error');
+          })
+          .finally(_ => {
+            this.loading = false;
+          }); 
+      }
+    }
+  }
+};
+</script>
+
+<style lang="stylus" scoped>
+.full-nav {
+    padding-left: 0 !important;
+    z-index: 1000;
+}
+
+.hambuger-button {
+    margin-left: -15px;
+}
+
+.search-field {
+    margin-top: 8px !important;
+    padding-left: 40px !important;
+    padding-right: 20px !important;
+}
+
+.logged-user {
+    margin-top: -5px !important;
+    margin-left: 24px !important;
+}
+</style>
