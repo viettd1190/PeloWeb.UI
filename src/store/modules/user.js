@@ -4,7 +4,6 @@ import * as Auth from '@/utils/auth';
 const user = {
   state: {
     token: Auth.getAccessToken(),
-    refreshToken: Auth.getRefreshToken(),
     loggedUser: Auth.getLoggedUser(),
     expireToken: Auth,
     users: [],
@@ -16,10 +15,6 @@ const user = {
       let access_token = token ? token.access_token : '';
       Auth.setAccessToken(access_token);
       state.token = access_token;
-
-      let refresh_token = token ? token.refresh_token : '';
-      Auth.setRefreshToken(refresh_token);
-      state.refreshToken = refresh_token;
     },
     SET_LOGGED_USER: (state, loggedUser) => {
       Auth.setLoggedUser(loggedUser);
@@ -40,21 +35,16 @@ const user = {
           .loginByUsername(model)
           .then(response => {
             let result = response.data;
-
-            if (result.Data) {
+            if (result.isSuccess) {
               let token = {
-                access_token: result.Data.AccessToken,
-                refresh_token: result.Data.RefreshToken,
-                expired_time: result.Data.ExpiresIn
+                access_token: result.data.token,
               };
               commit('SET_TOKEN', token);
-
-              let loggedUser = { u: model.Username };
+              let loggedUser = { u: result.data.username,d:result.data.displayName,a:result.data.avatar };
               commit('SET_LOGGED_USER', loggedUser);
-
               resolve(token);
             } else {
-              reject(result.Code);
+              reject(result.message);
             }
           })
           .catch(error => {
@@ -139,44 +129,16 @@ const user = {
         resolve();
       });
     },
-    refreshToken ({ commit }) {
-      if(Auth.getAccessToken()==''){
-        return;
-      }
-      return new Promise((resolve, reject) => {
-        API.user
-          .refreshtoken({ refreshToken: Auth.getRefreshToken() })
-          .then(response => {
-            let result = response.data;
-            if (result.Data) {
-              let token = {
-                access_token: result.Data.AccessToken,
-                refresh_token: result.Data.RefreshToken,
-                expired_time: result.Data.ExpiresIn
-              };
-              commit('SET_TOKEN', token);
-              resolve(token);
-            } else {
-              reject(result.Code);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
     UpdatePassword ({ commit }, model) {
       return new Promise((resolve, reject) => {
         API.user
           .changepassword(model)
           .then(response => {
-            let result = response.data;
-            if (result.Data) {
+            var result = response.data;
+            if (result.isSuccess) {
               commit('SET_UPDATE_PASSWORD_STATE', 1);
-              resolve(result.Data);
-            } else {
-              reject(result.Code);
             }
+            resolve(result.message);
           })
           .catch(error => {
             reject(error);

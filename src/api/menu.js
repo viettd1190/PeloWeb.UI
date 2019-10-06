@@ -12,8 +12,7 @@ const Menu = [
     group: 'apps',
     icon: 'person',
     name: 'User',
-    url: '/user',
-    roles: ['GetAccount']
+    url: '/user'
   },
 ];
 

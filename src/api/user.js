@@ -2,14 +2,14 @@ import request from '@/api/request';
 
 export function loginByUsername (data) {
   return request({
-    url: 'User/login',
+    url: 'account/logon',
     method: 'post',
     data
   });
 }
 export function changepassword (data) {
   return request({
-    url: 'User/changepassword',
+    url: 'account/changepwd',
     method: 'put',
     data
   });

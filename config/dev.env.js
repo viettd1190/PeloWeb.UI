@@ -8,5 +8,5 @@ module.exports = merge(devEnv, {
   //BASE_API: '"https://localhost:5001/"'
   //BASE_API: '"http://115.78.9.30:24555/"',
   //BASE_API: '"http://192.168.30.35:24556/api/task"',
-  BASE_API: '"http://map-collection.motrak.vn/api/"',
+  BASE_API: '"http://localhost:33518/api/"',
 });

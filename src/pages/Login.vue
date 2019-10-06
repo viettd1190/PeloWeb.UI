@@ -20,7 +20,7 @@
                                         name="login"
                                         label="Username"
                                         type="text"
-                                        v-model="model.Username"
+                                        v-model="model.username"
                                         :rules="rules"
                                         v-on:keyup="validateForm"
                                     ></v-text-field>
@@ -30,7 +30,7 @@
                                         label="Mật khẩu"
                                         id="password"
                                         type="password"
-                                        v-model="model.Password"
+                                        v-model="model.password"
                                         :rules="rules"
                                         v-on:keyup="validateForm"
                                     ></v-text-field>
@@ -62,8 +62,8 @@ export default {
   data: () => ({
     loading: false,
     model: {
-      Username: '',
-      Password: ''
+      username: '',
+      password: ''
     },
     rules: [value => !!value || "Thông tin không được trống"],
   }),
@@ -86,7 +86,7 @@ export default {
         })
         .catch(_ => {
           this.loading = false;
-          window.getApp.showMessage('error');
+          window.getApp.showMessage(_,'error');
         });
     }
   }

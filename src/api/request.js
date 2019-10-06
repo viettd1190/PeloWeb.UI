@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from '@/store';
-import { getAccessToken, getRefreshToken, getLoggedUser } from '@/utils/auth';
+import { getAccessToken, getLoggedUser } from '@/utils/auth';
 
 const service = axios.create({
   baseURL: process.env.BASE_API,
@@ -9,7 +9,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
-    if (store.getters.token) { config.headers['Authorization'] = `Bearer ${getAccessToken()}` }
+    if (getAccessToken()) { config.headers['Authorization'] = `Bearer ${getAccessToken()}` }
     return config;
   },
   error => Promise.reject(error)
@@ -29,10 +29,8 @@ service.interceptors.response.use(
     if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
       const accessToken = getAccessToken();
-      const refreshToken = getRefreshToken();
       const loggedUser = getLoggedUser();
-      window.getApp.$emit('EXPIRED_TOKEN')      
-      if (!accessToken || !refreshToken || !loggedUser) { 
+      if (!accessToken || !loggedUser) { 
         window.location.href = '/#/login' 
       }
       else { 

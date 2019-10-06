@@ -1,5 +1,4 @@
 const AccessTokenKey = 'Access-Token';
-const RefreshTokenKey = 'Refresh-Token';
 const LoggedUserKey = 'LoggedUserInfo';
 import Cookies from 'js-cookie';
 
@@ -11,16 +10,6 @@ export function getAccessToken () {
 export function setAccessToken (token) {
   localStorage.setItem(AccessTokenKey, token);
   return Cookies.set(AccessTokenKey, token);
-}
-
-export function getRefreshToken () {
-  let token = localStorage.getItem(RefreshTokenKey);
-  return token ? token : Cookies.get(RefreshTokenKey);
-}
-
-export function setRefreshToken (token) {
-  localStorage.setItem(RefreshTokenKey, token);
-  return Cookies.set(RefreshTokenKey, token);
 }
 
 export function getLoggedUser () {
@@ -41,10 +30,8 @@ export function setLoggedUser (user) {
 }
 
 export function removeToken () {
-  localStorage.removeItem(RefreshTokenKey);
   localStorage.removeItem(AccessTokenKey);
   localStorage.removeItem(LoggedUserKey);
-  Cookies.remove(RefreshTokenKey);
   Cookies.remove(LoggedUserKey);
   return Cookies.remove(AccessTokenKey);
 }

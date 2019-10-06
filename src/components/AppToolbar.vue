@@ -75,7 +75,7 @@ export default {
     ],
     navItems: [
       {
-        title: 'Bản đồ',
+        title: 'Home',
         url: '/home'
        },
        {
@@ -106,7 +106,7 @@ export default {
     }
   },
   mounted () {
-    this.menuItems[0].title = this.loggedUser ? this.loggedUser.u : '';
+    this.menuItems[0].title = this.loggedUser ? this.loggedUser.d : '';
   },
   methods: {
     ...mapActions(['getUserInfo', 'SeachCompanyRequest']),

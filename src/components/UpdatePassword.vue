@@ -92,13 +92,16 @@ export default {
             return;
         };
         let p = {
-            OldPassword: this.oldpassword,
-            NewPassword: this.newPassword
+            password: this.oldpassword,
+            newPassword: this.newPassword
         }
         this.updatePass(p);
     },
     async updatePass(model){
         let rs = await this.UpdatePassword(model);
+        if(rs!=''){
+          window.getApp.showMessage(rs,'error');
+        }
     },
     close(){
       this.SET_UPDATE_PASSWORD_STATE(-1);

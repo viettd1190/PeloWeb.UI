@@ -16,12 +16,6 @@ export default [
     }
   },
   {
-    name: 'EXPIRED_TOKEN',
-    callback: function () {
-      store.dispatch('refreshToken');
-    }
-  },
-  {
     name: 'APP_PAGE_LOADED',
     callback: function () {}
   },
