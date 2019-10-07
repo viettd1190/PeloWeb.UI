@@ -40,6 +40,7 @@
                                         color="primary"
                                         @click="login"
                                         :loading="loading">Đăng nhập</v-btn>
+                                        <a href="#/forgotpassword">Quên mật khẩu?</a>
                                 </v-form>
                             </v-card-text>
                         </v-card>
@@ -75,7 +76,7 @@ export default {
       }
     },
     login () {
-      if(this.model.Username==''||this.model.Password==''){
+      if(this.model.username==''||this.model.password==''){
           return ;
       }
       this.loading = true;

@@ -27,7 +27,7 @@ export default {
     ])
   },
   created() {
-    //if (!this.loggedUser) window.location.href = '#/login';
+    if (!this.loggedUser) window.location.href = '#/login';
   },
   mounted() {
   },

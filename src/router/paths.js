@@ -52,5 +52,21 @@ export default [
     meta: { breadcrumb: true },
     name: 'Home',
     component: () => import(`@/pages/home/index.vue`)
+  },
+  {
+    path: '/forgotpassword',
+    meta: {
+      public: true
+    },
+    name: 'forgotpassword',
+    component: () => import(`@/pages/forgotpassword.vue`)
+  },
+  {
+    path: '/updateprofile',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'updateprofile',
+    component: () => import(`@/pages/updateprofile.vue`)
   }
 ];

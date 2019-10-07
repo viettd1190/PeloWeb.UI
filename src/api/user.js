@@ -14,3 +14,23 @@ export function changepassword (data) {
     data
   });
 }
+export function forgotpassword (data) {
+  return request({
+    url: 'account/forgotpwd',
+    method: 'put',
+    data
+  });
+}
+export function getprofile (data) {
+  return request({
+    url: 'account/information',
+    method: 'get',    
+  });
+}
+export function updateprofile (data) {
+  return request({
+    url: 'account/information',
+    method: 'put',
+    data
+  });
+}

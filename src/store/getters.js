@@ -1,6 +1,6 @@
 const getters = {
   token: state => state.user.token,
-  //refreshToken: state => state.user.refreshToken,
+  // refreshToken: state => state.user.refreshToken,
   loggedUser: state => state.user.loggedUser,
 
   // points: state => state.point.points,
@@ -11,7 +11,8 @@ const getters = {
   // selectRoute: state => state.point.selectRoute,
   // vehicleList: state => state.vehicle.vehicleList,
   // users: state => state.user.users,
-   isUpdatePass: state => state.user.isUpdatePass,
+  isUpdatePass: state => state.user.isUpdatePass,
+  profile: state => state.user.profile
   // editPoint: state => state.point.editPoint,
 };
 export default getters;

@@ -9,7 +9,9 @@ const service = axios.create({
 
 service.interceptors.request.use(
   config => {
-    if (getAccessToken()) { config.headers['Authorization'] = `Bearer ${getAccessToken()}` }
+    if (getAccessToken()) {
+      config.headers['Authorization'] = `Bearer ${getAccessToken()}`;
+    }
     return config;
   },
   error => Promise.reject(error)
@@ -19,10 +21,12 @@ service.interceptors.response.use(
   response => {
     if (
       response.status === 200 &&
-      response.data.code === 'ERR_INVALID_PERMISSION'
-    ) { window.getApp.$emit('APP_ACCESS_DENIED') }
-    else { 
-      return response }
+      response.data.message === 'ERR_INVALID_PERMISSION'
+    ) {
+      window.getApp.$emit('APP_ACCESS_DENIED');
+    } else {
+      return response;
+    }
   },
   error => {
     const originalRequest = error.config;
@@ -30,15 +34,18 @@ service.interceptors.response.use(
       originalRequest._retry = true;
       const accessToken = getAccessToken();
       const loggedUser = getLoggedUser();
-      if (!accessToken || !loggedUser) { 
-        window.location.href = '/#/login' 
-      }
-      else { 
-        return axios(originalRequest) 
+      if (!accessToken || !loggedUser) {
+        window.location.href = '/#/login';
+      } else {
+        return axios(originalRequest);
       }
     }
-    if (error.response.status === 403) { window.getApp.$emit('APP_ACCESS_DENIED') }
-    if (error.response.status === 500) { return Promise.reject(error) }
+    if (error.response.status === 403) {
+      window.getApp.$emit('APP_ACCESS_DENIED');
+    }
+    if (error.response.status === 500) {
+      return Promise.reject(error);
+    }
     return Promise.reject(error);
   }
 );
