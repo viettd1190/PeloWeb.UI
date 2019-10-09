@@ -1,19 +1,12 @@
 const Menu = [
-  { header: 'Xin chào' },
+  { header: 'Menu' },
   {
-    title: 'Bản đồ',
+    title: 'Home',
     group: 'apps',
-    icon: 'map',
+    icon: 'home',
     name: 'Home',
     url: '/home'    
-  },
-  {
-    title: 'Người dùng',
-    group: 'apps',
-    icon: 'person',
-    name: 'User',
-    url: '/user'
-  },
+  }
 ];
 
 // reorder menu

@@ -3,7 +3,7 @@
     <template v-if="!$route.meta.public">
       <v-app id="inspire" class="app">
         <app-toolbar class="app--toolbar"></app-toolbar>
-        <!-- <app-drawer class="app--drawer"></app-drawer> -->
+        <app-drawer class="app--drawer"></app-drawer>
         <v-content>
           <!-- Page Header -->
           <!-- <page-header v-if="$route.meta.breadcrumb"></page-header> -->

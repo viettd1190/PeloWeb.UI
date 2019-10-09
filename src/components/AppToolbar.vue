@@ -1,11 +1,12 @@
 <template>
   <div>
     <v-toolbar color="primary" fixed dark app class="full-nav">
-      <!-- <v-toolbar-title class="ml-0">
-                <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
-      </v-toolbar-title>-->
       <v-toolbar-title class="ml-0">
-        <span>&nbsp;&nbsp;&nbsp; {{pageTitle}}</span>
+                <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
+      </v-toolbar-title>
+      <v-toolbar-title class="ml-0">
+        <v-avatar size="32"><img src="/static/logo.png" /></v-avatar>
+        <span>{{pageTitle}}</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
@@ -15,7 +16,7 @@
         <v-toolbar-title class="ml-0 logged-user" slot="activator">
           <span>
             <small v-if="loggedUser">
-              {{loggedUser.u}}
+              {{loggedUser.d}}
               <v-icon>expand_more</v-icon>
             </small>
           </span>
@@ -77,10 +78,10 @@ export default {
       }
     ],
     navItems: [
-      {
-        title: "Home",
-        url: "/home"
-      }
+      // {
+      //   title: "Home",
+      //   url: "/home"
+      // }
     ],
     searchText: "",
     loading: false
@@ -101,7 +102,7 @@ export default {
     }
   },
   mounted() {
-    this.menuItems[0].title = this.loggedUser ? this.loggedUser.d : "";
+    this.menuItems[0].title = this.loggedUser ? this.loggedUser.d : this.loggedUser.u;
   },
   methods: {
     ...mapActions(["getUserInfo", "GetProfile"]),

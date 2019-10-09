@@ -214,8 +214,7 @@ const user = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              commit('SET_UPDATE_PROFILE_STATE', model);
-              resolve(result.data);
+              resolve(result.isSuccess);
             } else {
               reject(result.message);
             }

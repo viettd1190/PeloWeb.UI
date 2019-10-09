@@ -118,27 +118,27 @@ export default {
         this.update();
       }
     },
-    update() {
-      if (
-        this.model.username == "" ||
-        this.model.displayName == "" ||
-        this.model.fullName == "" ||
-        this.model.email == "" ||
-        this.model.phoneNumber
-      ) {
-        return;
-      }
-      this.loading = true;
-      this.UpdateProfile(this.model)
-        .then(() => {
-          this.loading = false;
-          window.getApp.showMessage("Cập nhật thành công", "success");
-        })
-        .catch(_ => {
-          this.loading = false;
-          window.getApp.showMessage(_, "error");
-        });
-    },
+    // update() {
+    //   if (
+    //     this.model.username == "" ||
+    //     this.model.displayName == "" ||
+    //     this.model.fullName == "" ||
+    //     this.model.email == "" ||
+    //     this.model.phoneNumber
+    //   ) {
+    //     return;
+    //   }
+    //   this.loading = true;
+    //   this.UpdateProfile(this.model)
+    //     .then(() => {
+    //       this.loading = false;
+    //       window.getApp.showMessage("Cập nhật thành công", "success");
+    //     })
+    //     .catch(_ => {
+    //       this.loading = false;
+    //       window.getApp.showMessage(_, "error");
+    //     });
+    // },
     updateInfomation() {
       if (
         this.model.username == "" ||
@@ -164,10 +164,11 @@ export default {
       form.append("phoneNumber", this.model.phoneNumber);
       form.append("avatar", this.model.avatar);
       try {
-        let rs = await this.UpdateInfomation(form);
-        if (rs.data.isSuccess) {
-          window.getApp.showMessage("Cập nhật thành công", "success");
+        let rs = await this.UpdateProfile(form);
+        if (rs) {
+          window.getApp.showMessage("Cập nhật thành công", "success");          
         }
+        this.getProfile();
         this.loading = false;
       } catch (error) {
         window.getApp.showMessage(error, "success");
