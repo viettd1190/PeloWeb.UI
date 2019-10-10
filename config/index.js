@@ -50,10 +50,10 @@ module.exports = {
     index: path.resolve(
       __dirname,
       process.env.env_config === "dev"
-        ? "../deployments/support-dvr-map-dev/index.html"
+        ? "../deployments/pelo-dev/index.html"
         : process.env.env_config === "qa"
-          ? "../deployments/support-dvr-map-qa/index.html"
-          : "../deployments/support-dvr-map-prod/index.html"
+          ? "../deployments/pelo-qa/index.html"
+          : "../deployments/pelo-prod/index.html"
     ),
 
     // Paths
@@ -61,10 +61,10 @@ module.exports = {
     assetsRoot: path.resolve(
       __dirname,
       process.env.env_config === "dev"
-        ? "../deployments/support-dvr-map-dev"
+        ? "../deployments/pelo-dev"
         : process.env.env_config === "qa"
-          ? "../deployments/support-dvr-map-qa"
-          : "../deployments/support-dvr-map-prod"
+          ? "../deployments/pelo-qa"
+          : "../deployments/pelo-prod"
     ),
     assetsSubDirectory: "static",
     assetsPublicPath: "/",
