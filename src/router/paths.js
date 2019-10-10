@@ -68,5 +68,331 @@ export default [
     },
     name: 'updateprofile',
     component: () => import(`@/pages/updateprofile.vue`)
+  },
+  {
+    path: '/CRM/Index',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/Index',
+    component: () => import(`@/pages/crm/index.vue`)
+  },{
+    path: '/CRM/KhachChuaXuLyTrongNgay',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/KhachChuaXuLyTrongNgay',
+    component: () => import(`@/pages/crm/KhachChuaXuLyTrongNgay.vue`)
+  },{
+    path: '/CRM/KhachToiHenCanChamSoc',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/KhachToiHenCanChamSoc',
+    component: () => import(`@/pages/crm/KhachToiHenCanChamSoc.vue`)
+  },{
+    path: '/CRM/KhachQuaHenChamSoc',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/KhachQuaHenChamSoc',
+    component: () => import(`@/pages/crm/KhachQuaHenChamSoc.vue`)
+  },{
+    path: '/CRM/KhachToiHenNgayMai',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/KhachToiHenNgayMai',
+    component: () => import(`@/pages/crm/KhachToiHenNgayMai.vue`)
   }
+  ,{
+    path: '/CRM/KhachToiHenNgayMai',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/KhachToiHenNgayMai',
+    component: () => import(`@/pages/crm/KhachToiHenNgayMai.vue`)
+  },
+  ,{
+    path: '/CRM/CRMStatus',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CRMStatus/Index',
+    component: () => import(`@/pages/crm/CRMStatus.vue`)
+  },
+  ,{
+    path: '/CRM/CRMPriority',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CRMPriority/Index',
+    component: () => import(`@/pages/crm/CRMPriority.vue`)
+  },
+  ,{
+    path: '/CRM/CustomerSource',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CustomerSource/Index',
+    component: () => import(`@/pages/crm/CustomerSource.vue`)
+  },
+  ,{
+    path: '/CRM/CustomerType',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CustomerType/Index',
+    component: () => import(`@/pages/crm/CustomerType.vue`)
+  },
+  ,{
+    path: '/Product/Index',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/Index',
+    component: () => import(`@/pages/product/Index.vue`)
+  },
+  ,{
+    path: '/Product/ProductGroup',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/ProductGroup/Index',
+    component: () => import(`@/pages/product/ProductGroup.vue`)
+  },
+  ,{
+    path: '/Product/Manufacturer',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/Manufacturer/Index',
+    component: () => import(`@/pages/product/Manufacturer.vue`)
+  }
+  ,{
+    path: '/Setting/AppConfig',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/AppConfig/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Setting/Branch',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Branch/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Setting/MainNavigation',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/MainNavigation/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Setting/MainNavigationGroup',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/MainNavigationGroup/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Setting/SystemUser',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemUser/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Setting/SystemRole',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemRole/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Setting/Admin/Icons',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Admin/Icons',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Setting/UserActivityLog',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/UserActivityLog/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Recruitment/Candidate',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Recruitment/Candidate/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Recruitment/CandidateStatus',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Recruitment/CandidateStatus/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Recruitment/Index',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Recruitment/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Recruitment/RecruitmentStatus',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Recruitment/RecruitmentStatus/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Warranty/WarrantyStatus',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Warranty/WarrantyStatus/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Warranty/WarrantyStatusPermission',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Warranty/WarrantyStatusPermission/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Warranty/Index',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Warranty/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Warranty/WarrantyDescription',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Warranty/WarrantyDescription/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Receipt/ReceiptStatus',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Receipt/ReceiptStatus/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Receipt/ReceiptStatusPermission',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Receipt/ReceiptStatusPermission/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Receipt/Index',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Receipt/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Receipt/ReceiptDescription',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Receipt/ReceiptDescription/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  }
+  ,{
+    path: '/Task/TaskStatus',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskStatus/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  }
+  ,{
+    path: '/Task/TaskPriority',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskPriority/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  }
+  ,{
+    path: '/Task/TaskType',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskType/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  }
+  ,{
+    path: '/Task/TaskLoop',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskLoop/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  }
+  ,{
+    path: '/Task/TaskStatusPermission',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskStatusPermission/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  }
+  ,{
+    path: '/Task/Index',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  }
+  ,{
+    path: '/Invoice/Index',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Invoice/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },{
+    path: '/Invoice/PayMethod',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Invoice/PayMethod/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  }
+  ,{
+    path: '/Invoice/InvoiceStatus',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Invoice/InvoiceStatus/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  }
+  ,{
+    path: '/Invoice/InvoiceStatusInRole',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Invoice/InvoiceStatusInRole/Index',
+    component: () => import(`@/pages/invoice/Index.vue`)
+  },
+  {
+    path: '/Customer',
+    meta: { breadcrumb: true },
+    name: 'Customer',
+    component: () => import(`@/pages/home/index.vue`)
+  },
 ];

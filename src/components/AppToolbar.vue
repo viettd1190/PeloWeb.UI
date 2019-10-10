@@ -61,7 +61,7 @@ import validate from "@/utils/validate";
 export default {
   name: "app-toolbar",
   data: () => ({
-    pageTitle: "Pelo.vn",
+    pageTitle: "Vidia Admin",
     menuItems: [
       {
         icon: "person",

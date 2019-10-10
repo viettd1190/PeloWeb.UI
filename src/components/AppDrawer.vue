@@ -6,7 +6,7 @@
         :dark="$vuetify.dark"
         app
         v-model="drawer"
-        width="200"
+        width="270"
     >
         <div class="space"></div>
         <vue-perfect-scrollbar class="drawer-menu--scroll" :settings="scrollSettings">
@@ -18,25 +18,25 @@
                         :key="item.name"
                         :group="item.group"
                         :prepend-icon="item.icon"
-                        no-action="no-action"
-                    >
+                        no-action="no-action">
                         <v-list-tile slot="activator" ripple="ripple">
                             <v-list-tile-content>
                                 <v-list-tile-title>{{ item.title }}</v-list-tile-title>
                             </v-list-tile-content>
-                        </v-list-tile>
-                        <template v-for="(subItem, i) in item.items">
+                        </v-list-tile>                        
+                        <template v-for="(subItem, i) in item.items">                          
                             <!--sub group-->
                             <v-list-group
                                 v-if="subItem.items"
                                 :key="subItem.name"
                                 :group="subItem.group"
                                 sub-group="sub-group"
-                            >
-                                <v-list-tile slot="activator" ripple="ripple">
-                                    <v-list-tile-content>
+                            >                                    
+                                <v-list-tile slot="activator" ripple="ripple">                                  
+                                    <v-list-tile-content>                                      
                                         <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
                                     </v-list-tile-content>
+                                    
                                 </v-list-tile>
                                 <v-list-tile
                                     v-for="(grand, i) in subItem.children"
@@ -62,6 +62,7 @@
                             >
                                 <v-list-tile-content>
                                     <v-list-tile-title>
+                                      <!-- <a>aaa</a> -->
                                         <span>{{ subItem.title }}</span>
                                     </v-list-tile-title>
                                 </v-list-tile-content>
