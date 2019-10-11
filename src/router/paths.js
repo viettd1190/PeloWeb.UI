@@ -175,140 +175,140 @@ export default [
       breadcrumb: true
     },
     name: 'Setting/AppConfig/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/setting/AppConfig.vue`)
   },{
     path: '/Setting/Branch',
     meta: {
       breadcrumb: true
     },
     name: 'Setting/Branch/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/setting/Branch.vue`)
   },{
     path: '/Setting/MainNavigation',
     meta: {
       breadcrumb: true
     },
     name: 'Setting/MainNavigation/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/setting/MainNavigation.vue`)
   },{
     path: '/Setting/MainNavigationGroup',
     meta: {
       breadcrumb: true
     },
     name: 'Setting/MainNavigationGroup/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/setting/MainNavigationGroup.vue`)
   },{
     path: '/Setting/SystemUser',
     meta: {
       breadcrumb: true
     },
     name: 'Setting/SystemUser/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/setting/SystemUser.vue`)
   },{
     path: '/Setting/SystemRole',
     meta: {
       breadcrumb: true
     },
     name: 'Setting/SystemRole/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/setting/SystemRole.vue`)
   },{
     path: '/Setting/Admin/Icons',
     meta: {
       breadcrumb: true
     },
     name: 'Setting/Admin/Icons',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/setting/Icons.vue`)
   },{
     path: '/Setting/UserActivityLog',
     meta: {
       breadcrumb: true
     },
     name: 'Setting/UserActivityLog/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/setting/UserActivityLog.vue`)
   },{
     path: '/Recruitment/Candidate',
     meta: {
       breadcrumb: true
     },
     name: 'Recruitment/Candidate/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/recruitment/Candidate.vue`)
   },{
     path: '/Recruitment/CandidateStatus',
     meta: {
       breadcrumb: true
     },
     name: 'Recruitment/CandidateStatus/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/recruitment/CandidateStatus.vue`)
   },{
     path: '/Recruitment/Index',
     meta: {
       breadcrumb: true
     },
     name: 'Recruitment/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/recruitment/Index.vue`)
   },{
     path: '/Recruitment/RecruitmentStatus',
     meta: {
       breadcrumb: true
     },
     name: 'Recruitment/RecruitmentStatus/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/recruitment/RecruitmentStatus.vue`)
   },{
     path: '/Warranty/WarrantyStatus',
     meta: {
       breadcrumb: true
     },
     name: 'Warranty/WarrantyStatus/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/warranty/WarrantyStatus.vue`)
   },{
     path: '/Warranty/WarrantyStatusPermission',
     meta: {
       breadcrumb: true
     },
     name: 'Warranty/WarrantyStatusPermission/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/warranty/WarrantyStatusPermission.vue`)
   },{
     path: '/Warranty/Index',
     meta: {
       breadcrumb: true
     },
     name: 'Warranty/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/warranty/Index.vue`)
   },{
     path: '/Warranty/WarrantyDescription',
     meta: {
       breadcrumb: true
     },
     name: 'Warranty/WarrantyDescription/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/warranty/WarrantyDescription.vue`)
   },{
     path: '/Receipt/ReceiptStatus',
     meta: {
       breadcrumb: true
     },
     name: 'Receipt/ReceiptStatus/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/receipt/ReceiptStatus.vue`)
   },{
     path: '/Receipt/ReceiptStatusPermission',
     meta: {
       breadcrumb: true
     },
     name: 'Receipt/ReceiptStatusPermission/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/receipt/ReceiptStatusPermission.vue`)
   },{
     path: '/Receipt/Index',
     meta: {
       breadcrumb: true
     },
     name: 'Receipt/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/receipt/Index.vue`)
   },{
     path: '/Receipt/ReceiptDescription',
     meta: {
       breadcrumb: true
     },
     name: 'Receipt/ReceiptDescription/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/receipt/ReceiptDescription.vue`)
   }
   ,{
     path: '/Task/TaskStatus',
@@ -316,7 +316,7 @@ export default [
       breadcrumb: true
     },
     name: 'Task/TaskStatus/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/task/TaskStatus.vue`)
   }
   ,{
     path: '/Task/TaskPriority',
@@ -324,7 +324,7 @@ export default [
       breadcrumb: true
     },
     name: 'Task/TaskPriority/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/task/TaskPriority.vue`)
   }
   ,{
     path: '/Task/TaskType',
@@ -332,7 +332,7 @@ export default [
       breadcrumb: true
     },
     name: 'Task/TaskType/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/task/TaskType.vue`)
   }
   ,{
     path: '/Task/TaskLoop',
@@ -340,7 +340,7 @@ export default [
       breadcrumb: true
     },
     name: 'Task/TaskLoop/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/task/TaskLoop.vue`)
   }
   ,{
     path: '/Task/TaskStatusPermission',
@@ -348,7 +348,7 @@ export default [
       breadcrumb: true
     },
     name: 'Task/TaskStatusPermission/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/task/TaskStatusPermission.vue`)
   }
   ,{
     path: '/Task/Index',
@@ -356,7 +356,7 @@ export default [
       breadcrumb: true
     },
     name: 'Task/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/task/Index.vue`)
   }
   ,{
     path: '/Invoice/Index',
@@ -371,7 +371,7 @@ export default [
       breadcrumb: true
     },
     name: 'Invoice/PayMethod/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/invoice/PayMethod.vue`)
   }
   ,{
     path: '/Invoice/InvoiceStatus',
@@ -379,7 +379,7 @@ export default [
       breadcrumb: true
     },
     name: 'Invoice/InvoiceStatus/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/invoice/InvoiceStatus.vue`)
   }
   ,{
     path: '/Invoice/InvoiceStatusInRole',
@@ -387,12 +387,12 @@ export default [
       breadcrumb: true
     },
     name: 'Invoice/InvoiceStatusInRole/Index',
-    component: () => import(`@/pages/invoice/Index.vue`)
+    component: () => import(`@/pages/invoice/InvoiceStatusInRole.vue`)
   },
   {
     path: '/Customer',
     meta: { breadcrumb: true },
     name: 'Customer',
-    component: () => import(`@/pages/home/index.vue`)
+    component: () => import(`@/pages/customer/index.vue`)
   },
 ];
