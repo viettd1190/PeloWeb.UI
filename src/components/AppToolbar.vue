@@ -102,10 +102,10 @@ export default {
     }
   },
   mounted() {
-    this.menuItems[0].title = this.loggedUser ? this.loggedUser.d : this.loggedUser.u;
+    this.menuItems[0].title = this.loggedUser ? this.loggedUser.d : '';
   },
   methods: {
-    ...mapActions(["getUserInfo", "GetProfile"]),
+    ...mapActions(["GetProfile"]),
     ...mapMutations(["SET_SEARCH_TEXT"]),
 
     handleDrawerToggle() {

@@ -11,8 +11,8 @@ const getters = {
   // selectRoute: state => state.point.selectRoute,
   // vehicleList: state => state.vehicle.vehicleList,
   // users: state => state.user.users,
-  isUpdatePass: state => state.user.isUpdatePass,
-  profile: state => state.user.profile
-  // editPoint: state => state.point.editPoint,
+  profile: state => state.user.profile,
+  editAppConfig: state => state.setting.editAppConfig,
+  editBranch: state => state.setting.editBranch,
 };
 export default getters;

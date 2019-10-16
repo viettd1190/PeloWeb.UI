@@ -9,8 +9,14 @@
           <!-- <page-header v-if="$route.meta.breadcrumb"></page-header> -->
           <div class="page-wrapper">
             <router-view></router-view>
-          </div>
+          </div>          
         </v-content>
+        <v-footer height="auto" class="white pa-3 app--footer">
+            <v-spacer/>
+            <span
+                class="caption">Copyright &copy; {{ new Date().getFullYear() }}<a class="text-bold-800 darken-2" href="http://vidia.vn" target="_blank"> VIDIA </a>, All rights reserved.</span>
+            <v-spacer/>
+        </v-footer>
         <!-- <app-fab></app-fab> -->
       </v-app>
     </template>
@@ -35,7 +41,7 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <update-password v-if="isUpdatePass==0"></update-password>
+    <update-password v-if="showUpdatePassword" :isShow="showUpdatePassword" @closeUpdatePassword="closeUpdatePassword"></update-password>
   </div>
 </template>
 
@@ -66,24 +72,14 @@ export default {
       text: "",
       color: ""
     },
-    loadingDialog: false
+    loadingDialog: false,
+    showUpdatePassword: false
   }),
   computed: {
     ...mapGetters([
-      "points",
-      "selectPoint",
-      "isUpdatePass",
-      "selectRoute",
-      "routes"
     ])
   },
   watch: {
-    isUpdatePass() {
-      if (this.isUpdatePass == 1) {
-        this.showMessage("Cập nhật thành công", "success");
-        this.SET_UPDATE_PASSWORD_STATE(-1);
-      }
-    }
   },
   created() {
     AppEvents.forEach(item => {
@@ -93,9 +89,6 @@ export default {
   },
   methods: {
     ...mapMutations([
-      "SET_EDIT_POINT_STATE",
-      "SET_UPDATE_PASSWORD_STATE",
-      "SET_EDIT_POINT"
     ]),
     openThemeSettings() {
       this.$vuetify.goTo(0);
@@ -113,36 +106,21 @@ export default {
         case "ERR_EMAIL_OR_USERNAME_USED":
           return "Email hoặc Tên đăng nhập đã tồn tại.";
           break;
-          default:
-            return null;
-      }      
+        default:
+          return null;
+      }
     },
     showLoading(isShow) {
       this.loadingDialog = isShow;
     },
-    EditPoint(id) {
-      let point = null;
-      for (var i = 0; i < this.points.length; i++) {
-        if (this.points[i].id == id) {
-          this.SET_EDIT_POINT_STATE(this.points[i]);
-          break;
-        }
-      }
-    },
-    SetEditPoint(point) {
-      console.log(point);
-      console.log(this.selectRoute);
-      if (point != "" && this.selectRoute != "") {
-        let pointsfromroutes = this.routes.Routes.filter(
-          c => c.Id == this.selectRoute
-        )[0].Points;
-        let editPoint = pointsfromroutes.filter(c => c.Id == point)[0];
-        console.log(editPoint);
-        this.SET_EDIT_POINT(editPoint);
-      }
-    },
     updatePassword() {
-      this.SET_UPDATE_PASSWORD_STATE(0);
+      this.showUpdatePassword = true;
+    },
+    closeUpdatePassword(value){
+      if(value){
+        this.showMessage("Cập nhật thành công", "success");
+      }
+      this.showUpdatePassword = false;
     }
   }
 };

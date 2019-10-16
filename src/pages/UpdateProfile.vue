@@ -22,7 +22,7 @@
                 @change="loadImageFile"
               />
             </div>
-            <v-form>
+            <v-form ref="form" v-model="valid">
               <v-text-field
                 append-icon="person"
                 name="Username"
@@ -54,7 +54,7 @@
                 append-icon="phone"
                 name="phoneNumber"
                 label="PhoneNumber"
-                type="text"
+                type="number"
                 v-model="model.phoneNumber"
                 :rules="rules"
                 v-on:keyup="validateForm"
@@ -63,13 +63,13 @@
                 append-icon="email"
                 name="email"
                 label="Email"
-                type="text"
+                type="email"
                 v-model="model.email"
-                :rules="rules"
+                :rules="emailRules"
                 v-on:keyup="validateForm"
               ></v-text-field>
               <br />
-              <v-btn block color="primary" @click="updateInfomation" :loading="loading">Cập nhật</v-btn>
+              <v-btn block color="primary" :disabled="!valid" @click="validate" :loading="loading">Cập nhật</v-btn>
             </v-form>
           </v-card-text>
         </v-card>
@@ -93,8 +93,13 @@ export default {
         email: "",
         branchId: 0
       },
+      valid: true,
       rules: [value => !!value || "Thông tin không được trống"],
-      file: null
+      file: null,
+      emailRules: [
+        v => !!v || "E-mail is required",
+        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
+      ]
     };
   },
   computed: {
@@ -115,30 +120,14 @@ export default {
     ...mapActions(["UpdateProfile", "GetProfile", "UpdateInfomation"]),
     validateForm(e) {
       if (e.keyCode === 13) {
-        this.update();
+        this.validate();
       }
     },
-    // update() {
-    //   if (
-    //     this.model.username == "" ||
-    //     this.model.displayName == "" ||
-    //     this.model.fullName == "" ||
-    //     this.model.email == "" ||
-    //     this.model.phoneNumber
-    //   ) {
-    //     return;
-    //   }
-    //   this.loading = true;
-    //   this.UpdateProfile(this.model)
-    //     .then(() => {
-    //       this.loading = false;
-    //       window.getApp.showMessage("Cập nhật thành công", "success");
-    //     })
-    //     .catch(_ => {
-    //       this.loading = false;
-    //       window.getApp.showMessage(_, "error");
-    //     });
-    // },
+    validate() {
+      if (this.$refs.form.validate()) {
+        this.updateInfomation();
+      }
+    },
     updateInfomation() {
       if (
         this.model.username == "" ||
@@ -166,14 +155,14 @@ export default {
       try {
         let rs = await this.UpdateProfile(form);
         if (rs) {
-          window.getApp.showMessage("Cập nhật thành công", "success");          
+          window.getApp.showMessage("Cập nhật thành công", "success");
         }
         this.getProfile();
         this.loading = false;
       } catch (error) {
         window.getApp.showMessage(error, "success");
         this.loading = false;
-      }      
+      }
     },
     async getProfile() {
       try {
@@ -204,6 +193,13 @@ export default {
       const file = e.target.files[0];
       this.file = file;
       this.model.avatar = URL.createObjectURL(file);
+    },
+    isEmailValid: function() {
+      return this.profile.email == ""
+        ? ""
+        : this.reg.test(this.profile.email)
+        ? "has-success"
+        : "has-error";
     }
   }
 };

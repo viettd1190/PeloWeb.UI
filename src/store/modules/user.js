@@ -8,7 +8,6 @@ const user = {
     loggedUser: Auth.getLoggedUser(),
     expireToken: Auth,
     users: [],
-    isUpdatePass: -1,
     profile: {
       username: '',
       displayName: '',
@@ -35,9 +34,6 @@ const user = {
     SET_STORE_USERS: (state, users) => {
       state.users = users;
     },
-    SET_UPDATE_PASSWORD_STATE: (state, flag) => {
-      state.isUpdatePass = flag;
-    },
     SET_UPDATE_PROFILE_STATE: (state, data) => {
       state.profile.username = data.username;
       state.profile.displayName = data.displayName;
@@ -52,9 +48,9 @@ const user = {
   },
 
   actions: {
-    loginByUsername ({ commit }, model) {
-      return new Promise((resolve, reject) => {
-        API.user
+    async LoginByUsername ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
+         API.user
           .loginByUsername(model)
           .then(response => {
             let result = response.data;
@@ -79,8 +75,8 @@ const user = {
           });
       });
     },
-    CreateUser ({ commit }, model) {
-      return new Promise((resolve, reject) => {
+    async CreateUser ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
         API.user
           .insertUser(model)
           .then(response => {
@@ -95,8 +91,8 @@ const user = {
           });
       });
     },
-    UpdateUserInfo ({ commit }, model) {
-      return new Promise((resolve, reject) => {
+    async UpdateUserInfo ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
         API.user
           .updateUser(model)
           .then(response => {
@@ -111,8 +107,8 @@ const user = {
           });
       });
     },
-    deleteUser ({commit }, id) {
-      return new Promise((resolve, reject) => {
+    async DeleteUser ({commit }, id) {
+      return await new Promise((resolve, reject) => {
         API.user
           .deleteUser(id)
           .then(response => {
@@ -128,8 +124,8 @@ const user = {
           });
       });
     },
-    GetUserList ({ state, commit }, params) {
-      return new Promise((resolve, reject) => {
+    async GetUserList ({ state, commit }, params) {
+      return await new Promise((resolve, reject) => {
         API.user
           .getUsers(params)
           .then(response => {
@@ -147,8 +143,8 @@ const user = {
       });
     },
 
-    logOut ({ commit }) {
-      return new Promise(resolve => {
+    async LogOut ({ commit }) {
+      return await new Promise(resolve => {
         commit('SET_TOKEN', '');
         commit('SET_LOGGED_USER', '');
 
@@ -156,24 +152,23 @@ const user = {
         resolve();
       });
     },
-    UpdatePassword ({ commit }, model) {
-      return new Promise((resolve, reject) => {
+    async UpdatePassword ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
         API.user
           .changepassword(model)
           .then(response => {
             let result = response.data;
-            if (result.isSuccess) {
-              commit('SET_UPDATE_PASSWORD_STATE', 1);
+            if(result){
+              resolve(result.message);
             }
-            resolve(result.message);
           })
           .catch(error => {
             reject(error);
           });
       });
     },
-    ForgotPassword ({ commit }, model) {
-      return new Promise((resolve, reject) => {
+    async ForgotPassword ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
         API.user
           .forgotpassword(model)
           .then(response => {
@@ -207,8 +202,8 @@ const user = {
           });
       });
     },
-    UpdateProfile ({ commit }, model) {
-      return new Promise((resolve, reject) => {
+    async UpdateProfile ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
         API.user
           .updateprofile(model)
           .then(response => {
@@ -224,19 +219,6 @@ const user = {
           });
       });
     },
-    async UpdateInfomation({commit,state},model){
-      try {
-        return await axios.put('http://localhost:33518/api/account/information',model,{
-          headers: {
-              "Accept": "application/json",
-              "Content-type": "application/json",
-              "Authorization": "Bearer " + state.token
-          }});
-      } catch (error) {
-        return error;
-      }
-    }
-
   }
 };
 

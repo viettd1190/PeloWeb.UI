@@ -1,4 +1,5 @@
 import request from '@/api/request';
+import {get,post,put,remove} from '@/api/baseapi';
 
 export function loginByUsername (data) {
   return request({
@@ -6,6 +7,7 @@ export function loginByUsername (data) {
     method: 'post',
     data
   });
+  //return post('account/logon',data);
 }
 export function changepassword (data) {
   return request({

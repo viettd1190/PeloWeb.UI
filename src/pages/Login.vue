@@ -69,7 +69,7 @@ export default {
     rules: [value => !!value || "Thông tin không được trống"],
   }),
   methods: {
-    ...mapActions(['loginByUsername']),
+    ...mapActions(['LoginByUsername']),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.login();
@@ -80,7 +80,7 @@ export default {
           return ;
       }
       this.loading = true;
-      this.loginByUsername(this.model)
+      this.LoginByUsername(this.model)
         .then(() => {
           this.loading = false;
           this.$router.push({ path: '/' });

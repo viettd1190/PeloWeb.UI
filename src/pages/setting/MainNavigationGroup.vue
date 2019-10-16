@@ -1,5 +1,8 @@
 <template>
   <div>
+    <title-page>
+    Nhóm Menu điều hướng
+  </title-page>
   </div>
 </template>
 
@@ -10,8 +13,10 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
 import XLSX from "xlsx";
+import TitlePage from "@/components/TitlePage";
 export default {
   components: {
+    TitlePage
   },
   props: {
     beforeUpload: Function,

@@ -395,4 +395,36 @@ export default [
     name: 'Customer',
     component: () => import(`@/pages/customer/index.vue`)
   },
+  {
+    path: '/Setting/AppConfig/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/AppConfig',
+    component: () => import(`@/pages/setting/components/FormAddAppConfig.vue`)
+  },
+  {
+    path: '/Setting/AppConfig/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/AppConfig',
+    component: () => import(`@/pages/setting/components/FormEditAppConfig.vue`)
+  },
+  {
+    path: '/Setting/Branch/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Branch',
+    component: () => import(`@/pages/setting/components/AddBranch.vue`)
+  },
+  {
+    path: '/Setting/Branch/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Branch',
+    component: () => import(`@/pages/setting/components/EditBranch.vue`)
+  },
 ];

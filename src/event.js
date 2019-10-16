@@ -10,7 +10,7 @@ export default [
   {
     name: 'APP_LOGOUT',
     callback: function () {
-      store.dispatch('logOut').then(_ => {
+      store.dispatch('LogOut').then(_ => {
         this.$router.replace({ path: '/login' });
       });
     }

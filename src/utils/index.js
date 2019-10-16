@@ -38,7 +38,13 @@ export default {
   toggleFullScreen,
   kebab
 };
-
+export let messageResult = {
+  UpdateSuccess: 'Cập nhật thành công',
+  InsertSuccess: 'Thêm mới thành công',
+  Error: 'error',
+  Success: 'success',
+  DeleteSuccess: 'Xóa thành công',
+};
 export let pagination = {
   keySearch: '',
   pageIndex: 1,
