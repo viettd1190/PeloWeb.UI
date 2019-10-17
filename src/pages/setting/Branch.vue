@@ -1,33 +1,6 @@
 <template>
   <div style="min-height:400px">
     <title-page>Chi nhánh</title-page>
-    <!-- <v-layout row justify-center>
-      <v-flex xs12 sm3 md3 lg3>
-        <v-text-field
-          hide-details
-          label="Tên tham số"
-          v-model="name"
-          class="ma-2"
-          append-icon="search"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm3 md3 lg3>
-        <v-text-field
-          class="ma-2"
-          hide-details
-          label="Giá trị"
-          v-model="description"
-          append-icon="search"
-        ></v-text-field>
-      </v-flex>
-    </v-layout>
-    <v-layout row justify-center>
-      <v-flex xs4 sm2 md1 lg1>
-        <v-btn color="#666EE8" class="white--text" @click="search()">
-          <v-icon>sort</v-icon>Lọc
-        </v-btn>
-      </v-flex>
-    </v-layout> -->
     <v-container>
       <v-data-table
         item-key="id"
@@ -70,15 +43,14 @@ import moment from "moment";
 import TitlePage from "@/components/TitlePage";
 export default {
   components: {
-    TitlePage,
+    TitlePage
   },
-  props: {
-  },
+  props: {},
   data() {
     return {
       name: "",
       hotline: "",
-      address:"",
+      address: "",
       table: {
         headers: [
           {
@@ -104,10 +76,10 @@ export default {
         rowsPerPage: 10,
         totalRecords: 0,
         sortBy: "name",
-        descending:false
+        descending: false
       },
       datasourceFiltered: [],
-      isLoading: true,
+      isLoading: true
     };
   },
   computed: {},
@@ -124,8 +96,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetBranchs"]),
-    ...mapMutations(["STATE_UPDATE_EDIT_BRANCH"]),
+    ...mapActions(["GetBranchs", "GetBranch"]),
     async getList() {
       try {
         const {
@@ -144,7 +115,7 @@ export default {
             SortDir: descending ? "desc" : "asc",
             Name: this.name,
             Hotline: this.hotline,
-            Address:this.address
+            Address: this.address
           });
           if (rs != null && rs.data) {
             this.isLoading = false;
@@ -164,11 +135,19 @@ export default {
       this.getList();
     },
     add() {
-      window.location.href="#/Setting/Branch/Add";
+      window.getApp.changeView("/Add");
     },
-    select(item){
-      this.STATE_UPDATE_EDIT_BRANCH(item);
-      window.location.href="#/Setting/Branch/Edit/"+item.id;
+    select(item) {      
+      this.getById(item.id);
+    },
+    async getById(id) {
+      let rs = await this.GetBranch(id);
+      if (rs !== "") {
+        window.getApp.changeView("/Edit/" + id);
+      } else {
+        this.$destroy();
+        window.location.href = "#/404";
+      }
     }
   }
 };

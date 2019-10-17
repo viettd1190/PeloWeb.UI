@@ -9,13 +9,19 @@
           <!-- <page-header v-if="$route.meta.breadcrumb"></page-header> -->
           <div class="page-wrapper">
             <router-view></router-view>
-          </div>          
+          </div>
         </v-content>
         <v-footer height="auto" class="white pa-3 app--footer">
-            <v-spacer/>
-            <span
-                class="caption">Copyright &copy; {{ new Date().getFullYear() }}<a class="text-bold-800 darken-2" href="http://vidia.vn" target="_blank"> VIDIA </a>, All rights reserved.</span>
-            <v-spacer/>
+          <v-spacer />
+          <span class="caption">
+            Copyright &copy; {{ new Date().getFullYear() }}
+            <a
+              class="text-bold-800 darken-2"
+              href="http://vidia.vn"
+              target="_blank"
+            >VIDIA</a>, All rights reserved.
+          </span>
+          <v-spacer />
         </v-footer>
         <!-- <app-fab></app-fab> -->
       </v-app>
@@ -41,7 +47,11 @@
         </v-card-text>
       </v-card>
     </v-dialog>
-    <update-password v-if="showUpdatePassword" :isShow="showUpdatePassword" @closeUpdatePassword="closeUpdatePassword"></update-password>
+    <update-password
+      v-if="showUpdatePassword"
+      :isShow="showUpdatePassword"
+      @closeUpdatePassword="closeUpdatePassword"
+    ></update-password>
   </div>
 </template>
 
@@ -76,11 +86,9 @@ export default {
     showUpdatePassword: false
   }),
   computed: {
-    ...mapGetters([
-    ])
+    ...mapGetters([])
   },
-  watch: {
-  },
+  watch: {},
   created() {
     AppEvents.forEach(item => {
       this.$on(item.name, item.callback);
@@ -88,8 +96,7 @@ export default {
     window.getApp = this;
   },
   methods: {
-    ...mapMutations([
-    ]),
+    ...mapMutations([]),
     openThemeSettings() {
       this.$vuetify.goTo(0);
       this.rightDrawer = !this.rightDrawer;
@@ -116,11 +123,14 @@ export default {
     updatePassword() {
       this.showUpdatePassword = true;
     },
-    closeUpdatePassword(value){
-      if(value){
+    closeUpdatePassword(value) {
+      if (value) {
         this.showMessage("Cập nhật thành công", "success");
       }
       this.showUpdatePassword = false;
+    },
+    changeView(url) {
+      window.location.href = "#"+this.$route.path + url;
     }
   }
 };

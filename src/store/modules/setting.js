@@ -4,7 +4,10 @@ import API from '@/api/index';
 const setting = {
   state: {
     editAppConfig: null,
-    editBranch: null
+    editBranch: null,
+    provinces: Array,
+    districts: Array,
+    wards: Array
   },
   mutations: {
     STATE_UPDATE_EDIT_APPCONFIG: (state, data) => {
@@ -12,6 +15,15 @@ const setting = {
     },
     STATE_UPDATE_EDIT_BRANCH: (state, data) => {
       state.editBranch = data;
+    },
+    STATE_UPDATE_PROVINCES: (state, data) => {
+      state.provinces = data;
+    },
+    STATE_UPDATE_DISTRICTS: (state, data) => {
+      state.districts = data;
+    },
+    STATE_UPDATE_WARDS: (state, data) => {
+      state.wards = data;
     }
   },
   actions: {
@@ -182,6 +194,60 @@ const setting = {
               resolve(result.data);
             } else {
               reject(result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async GetProvinces ({ state, commit }, params) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .getProvinces(params)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              commit('STATE_UPDATE_PROVINCES', result.data);
+              resolve(result.Message);
+            } else {
+              reject(result.Message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async GetDistricts ({ state, commit }, params) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .getDistrictsByProvince(params)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              commit('STATE_UPDATE_DISTRICTS', result.data);
+              resolve(result.Message);
+            } else {
+              reject(result.Message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async GetWards ({ state, commit }, params) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .getWardsByDistrict(params)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              commit('STATE_UPDATE_WARDS', result.data);
+              resolve(result.Message);
+            } else {
+              reject(result.Message);
             }
           })
           .catch(error => {

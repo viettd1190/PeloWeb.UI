@@ -93,7 +93,6 @@ export default {
   },
   mounted() {
     if (this.editAppConfig == null) {
-      this.getAppConfigById();
       return;
     }
     this.form.id = this.editAppConfig.id;
@@ -172,15 +171,6 @@ export default {
         }
       } catch (error) {
         window.getApp.showMessage(rs, messageResult.Error);
-      }
-    },
-    async getAppConfigById() {
-      let rs = await this.GetAppConfig(this.form.id);
-      if (rs !== "") {
-      } else {
-        this.$destroy();
-        this.STATE_UPDATE_EDIT_APPCONFIG(null);
-        window.location.href = "#/404";
       }
     }
   }

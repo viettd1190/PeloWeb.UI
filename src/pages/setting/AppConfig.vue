@@ -122,8 +122,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetAppConfigList"]),
-    ...mapMutations(["STATE_UPDATE_EDIT_APPCONFIG"]),
+    ...mapActions(["GetAppConfigList","GetAppConfig"]),
     async getAppConfigList() {
       try {
         const {
@@ -162,11 +161,22 @@ export default {
       this.getAppConfigList();
     },
     add() {
-      window.location.href="#/Setting/AppConfig/Add";
+      window.getApp.changeView("/Add");
+      //window.location.href="#/Setting/AppConfig/Add";
     },
     selectConfig(item){
-      this.STATE_UPDATE_EDIT_APPCONFIG(item);
-      window.location.href="#/Setting/AppConfig/Edit/"+item.id;
+      this.getAppConfigById(item.id);      
+      //window.location.href="#/Setting/AppConfig/Edit/"+item.id;
+    },
+    async getAppConfigById(id) {
+      let rs = await this.GetAppConfig(id);
+      if (rs != "") {
+        window.getApp.changeView("/Edit/"+id);
+      } else {
+        this.$destroy();
+        this.STATE_UPDATE_EDIT_APPCONFIG(null);
+        window.location.href = "#/404";
+      }
     }
   }
 };

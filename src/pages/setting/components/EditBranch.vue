@@ -60,16 +60,17 @@ import { messageResult } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 export default {
   components: { TitlePage },
-  props: {
-    propData: null
-  },
+  props: {},
   data() {
     return {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
         name: "",
-        value: "",
-        description: ""
+        hotline: "",
+        address: "",
+        provinceId: null,
+        districtId: null,
+        wardId: null
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
@@ -93,7 +94,6 @@ export default {
   },
   mounted() {
     if (this.editBranch == null) {
-      this.getById();
       return;
     }
     this.form.id = this.editBranch.id;
@@ -101,8 +101,7 @@ export default {
     this.form.address = this.editBranch.address;
     this.form.hotline = this.editBranch.hotline;
   },
-  created() {
-  },
+  created() {},
   methods: {
     ...mapActions(["UpdateBranch", "DeleteBranch", "GetBranch"]),
     validateForm(e) {
@@ -168,14 +167,6 @@ export default {
         }
       } catch (error) {
         window.getApp.showMessage(rs, messageResult.Error);
-      }
-    },
-    async getById() {
-      let rs = await this.GetBranch(this.form.id);
-      if (rs !== "") {
-      } else {
-        this.$destroy();
-        window.location.href = "#/404";
       }
     }
   }

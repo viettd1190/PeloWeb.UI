@@ -6,6 +6,36 @@
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
+              <v-select
+                :items="selectProvinces"
+                item-text="name"
+                item-value="id"
+                v-model="province"
+                label="Tỉnh thành"
+                persistent-hint
+                return-object
+                single-line
+              ></v-select>
+              <v-select
+                :items="selectDistricts"
+                item-text="name"
+                item-value="id"
+                v-model="district"
+                label="Quận huyện"
+                persistent-hint
+                return-object
+                single-line
+              ></v-select>
+              <v-select
+                :items="selectWards"
+                item-text="name"
+                item-value="id"
+                v-model="ward"
+                label="Xã phường"
+                persistent-hint
+                return-object
+                single-line
+              ></v-select>
               <v-text-field
                 v-model="form.name"
                 :rules="[rules.required]"
@@ -54,23 +84,49 @@ import TitlePage from "@/components/TitlePage";
 import { messageResult } from "@/utils/index";
 export default {
   components: { TitlePage },
-  props: {
-  },
+  props: {},
   data() {
     return {
-      form: { name: "", hotline: "", address: "" },
+      form: {
+        name: "",
+        hotline: "",
+        address: "",
+        provinceId: 0,
+        districtId: 0,
+        wardId: 0
+      },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
       },
-      valid: true
+      valid: true,
+      selectProvinces: Array,
+      selectDistricts: Array,
+      selectWards: Array,
+      province: { id: 0, name: "", type: "" },
+      district: { id: 0, name: "", type: "" },
+      ward: { id: 0, name: "", type: "" }
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["provinces", "districts", "wards"])
+  },
   watch: {
+    provinces() {
+      this.selectProvinces = this.provinces;
+    },
+    districts() {
+      this.selectDistricts = this.districts;
+    },
+    wards() {
+      this.selectWards = this.wards;
+    }
   },
   created() {},
+  mounted() {
+    this.syncSelect();
+  },
   methods: {
-    ...mapActions(["CreateBranch"]),
+    ...mapActions(["CreateBranch", "GetProvinces", "GetDistricts", "GetWards"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -112,6 +168,11 @@ export default {
     close() {
       this.$destroy();
       window.location.href = "#/Setting/Branch";
+    },
+    syncSelect() {
+      this.GetProvinces();
+      this.GetDistricts(0);
+      this.GetWards(0);
     }
   }
 };

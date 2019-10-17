@@ -74,3 +74,23 @@ export function deleteBranchById (params) {
     method: 'delete',    
   });
 }
+export function getProvinces (params) {
+  return request({
+    url: 'province/all',
+    method: 'get',    
+  });
+}
+export function getDistrictsByProvince (params) {
+  return request({
+    url: 'district/all',
+    method: 'get',
+    params
+  });
+}
+export function getWardsByDistrict (params) {
+  return request({
+    url: 'ward/all',
+    method: 'get',
+    params
+  });
+}
