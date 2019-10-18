@@ -9,6 +9,7 @@
           v-model="name"
           class="ma-2"
           append-icon="search"
+          v-on:keyup="inputSearch"
         ></v-text-field>
       </v-flex>
       <v-flex xs12 sm3 md3 lg3>
@@ -18,6 +19,7 @@
           label="Giá trị"
           v-model="description"
           append-icon="search"
+          v-on:keyup="inputSearch"
         ></v-text-field>
       </v-flex>
     </v-layout>
@@ -177,7 +179,13 @@ export default {
         this.STATE_UPDATE_EDIT_APPCONFIG(null);
         window.location.href = "#/404";
       }
-    }
+    },
+    
+    inputSearch(e) {
+      if (e.keyCode === 13) {
+        this.getAppConfigList();
+      }
+    },
   }
 };
 </script>

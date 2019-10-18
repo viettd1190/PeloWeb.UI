@@ -427,4 +427,20 @@ export default [
     name: 'Setting/Branch',
     component: () => import(`@/pages/setting/components/EditBranch.vue`)
   },
+  {
+    path: '/Setting/SystemRole/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemRole',
+    component: () => import(`@/pages/setting/components/AddRole.vue`)
+  },
+  {
+    path: '/Setting/SystemRole/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemRole',
+    component: () => import(`@/pages/setting/components/EditRole.vue`)
+  },
 ];

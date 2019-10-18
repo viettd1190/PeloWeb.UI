@@ -94,3 +94,49 @@ export function getWardsByDistrict (params) {
     params
   });
 }
+export function getRoles (params) {
+  return request({
+    url: 'role',
+    method: 'get',
+    params
+  });
+}
+export function getRole (params) {
+  return request({
+    url: 'role/'+params,
+    method: 'get',
+  });
+}
+export function getRoleAll (params) {
+  return request({
+    url: 'role/all',
+    method: 'get',
+  });
+}
+export function createRole (data) {
+  return request({
+    url: 'role',
+    method: 'post',
+    data
+  });
+}
+export function updateRole (data) {
+  return request({
+    url: 'role',
+    method: 'put',
+    data
+  });
+}
+export function getRoleById (params) {
+  return request({
+    url: 'branch/'+params,
+    method: 'get',
+    
+  });
+}
+export function deleteRoleId (params) {
+  return request({
+    url: 'branch/'+params,
+    method: 'delete',    
+  });
+}

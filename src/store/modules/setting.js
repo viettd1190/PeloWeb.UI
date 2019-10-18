@@ -7,7 +7,8 @@ const setting = {
     editBranch: null,
     provinces: [],
     districts: [],
-    wards: []
+    wards: [],
+    editRole:null    
   },
   mutations: {
     STATE_UPDATE_EDIT_APPCONFIG: (state, data) => {
@@ -254,7 +255,94 @@ const setting = {
             reject(error);
           });
       });
-    }
+    },
+    ///Role
+    async GetRoles ({ state, commit }, params) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .getRoles(params)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              resolve(result.data);
+            } else {
+              reject(result.Message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async CreateRole ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .createRole(model)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              resolve(result.message);
+            } else {
+              reject(result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async UpdateRole ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .updateRole(model)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              resolve(result.message);
+            } else {
+              reject(result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async DeleteRole ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .deleteRoleById(model)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              resolve(result.message);
+            } else {
+              reject(result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async GetRole ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .getRole(model)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              commit('STATE_UPDATE_EDIT_BRANCH', result.data);
+              resolve(result.data);
+            } else {
+              reject(result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
   }
 };
 
