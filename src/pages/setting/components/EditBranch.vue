@@ -6,6 +6,39 @@
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
+              <v-select
+                :items="selectProvinces"
+                item-text="name"
+                item-value="id"
+                v-model="province"
+                label="Tỉnh thành"
+                persistent-hint
+                return-object
+                v-on:change="changeProvince"
+                :error-messages="errors.collect('type')"
+                v-validate="'required'"
+                data-vv-name="type"
+                required
+              ></v-select>
+              <v-select
+                :items="selectDistricts"
+                item-text="name"
+                item-value="id"
+                v-model="district"
+                label="Quận huyện"
+                persistent-hint
+                return-object
+                v-on:change="changeDistrict"
+              ></v-select>
+              <v-select
+                :items="selectWards"
+                item-text="name"
+                item-value="id"
+                v-model="ward"
+                label="Xã phường"
+                persistent-hint
+                return-object
+              ></v-select>
               <v-text-field
                 v-model="form.name"
                 :rules="[rules.required]"
@@ -17,7 +50,6 @@
               ></v-text-field>
               <v-text-field
                 v-model="form.address"
-                :rules="[rules.required]"
                 type="text"
                 name="input-10-1"
                 label="Địa chỉ"
@@ -50,6 +82,7 @@
         </v-container>
       </v-form>
     </v-card>
+    <dialog-confirm v-if="isRemove" @comfirm="confirmDelete"></dialog-confirm>
   </div>
 </template>
 <script>
@@ -58,8 +91,9 @@ import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
 import { messageResult } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
+import DialogConfirm from "@/components/DialogConfirm";
 export default {
-  components: { TitlePage },
+  components: { TitlePage, DialogConfirm },
   props: {},
   data() {
     return {
@@ -67,43 +101,72 @@ export default {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
         name: "",
         hotline: "",
-        address: "",
-        provinceId: null,
-        districtId: null,
-        wardId: null
+        address: ""
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
       },
-      valid: true
+      selectProvinces: [],
+      selectDistricts: [],
+      selectWards: [],
+      valid: true,
+      province: { id: 0, name: "", type: "" },
+      district: { id: 0, name: "", type: "" },
+      ward: { id: 0, name: "", type: "" },
+      isRemove: false
     };
   },
   computed: {
-    ...mapGetters(["editBranch"])
+    ...mapGetters(["editBranch", "provinces", "districts", "wards"])
   },
   watch: {
     editBranch() {
       if (this.editBranch == null) {
         return;
       }
+      this.syncSelect();
       this.form.id = this.editBranch.id;
       this.form.name = this.editBranch.name;
       this.form.address = this.editBranch.address;
       this.form.hotline = this.editBranch.hotline;
+      this.ward.id = this.editBranch.wardId;
+      this.province.id = this.editBranch.provinceId;
+      this.district.id = this.editBranch.districtId;
+    },
+    provinces() {
+      this.selectProvinces = this.provinces;
+    },
+    districts() {
+      this.selectDistricts = this.districts;
+    },
+    wards() {
+      this.selectWards = this.wards;
     }
   },
   mounted() {
     if (this.editBranch == null) {
+      this.getById(this.form.id);
+      this.syncSelect();
       return;
     }
     this.form.id = this.editBranch.id;
     this.form.name = this.editBranch.name;
     this.form.address = this.editBranch.address;
     this.form.hotline = this.editBranch.hotline;
+    this.ward.id = this.editBranch.wardId;
+    this.province.id = this.editBranch.provinceId;
+    this.district.id = this.editBranch.districtId;
   },
   created() {},
   methods: {
-    ...mapActions(["UpdateBranch", "DeleteBranch", "GetBranch"]),
+    ...mapActions([
+      "UpdateBranch",
+      "DeleteBranch",
+      "GetBranch",
+      "GetProvinces",
+      "GetDistricts",
+      "GetWards"
+    ]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -118,14 +181,17 @@ export default {
       if (this.id == 0) {
         this.close();
       }
-      if (this.value == "" || this.value == "") {
+      if (this.form.name == "" || this.province.id == 0) {
         return;
       }
       let p = {
         id: this.form.id,
         address: this.form.address,
         name: this.form.name,
-        hotline: this.form.hotline
+        hotline: this.form.hotline,
+        provinceId: this.province.id,
+        districtId: this.district.id,
+        wardId: this.ward.id
       };
       this.update(p);
     },
@@ -150,7 +216,8 @@ export default {
       window.location.href = "#/Setting/Branch";
     },
     removeData() {
-      this.remove();
+      this.isRemove = true;
+      //this.remove();
     },
     async remove() {
       try {
@@ -168,6 +235,34 @@ export default {
       } catch (error) {
         window.getApp.showMessage(rs, messageResult.Error);
       }
+    },
+    syncSelect() {
+      this.GetProvinces();
+      this.GetDistricts({ ProvinceId: this.province.id });
+      this.GetWards({
+        ProvinceId: this.province.id,
+        DistrictId: this.district.id
+      });
+    },
+    changeProvince(e) {
+      this.GetDistricts({ ProvinceId: e.id });
+    },
+    changeDistrict(e) {
+      this.GetWards({ ProvinceId: this.province.id, DistrictId: e.id });
+    },
+    async getById(id) {
+      let rs = await this.GetBranch(id);
+      if (rs !== "") {
+      } else {
+        this.$destroy();
+        window.location.href = "#/404";
+      }
+    },
+    confirmDelete(flag) {
+      if (flag) {        
+        this.remove();
+      }
+      this.isRemove = false;
     }
   }
 };

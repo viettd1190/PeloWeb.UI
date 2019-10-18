@@ -14,7 +14,11 @@
                 label="Tỉnh thành"
                 persistent-hint
                 return-object
-                single-line
+                v-on:change="changeProvince"
+                :error-messages="errors.collect('type')"
+                v-validate="'required'"
+                data-vv-name="type"
+                required
               ></v-select>
               <v-select
                 :items="selectDistricts"
@@ -24,7 +28,7 @@
                 label="Quận huyện"
                 persistent-hint
                 return-object
-                single-line
+                v-on:change="changeDistrict"
               ></v-select>
               <v-select
                 :items="selectWards"
@@ -34,7 +38,6 @@
                 label="Xã phường"
                 persistent-hint
                 return-object
-                single-line
               ></v-select>
               <v-text-field
                 v-model="form.name"
@@ -47,7 +50,6 @@
               ></v-text-field>
               <v-text-field
                 v-model="form.address"
-                :rules="[rules.required]"
                 type="text"
                 name="input-10-1"
                 label="Địa chỉ"
@@ -68,7 +70,9 @@
           <v-layout row justify-center>
             <v-card-actions>
               <v-btn class="default" @click="close()">Trở lại</v-btn>
-              <v-btn class="primary" :disabled="!valid" @click="validate()">Thêm mới</v-btn>
+              <v-btn class="primary" :disabled="!valid" @click="validate()"
+                >Thêm mới</v-btn
+              >
             </v-card-actions>
           </v-layout>
         </v-container>
@@ -91,17 +95,14 @@ export default {
         name: "",
         hotline: "",
         address: "",
-        provinceId: 0,
-        districtId: 0,
-        wardId: 0
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
       },
       valid: true,
-      selectProvinces: Array,
-      selectDistricts: Array,
-      selectWards: Array,
+      selectProvinces: [],
+      selectDistricts: [],
+      selectWards: [],
       province: { id: 0, name: "", type: "" },
       district: { id: 0, name: "", type: "" },
       ward: { id: 0, name: "", type: "" }
@@ -119,7 +120,7 @@ export default {
     },
     wards() {
       this.selectWards = this.wards;
-    }
+    }    
   },
   created() {},
   mounted() {
@@ -138,13 +139,19 @@ export default {
       }
     },
     save() {
-      if (this.value == "" || this.value == "") {
+      if (
+        this.form.name == "" ||
+        this.province.id == 0
+      ) {
         return;
       }
       let p = {
         address: this.form.address,
         name: this.form.name,
-        hotline: this.form.hotline
+        hotline: this.form.hotline,
+        provinceId: this.province.id,
+        districtId: this.district.id,
+        wardId: this.ward.id
       };
       this.add(p);
     },
@@ -173,6 +180,12 @@ export default {
       this.GetProvinces();
       this.GetDistricts(0);
       this.GetWards(0);
+    },
+    changeProvince(e) {
+      this.GetDistricts({ ProvinceId: e.id });      
+    },
+    changeDistrict(e) {
+      this.GetWards({ ProvinceId: this.province.id, DistrictId: e.id });
     }
   }
 };

@@ -5,9 +5,9 @@ const setting = {
   state: {
     editAppConfig: null,
     editBranch: null,
-    provinces: Array,
-    districts: Array,
-    wards: Array
+    provinces: [],
+    districts: [],
+    wards: []
   },
   mutations: {
     STATE_UPDATE_EDIT_APPCONFIG: (state, data) => {

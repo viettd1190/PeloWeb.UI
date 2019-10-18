@@ -9,7 +9,7 @@
         :items="datasourceFiltered"
         :pagination.sync="pagination"
         :total-items="pagination.totalRecords"
-        :rows-per-page-items="[10,20,50,100]"
+        :rows-per-page-items="[10, 20, 50, 100]"
         height="inherit"
         class="elevation-1"
         :loading="isLoading"
@@ -96,7 +96,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetBranchs", "GetBranch"]),
+    ...mapActions([
+      "GetBranchs",
+      "GetBranch",
+      "GetProvinces",
+      "GetDistricts",
+      "GetWards"
+    ]),
     async getList() {
       try {
         const {
@@ -135,12 +141,14 @@ export default {
       this.getList();
     },
     add() {
+      this.syncSelect();
       window.getApp.changeView("/Add");
     },
-    select(item) {      
+    select(item) {
       this.getById(item.id);
     },
     async getById(id) {
+      this.syncSelect();
       let rs = await this.GetBranch(id);
       if (rs !== "") {
         window.getApp.changeView("/Edit/" + id);
@@ -148,6 +156,11 @@ export default {
         this.$destroy();
         window.location.href = "#/404";
       }
+    },
+    syncSelect() {
+      this.GetProvinces();
+      this.GetDistricts(0);
+      this.GetWards(0);
     }
   }
 };
