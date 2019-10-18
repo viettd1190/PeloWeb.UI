@@ -8,7 +8,7 @@
       <v-card-actions class="pt-0">
         <v-spacer></v-spacer>
         <v-btn text @click.native="cancel">Không</v-btn>
-        <v-btn color="primary darken-1" text @click.native="agree">Có</v-btn>
+        <v-btn color="red darken-1" class="white--text" text @click.native="agree">Có</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

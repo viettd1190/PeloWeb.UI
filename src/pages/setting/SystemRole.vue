@@ -10,6 +10,7 @@
           class="ma-2"
           append-icon="search"
           v-on:keyup="inputSearch"
+          :clearable="true"
         ></v-text-field>
       </v-flex>
     </v-layout>
@@ -70,7 +71,7 @@ export default {
             text: "Quyền",
             value: "name",
             align: "center"
-          },
+          }
         ]
       },
       pagination: {
@@ -99,9 +100,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      "GetRoles","GetRole"
-    ]),
+    ...mapActions(["GetRoles", "GetRole"]),
     async getList() {
       try {
         const {
@@ -144,7 +143,6 @@ export default {
       this.getById(item.id);
     },
     async getById(id) {
-      this.syncSelect();
       let rs = await this.GetRole(id);
       if (rs !== "") {
         window.getApp.changeView("/Edit/" + id);
@@ -157,7 +155,7 @@ export default {
       if (e.keyCode === 13) {
         this.search();
       }
-    },
+    }
   }
 };
 </script>

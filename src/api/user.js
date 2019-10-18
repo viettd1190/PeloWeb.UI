@@ -36,3 +36,43 @@ export function updateprofile (data) {
     data
   });
 }
+
+export function getUsers (params) {
+  return request({
+    url: 'user',
+    method: 'get',
+    params
+  });
+}
+export function getUser (params) {
+  return request({
+    url: 'user/' + params,
+    method: 'get'
+  });
+}
+export function getUserAll (params) {
+  return request({
+    url: 'user/all',
+    method: 'get'
+  });
+}
+export function createUser (data) {
+  return request({
+    url: 'user',
+    method: 'post',
+    data
+  });
+}
+export function updateUser (data) {
+  return request({
+    url: 'user',
+    method: 'put',
+    data
+  });
+}
+export function deleteUser (params) {
+  return request({
+    url: 'user/' + params,
+    method: 'delete'
+  });
+}

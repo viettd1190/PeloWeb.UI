@@ -102,7 +102,7 @@ export default {
     }
   },
   mounted() {
-    this.menuItems[0].title = this.loggedUser ? this.loggedUser.d : '';
+    this.menuItems[0].title = this.loggedUser ? this.loggedUser.u : this.loggedUser.d;
   },
   methods: {
     ...mapActions(["GetProfile"]),

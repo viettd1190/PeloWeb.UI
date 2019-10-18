@@ -10,6 +10,7 @@
           class="ma-2"
           append-icon="search"
           v-on:keyup="inputSearch"
+          :clearable="true"
         ></v-text-field>
       </v-flex>
       <v-flex xs12 sm3 md3 lg3>
@@ -20,6 +21,7 @@
           v-model="description"
           append-icon="search"
           v-on:keyup="inputSearch"
+          :clearable="true"
         ></v-text-field>
       </v-flex>
     </v-layout>

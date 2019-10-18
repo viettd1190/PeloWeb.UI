@@ -124,24 +124,6 @@ const user = {
           });
       });
     },
-    async GetUserList ({ state, commit }, params) {
-      return await new Promise((resolve, reject) => {
-        API.user
-          .getUsers(params)
-          .then(response => {
-            let result = response.data;
-            if (result.Users) {
-              commit('SET_STORE_USERS', result.Users);
-              resolve(result);
-            } else {
-              reject(result.Message);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
 
     async LogOut ({ commit }) {
       return await new Promise(resolve => {
@@ -219,6 +201,110 @@ const user = {
           });
       });
     },
+    // /User
+    async GetUsers ({ state, commit }, params) {
+      return await new Promise((resolve, reject) => {
+        API.user
+          .getUsers(params)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              resolve(result.data);
+            } else {
+              reject(result.Message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async GetUserAll ({ state, commit }, params) {
+      return await new Promise((resolve, reject) => {
+        API.user
+          .getUserAll(params)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              resolve(result.data);
+            } else {
+              reject(result.Message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async CreateUser ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
+        API.user
+          .createUser(model)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              resolve(result.message);
+            } else {
+              reject(result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async UpdateUser ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
+        API.user
+          .updateUser(model)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              resolve(result.message);
+            } else {
+              reject(result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async DeleteUser ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
+        API.user
+          .deleteUser(model)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              resolve(result.message);
+            } else {
+              reject(result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
+    async GetUser ({ commit }, model) {
+      return await new Promise((resolve, reject) => {
+        API.user
+          .getUser(model)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              commit('STATE_UPDATE_EDIT_ROLE', result.data);
+              resolve(result.data);
+            } else {
+              reject(result.message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    }
   }
 };
 

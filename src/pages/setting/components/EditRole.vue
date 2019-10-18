@@ -6,64 +6,15 @@
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
-              <v-select
-                :items="selectProvinces"
-                item-text="name"
-                item-value="id"
-                v-model="province"
-                label="Tỉnh thành"
-                persistent-hint
-                return-object
-                v-on:change="changeProvince"
-                :error-messages="errors.collect('type')"
-                v-validate="'required'"
-                data-vv-name="type"
-                required
-              ></v-select>
-              <v-select
-                :items="selectDistricts"
-                item-text="name"
-                item-value="id"
-                v-model="district"
-                label="Quận huyện"
-                persistent-hint
-                return-object
-                v-on:change="changeDistrict"
-              ></v-select>
-              <v-select
-                :items="selectWards"
-                item-text="name"
-                item-value="id"
-                v-model="ward"
-                label="Xã phường"
-                persistent-hint
-                return-object
-              ></v-select>
               <v-text-field
+                hide-details
+                label="Tên quyền"
                 v-model="form.name"
-                :rules="[rules.required]"
-                type="text"
-                name="input-10-1"
-                label="Tên"
-                counter
-                @click:append="show1 = !show1"
+                class="ma-2"
+                append-icon="search"
+                v-on:keyup="validateForm"
+                :rule="rules"
               ></v-text-field>
-              <v-text-field
-                v-model="form.address"
-                type="text"
-                name="input-10-1"
-                label="Địa chỉ"
-                counter
-                @click:append="show2 = !show2"
-              ></v-text-field>
-              <v-textarea
-                v-model="form.hotline"
-                type="text"
-                name="input-10-1"
-                label="hotline"
-                counter
-                @click:append="show3 = !show3"
-              ></v-textarea>
             </v-flex>
           </v-layout>
           <v-layout row justify-center>
@@ -100,73 +51,42 @@ export default {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
         name: "",
-        hotline: "",
-        address: ""
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
       },
-      selectProvinces: [],
-      selectDistricts: [],
-      selectWards: [],
       valid: true,
-      province: { id: 0, name: "", type: "" },
-      district: { id: 0, name: "", type: "" },
-      ward: { id: 0, name: "", type: "" },
       isRemove: false
     };
   },
   computed: {
-    ...mapGetters(["editBranch", "provinces", "districts", "wards"])
+    ...mapGetters(["editRole"])
   },
   watch: {
-    editBranch() {
-      if (this.editBranch == null) {
+    editRole() {
+      if (this.editRole == null) {
         return;
       }
-      this.syncSelect();
-      this.form.id = this.editBranch.id;
-      this.form.name = this.editBranch.name;
-      this.form.address = this.editBranch.address;
-      this.form.hotline = this.editBranch.hotline;
-      this.ward.id = this.editBranch.wardId;
-      this.province.id = this.editBranch.provinceId;
-      this.district.id = this.editBranch.districtId;
+      this.form.id = this.editRole.id;
+      this.form.name = this.editRole.name;
     },
-    provinces() {
-      this.selectProvinces = this.provinces;
-    },
-    districts() {
-      this.selectDistricts = this.districts;
-    },
-    wards() {
-      this.selectWards = this.wards;
-    }
   },
   mounted() {
-    if (this.editBranch == null) {
+    if (this.editRole == null) {
       this.getById(this.form.id);
-      this.syncSelect();
       return;
     }
-    this.form.id = this.editBranch.id;
-    this.form.name = this.editBranch.name;
-    this.form.address = this.editBranch.address;
-    this.form.hotline = this.editBranch.hotline;
-    this.ward.id = this.editBranch.wardId;
-    this.province.id = this.editBranch.provinceId;
-    this.district.id = this.editBranch.districtId;
+    this.form.id = this.editRole.id;
+    this.form.name = this.editRole.name;
   },
-  created() {},
+  created() {this.getById(this.form.id)},
   methods: {
     ...mapActions([
-      "UpdateBranch",
-      "DeleteBranch",
-      "GetBranch",
-      "GetProvinces",
-      "GetDistricts",
-      "GetWards"
+      "UpdateRole",
+      "DeleteRole",
+      "GetRole"
     ]),
+    ...mapMutations(["STATE_UPDATE_EDIT_ROLE"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -181,23 +101,18 @@ export default {
       if (this.id == 0) {
         this.close();
       }
-      if (this.form.name == "" || this.province.id == 0) {
+      if (this.form.name == "") {
         return;
       }
       let p = {
         id: this.form.id,
-        address: this.form.address,
-        name: this.form.name,
-        hotline: this.form.hotline,
-        provinceId: this.province.id,
-        districtId: this.district.id,
-        wardId: this.ward.id
+        name: this.form.name
       };
       this.update(p);
     },
     async update(model) {
       try {
-        let rs = await this.UpdateBranch(model);
+        let rs = await this.UpdateRole(model);
         if (rs != "") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -205,23 +120,24 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/Branch";
+          this.STATE_UPDATE_EDIT_ROLE(null);
+          window.location.href = "#/Setting/SystemRole";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      this.$destroy();
-      window.location.href = "#/Setting/Branch";
+      this.STATE_UPDATE_EDIT_ROLE(null);
+      this.$destroy();      
+      window.location.href = "#/Setting/SystemRole";
     },
     removeData() {
       this.isRemove = true;
-      //this.remove();
     },
     async remove() {
       try {
-        let rs = await this.DeleteBranch(this.form.id);
+        let rs = await this.DeleteRole(this.form.id);
         if (rs != "") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -230,36 +146,23 @@ export default {
             messageResult.Success
           );
           this.$destroy();
-          window.location.href = "#/Setting/Branch";
+          window.location.href = "#/Setting/SystemRole";
         }
       } catch (error) {
-        window.getApp.showMessage(rs, messageResult.Error);
+        window.getApp.showMessage(error, messageResult.Error);
       }
     },
-    syncSelect() {
-      this.GetProvinces();
-      this.GetDistricts({ ProvinceId: this.province.id });
-      this.GetWards({
-        ProvinceId: this.province.id,
-        DistrictId: this.district.id
-      });
-    },
-    changeProvince(e) {
-      this.GetDistricts({ ProvinceId: e.id });
-    },
-    changeDistrict(e) {
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: e.id });
-    },
     async getById(id) {
-      let rs = await this.GetBranch(id);
+      let rs = await this.GetRole(id);
       if (rs !== "") {
       } else {
         this.$destroy();
+        this.STATE_UPDATE_EDIT_ROLE(null);
         window.location.href = "#/404";
       }
     },
     confirmDelete(flag) {
-      if (flag) {        
+      if (flag) {
         this.remove();
       }
       this.isRemove = false;

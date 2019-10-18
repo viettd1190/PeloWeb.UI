@@ -47,6 +47,7 @@
                 label="Tên"
                 counter
                 @click:append="show1 = !show1"
+                :clearable="true"
               ></v-text-field>
               <v-text-field
                 v-model="form.address"
@@ -55,6 +56,7 @@
                 label="Địa chỉ"
                 counter
                 @click:append="show2 = !show2"
+                :clearable="true"
               ></v-text-field>
               <v-text-field
                 v-model="form.hotline"
@@ -64,6 +66,7 @@
                 counter
                 append-icon="phone"
                 @click:append="show3 = !show3"
+                :clearable="true"
               ></v-text-field>
             </v-flex>
           </v-layout>

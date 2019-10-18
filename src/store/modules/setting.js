@@ -8,7 +8,9 @@ const setting = {
     provinces: [],
     districts: [],
     wards: [],
-    editRole:null    
+    branchs: [],
+    editRole: null,
+    users: []
   },
   mutations: {
     STATE_UPDATE_EDIT_APPCONFIG: (state, data) => {
@@ -25,6 +27,12 @@ const setting = {
     },
     STATE_UPDATE_WARDS: (state, data) => {
       state.wards = data;
+    },
+    STATE_UPDATE_EDIT_ROLE: (state, data) => {
+      state.editRole = data;
+    },
+    STATE_UPDATE_BRANCHS: (state, data) => {
+      state.branchs = data;
     }
   },
   actions: {
@@ -133,6 +141,24 @@ const setting = {
           });
       });
     },
+    async GetBranchAll ({ state, commit }, params) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .getBranchAll(params)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              commit('STATE_UPDATE_BRANCHS', result.data);
+              resolve(result.data);
+            } else {
+              reject(result.Message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
     async CreateBranch ({ commit }, model) {
       return await new Promise((resolve, reject) => {
         API.setting
@@ -210,9 +236,9 @@ const setting = {
             let result = response.data;
             if (result.isSuccess) {
               commit('STATE_UPDATE_PROVINCES', result.data);
-              resolve(result.Message);
+              resolve(result.message);
             } else {
-              reject(result.Message);
+              reject(result.message);
             }
           })
           .catch(error => {
@@ -256,7 +282,7 @@ const setting = {
           });
       });
     },
-    ///Role
+    // /Role
     async GetRoles ({ state, commit }, params) {
       return await new Promise((resolve, reject) => {
         API.setting
@@ -311,7 +337,7 @@ const setting = {
     async DeleteRole ({ commit }, model) {
       return await new Promise((resolve, reject) => {
         API.setting
-          .deleteRoleById(model)
+          .deleteRole(model)
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
@@ -332,7 +358,7 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              commit('STATE_UPDATE_EDIT_BRANCH', result.data);
+              commit('STATE_UPDATE_EDIT_ROLE', result.data);
               resolve(result.data);
             } else {
               reject(result.message);
@@ -342,7 +368,7 @@ const setting = {
             reject(error);
           });
       });
-    },
+    },    
   }
 };
 

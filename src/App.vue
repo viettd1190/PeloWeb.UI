@@ -64,7 +64,7 @@ import menu from "@/api/menu";
 import ThemeSettings from "@/components/ThemeSettings";
 import UpdatePassword from "@/components/UpdatePassword";
 import AppEvents from "./event";
-import { mapGetters, mapMutations } from "vuex";
+import { mapGetters, mapMutations, mapActions } from "vuex";
 export default {
   components: {
     AppDrawer,
@@ -94,9 +94,12 @@ export default {
       this.$on(item.name, item.callback);
     });
     window.getApp = this;
+    this.getUserAll();
+    this.getBranchs();
   },
   methods: {
     ...mapMutations([]),
+    ...mapActions(["GetUserAll","GetBranchAll"]),
     openThemeSettings() {
       this.$vuetify.goTo(0);
       this.rightDrawer = !this.rightDrawer;
@@ -131,6 +134,13 @@ export default {
     },
     changeView(url) {
       window.location.href = "#"+this.$route.path + url;
+    },
+    getUserAll(){
+      console.log("Lấy tất cả user");      
+      //this.GetUserAll();
+    },
+    getBranchs(){
+      this.GetBranchAll();
     }
   }
 };

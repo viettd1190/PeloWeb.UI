@@ -23,15 +23,14 @@ export function updateAppConfig (data) {
 }
 export function getAppConfigById (params) {
   return request({
-    url: 'config/'+params,
-    method: 'get',
-    
+    url: 'config/' + params,
+    method: 'get'
   });
 }
 export function deleteAppConfigById (params) {
   return request({
-    url: 'config/'+params,
-    method: 'delete',    
+    url: 'config/' + params,
+    method: 'delete'
   });
 }
 export function getBranchs (params) {
@@ -44,7 +43,7 @@ export function getBranchs (params) {
 export function getBranchAll (params) {
   return request({
     url: 'branch/all',
-    method: 'get',
+    method: 'get'
   });
 }
 export function createBranch (data) {
@@ -63,21 +62,20 @@ export function updateBranch (data) {
 }
 export function getBranchById (params) {
   return request({
-    url: 'branch/'+params,
-    method: 'get',
-    
+    url: 'branch/' + params,
+    method: 'get'
   });
 }
 export function deleteBranchById (params) {
   return request({
-    url: 'branch/'+params,
-    method: 'delete',    
+    url: 'branch/' + params,
+    method: 'delete'
   });
 }
-export function getProvinces (params) {
+export function getProvinces () {
   return request({
     url: 'province/all',
-    method: 'get',    
+    method: 'get'
   });
 }
 export function getDistrictsByProvince (params) {
@@ -103,14 +101,14 @@ export function getRoles (params) {
 }
 export function getRole (params) {
   return request({
-    url: 'role/'+params,
-    method: 'get',
+    url: 'role/' + params,
+    method: 'get'
   });
 }
 export function getRoleAll (params) {
   return request({
     url: 'role/all',
-    method: 'get',
+    method: 'get'
   });
 }
 export function createRole (data) {
@@ -127,16 +125,9 @@ export function updateRole (data) {
     data
   });
 }
-export function getRoleById (params) {
+export function deleteRole (params) {
   return request({
-    url: 'branch/'+params,
-    method: 'get',
-    
-  });
-}
-export function deleteRoleId (params) {
-  return request({
-    url: 'branch/'+params,
-    method: 'delete',    
+    url: 'role/' + params,
+    method: 'delete'
   });
 }

@@ -14,6 +14,7 @@
                 append-icon="search"
                 v-on:keyup="validateForm"
                 :rule="rules"
+                :clearable="true"
               ></v-text-field>
             </v-flex>
           </v-layout>

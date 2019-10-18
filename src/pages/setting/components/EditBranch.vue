@@ -7,7 +7,7 @@
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
               <v-select
-                :items="selectProvinces"
+                :items="provinces"
                 item-text="name"
                 item-value="id"
                 v-model="province"
@@ -21,7 +21,7 @@
                 required
               ></v-select>
               <v-select
-                :items="selectDistricts"
+                :items="districts"
                 item-text="name"
                 item-value="id"
                 v-model="district"
@@ -31,7 +31,7 @@
                 v-on:change="changeDistrict"
               ></v-select>
               <v-select
-                :items="selectWards"
+                :items="wards"
                 item-text="name"
                 item-value="id"
                 v-model="ward"
