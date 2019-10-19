@@ -174,8 +174,24 @@ export default [
     meta: {
       breadcrumb: true
     },
-    name: 'Product/ProductGroup/Index',
+    name: 'Product/ProductGroup',
     component: () => import(`@/pages/product/ProductGroup.vue`)
+  },
+  ,{
+    path: '/Product/ProductGroup/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/ProductGroup',
+    component: () => import(`@/pages/product/components/AddProductGroup.vue`)
+  },
+  ,{
+    path: '/Product/ProductGroup/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/ProductGroup',
+    component: () => import(`@/pages/product/components/EditProductGroup.vue`)
   },
   ,{
     path: '/Product/Manufacturer',

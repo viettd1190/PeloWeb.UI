@@ -64,7 +64,7 @@ const Menu = [
     },{
       title: 'Nhóm sản phẩm',
       group: 'Product',
-      name: 'ProductGroup/Index',
+      name: 'ProductGroup',
     },{
       title: 'Thương hiệu',
       group: 'Product',
