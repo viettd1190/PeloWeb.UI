@@ -40,10 +40,10 @@
         :items="datasourceFiltered"
         :pagination.sync="pagination"
         :total-items="pagination.totalRecords"
-        :rows-per-page-items="[10,20,50,100]"
+        :rows-per-page-items="[10, 20, 50, 100]"
         height="inherit"
         class="elevation-1"
-        :loading="isLoading"
+        :loading="isLoading == 1"
         loading-text="Loading... Please wait"
       >
         <template slot="items" slot-scope="props">
@@ -74,10 +74,9 @@ import moment from "moment";
 import TitlePage from "@/components/TitlePage";
 export default {
   components: {
-    TitlePage,
+    TitlePage
   },
-  props: {
-  },
+  props: {},
   data() {
     return {
       name: "",
@@ -109,12 +108,11 @@ export default {
         sortBy: "name"
       },
       datasourceFiltered: [],
-      isLoading: true,
+      isLoading: -1
     };
   },
   computed: {},
   created() {
-    this.getAppConfigList();
   },
   mounted() {},
   watch: {
@@ -126,7 +124,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetAppConfigList","GetAppConfig"]),
+    ...mapActions(["GetAppConfigList", "GetAppConfig"]),
     async getAppConfigList() {
       try {
         const {
@@ -136,8 +134,11 @@ export default {
           itemsPerPage,
           rowsPerPage
         } = this.pagination;
-        this.isLoading = true;
-        if (this.isLoading) {
+        if (this.isLoading < 0) {
+          this.isLoading = 0;
+        }
+        if (this.isLoading == 0) {
+          this.isLoading = 1;
           let rs = await this.GetAppConfigList({
             Page: page,
             PageSize: rowsPerPage,
@@ -147,6 +148,7 @@ export default {
             Description: this.description
           });
           if (rs != null && rs.data) {
+            this.isLoading = -1;
             this.isLoading = false;
             this.datasourceFiltered = rs.data;
             this.pagination.totalRecords = rs.totalCount;
@@ -168,14 +170,14 @@ export default {
       window.getApp.changeView("/Add");
       //window.location.href="#/Setting/AppConfig/Add";
     },
-    selectConfig(item){
-      window.getApp.changeView("/Edit/"+item.id);
+    selectConfig(item) {
+      window.getApp.changeView("/Edit/" + item.id);
     },
     inputSearch(e) {
       if (e.keyCode === 13) {
         this.getAppConfigList();
       }
-    },
+    }
   }
 };
 </script>

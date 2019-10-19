@@ -1,58 +1,24 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Chi nhánh</title-page>
+    <title-page>Danh sách nhóm khách hàng</title-page>
     <v-layout row justify-center>
-      <v-flex xs12 sm6 md4 lg4>
+      <v-flex xs12 sm3 md3 lg3>
         <v-text-field
           hide-details
-          label="Tên chi nhánh"
+          label="Tên"
           v-model="name"
           class="ma-2"
-          append-icon="store"
+          append-icon="search"
           v-on:keyup="inputSearch"
           :clearable="true"
         ></v-text-field>
-        <v-text-field
-          class="ma-2"
-          hide-details
-          label="Hotline"
-          v-model="hotline"
-          append-icon="phone"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>
+      </v-flex>
+    </v-layout>
+    <v-layout row justify-center>
+      <v-flex xs4 sm2 md1 lg1>
         <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
         </v-btn>
-      </v-flex>
-      <v-flex xs12 sm6 md4 lg4>
-        <v-select
-          :items="provinces"
-          item-text="name"
-          item-value="id"
-          v-model="province"
-          label="Tỉnh thành"
-          persistent-hint
-          return-object
-        ></v-select>
-        <v-select
-          :items="selectDistricts"
-          item-text="name"
-          item-value="id"
-          v-model="province"
-          label="Quận Huyện"
-          persistent-hint
-          return-object
-        ></v-select>
-        <v-select
-          :items="selectWards"
-          item-text="name"
-          item-value="id"
-          v-model="province"
-          label="Xã phường"
-          persistent-hint
-          return-object
-        ></v-select>
       </v-flex>
     </v-layout>
     <v-container>
@@ -73,9 +39,6 @@
           <tr class="table-row">
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
-            </td>
-            <td nowrap>
-              <v-layout>{{ props.item.hotline }}</v-layout>
             </td>
           </tr>
         </template>
@@ -101,16 +64,12 @@ export default {
     return {
       name: "",
       hotline: "",
+      address: "",
       table: {
         headers: [
           {
-            text: "Chi nhánh",
+            text: "Tên",
             value: "name",
-            align: "center"
-          },
-          {
-            text: "Hot line",
-            value: "hotline",
             align: "center"
           }
         ]
@@ -124,20 +83,11 @@ export default {
         descending: false
       },
       datasourceFiltered: [],
-      isLoading: -1,
-      selectDistricts: [],
-      selectWards: [],
-      province: { id: 0, name: "", type: "" },
-      district: { id: 0, name: "", type: "" },
-      ward: { id: 0, name: "", type: "" }
-      //provinces:[]
+      isLoading: -1
     };
   },
-  computed: {
-    ...mapGetters(["provinces", "districts", "wards"])
-  },
+  computed: {},
   created() {
-    this.syncSelect();
   },
   mounted() {},
   watch: {
@@ -146,22 +96,10 @@ export default {
         this.search();
       },
       deep: true
-    },
-    districts() {
-      this.selectDistricts = this.districts;
-    },
-    wards() {
-      this.selectWards = this.wards;
     }
   },
   methods: {
-    ...mapActions([
-      "GetBranchs",
-      "GetBranch",
-      "GetProvinceAll",
-      "GetDistricts",
-      "GetWards"
-    ]),
+    ...mapActions(["GetCustomerGroups"]),
     async getList() {
       try {
         const {
@@ -176,17 +114,12 @@ export default {
         }
         if (this.isLoading == 0) {
           this.isLoading = 1;
-          let rs = await this.GetBranchs({
+          let rs = await this.GetCustomerGroups({
             Page: page,
             PageSize: rowsPerPage,
             ColumnOrder: sortBy,
             SortDir: descending ? "desc" : "asc",
-            Name: this.name,
-            Hotline: this.hotline,
-            Address: this.address,
-            ProvinceId: this.province.id,
-            DistrictId: this.district.id,
-            WardId: this.ward.id
+            Name: this.name
           });
           if (rs != null && rs.data) {
             this.isLoading = -1;
@@ -212,13 +145,7 @@ export default {
       this.getById(item.id);
     },
     getById(id) {
-      this.GetBranch(id);
       window.getApp.changeView("/Edit/" + id);
-    },
-    syncSelect() {
-      //this.GetProvinceAll();
-      this.GetDistricts(0);
-      this.GetWards(0);
     },
     inputSearch(e) {
       if (e.keyCode === 13) {

@@ -48,7 +48,7 @@ const Menu = [
     },{
       title: 'Nhóm khách hàng',
       group: 'CRM',
-      name: 'CustomerType/Index',
+      name: 'CustomerGroup',
     }]
   },
   {

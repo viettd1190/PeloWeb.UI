@@ -64,18 +64,12 @@ export default {
   },
   watch: {},
   mounted() {
-    if (this.editRole == null) {
-      this.getById(this.form.id);
-      return;
-    }
-    this.form.id = this.editRole.id;
-    this.form.name = this.editRole.name;
   },
   created() {
     this.getById(this.form.id);
   },
   methods: {
-    ...mapActions(["UpdateRole", "DeleteRole", "GetRole"]),
+    ...mapActions(["UpdateCustomerGroup", "DeleteCustomerGroup", "GetCustomerGroup"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -101,7 +95,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.UpdateRole(model);
+        let rs = await this.UpdateCustomerGroup(model);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -109,29 +103,29 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/SystemRole";
+          window.location.href = "#/Crm/CustomerGroup";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Setting/SystemRole";
+      window.location.href = "#/Crm/CustomerGroup";
     },
     removeData() {
       this.isRemove = true;
     },
     async remove() {
       try {
-        let rs = await this.DeleteRole(this.form.id);
-        if (rs != "") {
+        let rs = await this.DeleteCustomerGroup(this.form.id);
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/SystemRole";
+          window.location.href = "#/Crm/CustomerGroup";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -139,7 +133,7 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetRole(id);
+        let rs = await this.GetCustomerGroup(id);
         if (rs !== "") {
           this.form.id = rs.id;
           this.form.name = rs.name;

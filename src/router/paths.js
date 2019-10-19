@@ -138,12 +138,28 @@ export default [
     component: () => import(`@/pages/crm/CustomerSource.vue`)
   },
   ,{
-    path: '/CRM/CustomerType',
+    path: '/CRM/CustomerGroup',
     meta: {
       breadcrumb: true
     },
-    name: 'CRM/CustomerType/Index',
-    component: () => import(`@/pages/crm/CustomerType.vue`)
+    name: 'CRM/CustomerGroup',
+    component: () => import(`@/pages/crm/CustomerGroup.vue`)
+  },
+  ,{
+    path: '/CRM/CustomerGroup/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CustomerGroup',
+    component: () => import(`@/pages/crm/components/AddCustomerGroup.vue`)
+  },
+  ,{
+    path: '/CRM/CustomerGroup/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CustomerGroup',
+    component: () => import(`@/pages/crm/components/EditCustomerGroup.vue`)
   },
   ,{
     path: '/Product/Index',

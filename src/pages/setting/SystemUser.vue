@@ -218,7 +218,6 @@ export default {
     ...mapGetters(["branchs", "roles"])
   },
   created() {
-    this.getList();
   },
   mounted() {},
   watch: {

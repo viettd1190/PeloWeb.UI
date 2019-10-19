@@ -32,7 +32,7 @@
         :rows-per-page-items="[10, 20, 50, 100]"
         height="inherit"
         class="elevation-1"
-        :loading="isLoading"
+        :loading="isLoading==1"
         loading-text="Loading... Please wait"
       >
         <template slot="items" slot-scope="props">
@@ -83,12 +83,11 @@ export default {
         descending: false
       },
       datasourceFiltered: [],
-      isLoading: true
+      isLoading: -1
     };
   },
   computed: {},
   created() {
-    this.getList();
   },
   mounted() {},
   watch: {
@@ -110,8 +109,11 @@ export default {
           itemsPerPage,
           rowsPerPage
         } = this.pagination;
-        this.isLoading = true;
-        if (this.isLoading) {
+        if(this.isLoading < 0){
+          this.isLoading = 0;
+        }
+        if (this.isLoading==0) {
+          this.isLoading = 1;
           let rs = await this.GetRoles({
             Page: page,
             PageSize: rowsPerPage,
@@ -120,17 +122,17 @@ export default {
             Name: this.name
           });
           if (rs != null && rs.data) {
-            this.isLoading = false;
+            this.isLoading = -1;
             this.datasourceFiltered = rs.data;
             this.pagination.totalRecords = rs.totalCount;
             this.pagination.itemsPerPage = rs.pageSize;
           } else {
-            this.isLoading = false;
+            this.isLoading = -1;
             window.getApp.showMessage(rs, "error");
           }
         }
       } catch (error) {
-        this.isLoading = false;
+        this.isLoading = -1;
       }
     },
     search() {

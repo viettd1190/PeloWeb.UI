@@ -113,7 +113,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["provinces", "editBranch", "districts", "wards"])
+    ...mapGetters(["provinces", "districts", "wards"])
   },
   watch: {
     provinces() {
