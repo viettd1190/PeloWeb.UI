@@ -7,7 +7,7 @@
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
               <v-select
-                :items="provinces"
+                :items="selectProvinces"
                 item-text="name"
                 item-value="id"
                 v-model="province"
@@ -15,13 +15,9 @@
                 persistent-hint
                 return-object
                 v-on:change="changeProvince"
-                :error-messages="errors.collect('type')"
-                v-validate="'required'"
-                data-vv-name="type"
-                required
               ></v-select>
               <v-select
-                :items="districts"
+                :items="selectDistricts"
                 item-text="name"
                 item-value="id"
                 v-model="district"
@@ -31,7 +27,7 @@
                 v-on:change="changeDistrict"
               ></v-select>
               <v-select
-                :items="wards"
+                :items="selectWards"
                 item-text="name"
                 item-value="id"
                 v-model="ward"
@@ -106,33 +102,20 @@ export default {
       rules: {
         required: value => !!value || "Bắt buộc nhập."
       },
-      selectProvinces: [],
-      selectDistricts: [],
-      selectWards: [],
       valid: true,
       province: { id: 0, name: "", type: "" },
       district: { id: 0, name: "", type: "" },
       ward: { id: 0, name: "", type: "" },
-      isRemove: false
+      isRemove: false,
+      selectProvinces: [],
+      selectDistricts: [],
+      selectWards: []
     };
   },
   computed: {
-    ...mapGetters(["editBranch", "provinces", "districts", "wards"])
+    ...mapGetters(["provinces", "editBranch", "districts", "wards"])
   },
   watch: {
-    editBranch() {
-      if (this.editBranch == null) {
-        return;
-      }
-      this.syncSelect();
-      this.form.id = this.editBranch.id;
-      this.form.name = this.editBranch.name;
-      this.form.address = this.editBranch.address;
-      this.form.hotline = this.editBranch.hotline;
-      this.ward.id = this.editBranch.wardId;
-      this.province.id = this.editBranch.provinceId;
-      this.district.id = this.editBranch.districtId;
-    },
     provinces() {
       this.selectProvinces = this.provinces;
     },
@@ -144,29 +127,20 @@ export default {
     }
   },
   mounted() {
-    if (this.editBranch == null) {
-      this.getById(this.form.id);
-      this.syncSelect();
-      return;
-    }
-    this.form.id = this.editBranch.id;
-    this.form.name = this.editBranch.name;
-    this.form.address = this.editBranch.address;
-    this.form.hotline = this.editBranch.hotline;
-    this.ward.id = this.editBranch.wardId;
-    this.province.id = this.editBranch.provinceId;
-    this.district.id = this.editBranch.districtId;
+    //this.syncSelect();
   },
-  created() {},
+  created() {
+    this.getById(this.form.id);
+  },
   methods: {
     ...mapActions([
       "UpdateBranch",
       "DeleteBranch",
       "GetBranch",
-      "GetProvinces",
       "GetDistricts",
       "GetWards"
     ]),
+    ...mapMutations(["STATE_UPDATE_EDIT_BRANCH"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -198,13 +172,14 @@ export default {
     async update(model) {
       try {
         let rs = await this.UpdateBranch(model);
-        if (rs != "") {
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
             messageResult.UpdateSuccess,
             messageResult.Success
           );
+          this.STATE_UPDATE_EDIT_BRANCH(null);
           window.location.href = "#/Setting/Branch";
         }
       } catch (error) {
@@ -212,24 +187,20 @@ export default {
       }
     },
     close() {
-      this.$destroy();
+      this.$refs.form.reset();
+      this.STATE_UPDATE_EDIT_BRANCH(null);
       window.location.href = "#/Setting/Branch";
-    },
-    removeData() {
-      this.isRemove = true;
-      //this.remove();
     },
     async remove() {
       try {
         let rs = await this.DeleteBranch(this.form.id);
-        if (rs != "") {
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          this.$destroy();
           window.location.href = "#/Setting/Branch";
         }
       } catch (error) {
@@ -237,7 +208,17 @@ export default {
       }
     },
     syncSelect() {
-      this.GetProvinces();
+      // Promise.all([
+      //   this.GetDistricts({ ProvinceId: this.province.id }),
+      //   this.GetWards({
+      //     ProvinceId: this.province.id,
+      //     DistrictId: this.district.id
+      //   })
+      // ])
+      //   .then(function(values) {
+      //     console.log(values);
+      //   })
+      //   .catch(e => {});
       this.GetDistricts({ ProvinceId: this.province.id });
       this.GetWards({
         ProvinceId: this.province.id,
@@ -246,20 +227,33 @@ export default {
     },
     changeProvince(e) {
       this.GetDistricts({ ProvinceId: e.id });
+      this.selectWards = [];
+      this.GetWards({ ProvinceId: e.id, DistrictId: 0 });
     },
     changeDistrict(e) {
       this.GetWards({ ProvinceId: this.province.id, DistrictId: e.id });
     },
     async getById(id) {
-      let rs = await this.GetBranch(id);
-      if (rs !== "") {
-      } else {
-        this.$destroy();
+      try {
+        let rs = await this.GetBranch(id);
+        if (typeof rs == "object") {
+          this.selectProvinces = this.provinces;
+          this.form.name = rs.name;
+          this.form.address = rs.address;
+          this.form.hotline = rs.hotline;
+          this.ward.id = rs.wardId;
+          this.province.id = rs.provinceId;
+          this.district.id = rs.districtId;
+          this.syncSelect();
+        } else {
+          window.location.href = "#/404";
+        }
+      } catch (error) {
         window.location.href = "#/404";
       }
     },
     confirmDelete(flag) {
-      if (flag) {        
+      if (flag) {
         this.remove();
       }
       this.isRemove = false;

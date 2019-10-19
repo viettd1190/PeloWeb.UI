@@ -146,7 +146,6 @@ export default {
       if (rs !== "") {
         window.getApp.changeView("/Edit/"+id);
       } else {
-        this.$destroy();
         window.location.href = "#/404";
       }
     }

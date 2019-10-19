@@ -1,6 +1,6 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Chi nhánh</title-page>    
+    <title-page>Chi nhánh</title-page>
     <v-layout row justify-center>
       <v-flex xs12 sm6 md4 lg4>
         <v-text-field
@@ -27,7 +27,7 @@
       </v-flex>
       <v-flex xs12 sm6 md4 lg4>
         <v-select
-          :items="selectProvinces"
+          :items="provinces"
           item-text="name"
           item-value="id"
           v-model="province"
@@ -125,31 +125,29 @@ export default {
       },
       datasourceFiltered: [],
       isLoading: true,
-      selectProvinces: [],
       selectDistricts: [],
       selectWards: [],
       province: { id: 0, name: "", type: "" },
       district: { id: 0, name: "", type: "" },
-      ward: { id: 0, name: "", type: "" }
+      ward: { id: 0, name: "", type: "" },
+      //provinces:[]
     };
   },
   computed: {
-    ...mapGetters(["provinces", "districts", "wards"])
+    ...mapGetters(["provinces","districts", "wards"])
   },
   created() {
     this.syncSelect();
-    this.search();    
+    this.search();
   },
-  mounted() {},
+  mounted() {
+  },
   watch: {
     pagination: {
       handler() {
         this.search();
       },
       deep: true
-    },
-    provinces() {
-      this.selectProvinces = this.provinces;
     },
     districts() {
       this.selectDistricts = this.districts;
@@ -162,7 +160,7 @@ export default {
     ...mapActions([
       "GetBranchs",
       "GetBranch",
-      "GetProvinces",
+      "GetProvinceAll",
       "GetDistricts",
       "GetWards"
     ]),
@@ -174,7 +172,7 @@ export default {
           page,
           itemsPerPage,
           rowsPerPage
-        } = this.pagination;        
+        } = this.pagination;
         if (this.isLoading) {
           let rs = await this.GetBranchs({
             Page: page,
@@ -212,17 +210,12 @@ export default {
     select(item) {
       this.getById(item.id);
     },
-    async getById(id) {
-      let rs = await this.GetBranch(id);
-      if (rs !== "") {
-        window.getApp.changeView("/Edit/" + id);
-      } else {
-        this.$destroy();
-        window.location.href = "#/404";
-      }
+    getById(id) {
+      this.GetBranch(id);
+      window.getApp.changeView("/Edit/" + id);
     },
     syncSelect() {
-      this.GetProvinces();
+      //this.GetProvinceAll();
       this.GetDistricts(0);
       this.GetWards(0);
     },
@@ -230,7 +223,7 @@ export default {
       if (e.keyCode === 13) {
         this.search();
       }
-    },    
+    }
   }
 };
 </script>

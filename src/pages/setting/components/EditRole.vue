@@ -50,7 +50,7 @@ export default {
     return {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
-        name: "",
+        name: ""
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
@@ -60,17 +60,9 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["editRole"])
+    ...mapGetters([])
   },
-  watch: {
-    editRole() {
-      if (this.editRole == null) {
-        return;
-      }
-      this.form.id = this.editRole.id;
-      this.form.name = this.editRole.name;
-    },
-  },
+  watch: {},
   mounted() {
     if (this.editRole == null) {
       this.getById(this.form.id);
@@ -79,13 +71,11 @@ export default {
     this.form.id = this.editRole.id;
     this.form.name = this.editRole.name;
   },
-  created() {this.getById(this.form.id)},
+  created() {
+    this.getById(this.form.id);
+  },
   methods: {
-    ...mapActions([
-      "UpdateRole",
-      "DeleteRole",
-      "GetRole"
-    ]),
+    ...mapActions(["UpdateRole", "DeleteRole", "GetRole"]),
     ...mapMutations(["STATE_UPDATE_EDIT_ROLE"]),
     validateForm(e) {
       if (e.keyCode === 13) {
@@ -113,7 +103,7 @@ export default {
     async update(model) {
       try {
         let rs = await this.UpdateRole(model);
-        if (rs != "") {
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
@@ -129,7 +119,6 @@ export default {
     },
     close() {
       this.STATE_UPDATE_EDIT_ROLE(null);
-      this.$destroy();      
       window.location.href = "#/Setting/SystemRole";
     },
     removeData() {
@@ -145,7 +134,6 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          this.$destroy();
           window.location.href = "#/Setting/SystemRole";
         }
       } catch (error) {
@@ -153,11 +141,15 @@ export default {
       }
     },
     async getById(id) {
-      let rs = await this.GetRole(id);
-      if (rs !== "") {
-      } else {
-        this.$destroy();
-        this.STATE_UPDATE_EDIT_ROLE(null);
+      try {
+        let rs = await this.GetRole(id);
+        if (rs !== "") {
+          this.form.id = rs.id;
+          this.form.name = rs.name;
+        } else {
+          window.location.href = "#/404";
+        }
+      } catch (error) {
         window.location.href = "#/404";
       }
     },

@@ -443,4 +443,20 @@ export default [
     name: 'Setting/SystemRole',
     component: () => import(`@/pages/setting/components/EditRole.vue`)
   },
+  {
+    path: '/Setting/SystemUser/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemUser',
+    component: () => import(`@/pages/setting/components/AddUser.vue`)
+  },
+  {
+    path: '/Setting/SystemUser/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemUser',
+    component: () => import(`@/pages/setting/components/EditUser.vue`)
+  },
 ];

@@ -72,7 +72,7 @@ export function deleteBranchById (params) {
     method: 'delete'
   });
 }
-export function getProvinces () {
+export function getProvinceAll () {
   return request({
     url: 'province/all',
     method: 'get'

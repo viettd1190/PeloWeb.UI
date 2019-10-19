@@ -3,22 +3,13 @@ import API from '@/api/index';
 
 const setting = {
   state: {
-    editAppConfig: null,
-    editBranch: null,
     provinces: [],
+    roles: [],
     districts: [],
     wards: [],
     branchs: [],
-    editRole: null,
-    users: []
   },
   mutations: {
-    STATE_UPDATE_EDIT_APPCONFIG: (state, data) => {
-      state.editAppConfig = data;
-    },
-    STATE_UPDATE_EDIT_BRANCH: (state, data) => {
-      state.editBranch = data;
-    },
     STATE_UPDATE_PROVINCES: (state, data) => {
       state.provinces = data;
     },
@@ -28,12 +19,12 @@ const setting = {
     STATE_UPDATE_WARDS: (state, data) => {
       state.wards = data;
     },
-    STATE_UPDATE_EDIT_ROLE: (state, data) => {
-      state.editRole = data;
-    },
     STATE_UPDATE_BRANCHS: (state, data) => {
       state.branchs = data;
-    }
+    },
+    STATE_UPDATE_ROLES: (state, data) => {
+      state.roles = data;
+    },
   },
   actions: {
     // /AppConfig
@@ -61,7 +52,7 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              resolve(result.message);
+              resolve(result);
             } else {
               reject(result.message);
             }
@@ -78,7 +69,7 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              resolve(result.message);
+              resolve(result);
             } else {
               reject(result.message);
             }
@@ -95,7 +86,7 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              resolve(result.message);
+              resolve(result);
             } else {
               reject(result.message);
             }
@@ -112,7 +103,6 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              commit('STATE_UPDATE_EDIT_APPCONFIG', result.data);
               resolve(result.data);
             } else {
               reject(result.message);
@@ -166,7 +156,7 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              resolve(result.message);
+              resolve(result);
             } else {
               reject(result.message);
             }
@@ -183,7 +173,7 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              resolve(result.message);
+              resolve(result);
             } else {
               reject(result.message);
             }
@@ -200,7 +190,7 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              resolve(result.message);
+              resolve(result);
             } else {
               reject(result.message);
             }
@@ -217,7 +207,6 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              commit('STATE_UPDATE_EDIT_BRANCH', result.data);
               resolve(result.data);
             } else {
               reject(result.message);
@@ -228,15 +217,15 @@ const setting = {
           });
       });
     },
-    async GetProvinces ({ state, commit }, params) {
+    async GetProvinceAll ({ state, commit }, params) {
       return await new Promise((resolve, reject) => {
         API.setting
-          .getProvinces(params)
+          .getProvinceAll(params)
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
               commit('STATE_UPDATE_PROVINCES', result.data);
-              resolve(result.message);
+              resolve(result);
             } else {
               reject(result.message);
             }
@@ -254,7 +243,7 @@ const setting = {
             let result = response.data;
             if (result.isSuccess) {
               commit('STATE_UPDATE_DISTRICTS', result.data);
-              resolve(result.Message);
+              resolve(result.data);
             } else {
               reject(result.Message);
             }
@@ -272,7 +261,7 @@ const setting = {
             let result = response.data;
             if (result.isSuccess) {
               commit('STATE_UPDATE_WARDS', result.data);
-              resolve(result.Message);
+              resolve(result.data);
             } else {
               reject(result.Message);
             }
@@ -300,6 +289,24 @@ const setting = {
           });
       });
     },
+    async GetRoleAll ({ state, commit }, params) {
+      return await new Promise((resolve, reject) => {
+        API.setting
+          .getRoleAll(params)
+          .then(response => {
+            let result = response.data;
+            if (result.isSuccess) {
+              commit('STATE_UPDATE_ROLES', result.data);
+              resolve(result.data);
+            } else {
+              reject(result.Message);
+            }
+          })
+          .catch(error => {
+            reject(error);
+          });
+      });
+    },
     async CreateRole ({ commit }, model) {
       return await new Promise((resolve, reject) => {
         API.setting
@@ -307,7 +314,7 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              resolve(result.message);
+              resolve(result);
             } else {
               reject(result.message);
             }
@@ -324,7 +331,7 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              resolve(result.message);
+              resolve(result);
             } else {
               reject(result.message);
             }
@@ -358,7 +365,6 @@ const setting = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              commit('STATE_UPDATE_EDIT_ROLE', result.data);
               resolve(result.data);
             } else {
               reject(result.message);

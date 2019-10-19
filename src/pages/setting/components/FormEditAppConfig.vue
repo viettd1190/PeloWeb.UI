@@ -61,8 +61,7 @@ import { messageResult } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 export default {
   components: { TitlePage },
-  props: {
-  },
+  props: {},
   data() {
     return {
       form: {
@@ -78,33 +77,22 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["editAppConfig"])
+    ...mapGetters([])
   },
-  watch: {
-    editAppConfig() {
-      if (this.editAppConfig == null) {
-        return;
-      }
-      this.form.id = this.editAppConfig.id;
-      this.form.name = this.editAppConfig.name;
-      this.form.value = this.editAppConfig.value;
-      this.form.description = this.editAppConfig.description;
-    }
-  },
+  watch: {},
   mounted() {
     if (this.editAppConfig == null) {
       return;
     }
-    this.form.id = this.editAppConfig.id;
     this.form.name = this.editAppConfig.name;
     this.form.value = this.editAppConfig.value;
     this.form.description = this.editAppConfig.description;
   },
   created() {
+    this.getById(this.form.id);
   },
   methods: {
     ...mapActions(["UpdateAppConfig", "DeleteAppConfig", "GetAppConfig"]),
-    ...mapActions(["STATE_UPDATE_EDIT_APPCONFIG"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -133,14 +121,13 @@ export default {
     async updateAppCfg(model) {
       try {
         let rs = await this.UpdateAppConfig(model);
-        if (rs != "") {
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          this.STATE_UPDATE_EDIT_APPCONFIG(null);
           window.location.href = "#/Setting/AppConfig";
         }
       } catch (error) {
@@ -148,8 +135,6 @@ export default {
       }
     },
     close() {
-      this.$destroy();
-      this.STATE_UPDATE_EDIT_APPCONFIG(null);
       window.location.href = "#/Setting/AppConfig";
     },
     removeData() {
@@ -158,19 +143,31 @@ export default {
     async remove() {
       try {
         let rs = await this.DeleteAppConfig(this.form.id);
-        if (rs != "") {
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          this.$destroy();
-          this.STATE_UPDATE_EDIT_APPCONFIG(null);
           window.location.href = "#/Setting/AppConfig";
         }
       } catch (error) {
         window.getApp.showMessage(rs, messageResult.Error);
+      }
+    },
+    async getById(id) {
+      try {
+        let rs = await this.GetAppConfig(id);
+        if (typeof rs == "object") {
+          this.form.name = rs.name;
+          this.form.value = rs.value;
+          this.form.description = rs.description;
+        } else {
+          window.location.href = "#/404";
+        }
+      } catch (error) {
+        window.location.href = "#/404";
       }
     }
   }

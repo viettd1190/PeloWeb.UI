@@ -93,13 +93,17 @@ export default {
     AppEvents.forEach(item => {
       this.$on(item.name, item.callback);
     });
-    window.getApp = this;
+    window.getApp = this;    
+  },
+  mounted(){
     this.getUserAll();
     this.getBranchs();
+    this.getProvinceAll();
+    this.getRoleAll();
   },
   methods: {
     ...mapMutations([]),
-    ...mapActions(["GetUserAll","GetBranchAll"]),
+    ...mapActions(["GetUserAll","GetBranchAll","GetProvinceAll","GetRoleAll"]),
     openThemeSettings() {
       this.$vuetify.goTo(0);
       this.rightDrawer = !this.rightDrawer;
@@ -141,6 +145,12 @@ export default {
     },
     getBranchs(){
       this.GetBranchAll();
+    },
+    getProvinceAll(){
+      this.GetProvinceAll();
+    },
+    async getRoleAll() {
+      this.GetRoleAll();
     }
   }
 };

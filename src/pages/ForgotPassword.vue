@@ -88,7 +88,6 @@ export default {
     },
     backtoLogin() {
       window.location.href = "#/login";
-      this.$destroy();
     }
   },
   beforeDestroy() {

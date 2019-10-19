@@ -97,14 +97,13 @@ export default {
     async addAppCfg(model) {
       try {
         let rs = await this.CreateAppConfig(model);
-        if (rs != "") {
+       if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          this.$destroy();
           window.location.href = "#/Setting/AppConfig";
         }
       } catch (error) {
@@ -112,7 +111,6 @@ export default {
       }
     },
     close() {
-      this.$destroy();
       window.location.href = "#/Setting/AppConfig";
     }
   }

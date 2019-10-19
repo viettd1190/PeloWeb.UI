@@ -142,14 +142,8 @@ export default {
     select(item) {
       this.getById(item.id);
     },
-    async getById(id) {
-      let rs = await this.GetRole(id);
-      if (rs !== "") {
-        window.getApp.changeView("/Edit/" + id);
-      } else {
-        this.$destroy();
-        window.location.href = "#/404";
-      }
+    getById(id) {      
+      window.getApp.changeView("/Edit/" + id);
     },
     inputSearch(e) {
       if (e.keyCode === 13) {

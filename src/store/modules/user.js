@@ -18,7 +18,7 @@ const user = {
       branchId: 0,
       roleId: 0,
       time: new Date()
-    }
+    },    
   },
 
   mutations: {
@@ -44,6 +44,9 @@ const user = {
       state.profile.branchId = data.branchId;
       state.profile.roleId = data.roleId;
       state.profile.time = new Date();
+    },
+    STATE_EDIT_USER:(state,data)=>{
+      state.editUser=data;
     }
   },
 
@@ -294,7 +297,6 @@ const user = {
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
-              commit('STATE_UPDATE_EDIT_ROLE', result.data);
               resolve(result.data);
             } else {
               reject(result.message);

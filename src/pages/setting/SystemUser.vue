@@ -13,6 +13,7 @@
           :clearable="true"
         ></v-text-field>
       </v-flex>
+      <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
       <v-flex xs12 sm3 md3 lg3>
         <v-text-field
           class="ma-2"
@@ -37,6 +38,7 @@
           :clearable="true"
         ></v-text-field>
       </v-flex>
+      <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
       <v-flex xs12 sm3 md3 lg3>
         <v-text-field
           class="ma-2"
@@ -50,6 +52,31 @@
       </v-flex>
     </v-layout>
     <v-layout row justify-center>
+      <v-flex xs12 sm3 md3 lg3>
+        <v-select
+          :items="branchs"
+          item-text="name"
+          item-value="id"
+          v-model="branch"
+          label="Chi nhánh"
+          persistent-hint
+          return-object
+        ></v-select>
+      </v-flex>
+      <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
+      <v-flex xs12 sm3 md3 lg3>
+        <v-select
+          :items="roles"
+          item-text="name"
+          item-value="id"
+          v-model="role"
+          label="Quyền"
+          persistent-hint
+          return-object
+        ></v-select>
+      </v-flex>
+    </v-layout>
+    <v-layout row justify-center>
       <v-flex xs4 sm2 md1 lg1>
         <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
@@ -59,7 +86,6 @@
     <v-container>
       <v-data-table
         item-key="id"
-        dense
         :headers="table.headers"
         :items="datasourceFiltered"
         :pagination.sync="pagination"
@@ -67,13 +93,42 @@
         :rows-per-page-items="[10, 20, 50, 100]"
         height="inherit"
         class="elevation-1"
-        :loading="isLoading"
+        :loading="isLoading == 0"
         loading-text="Loading... Please wait"
       >
         <template slot="items" slot-scope="props">
           <tr class="table-row">
+            <td nowrap>
+              <v-avatar size="48">
+                <img
+                  v-if="props.item.avatar != null"
+                  :src="props.item.avatar"
+                  @error="errorImgUrl"
+                />
+                <img v-else src="/static/avatar/no-avatar.jpg" />
+              </v-avatar>
+            </td>
             <td nowrap style="cursor:pointer" @click="select(props.item)">
-              <a>{{ props.item.name }}</a>
+              <a>{{ props.item.username }}</a>
+            </td>
+            <td nowrap>
+              {{ props.item.full_name }}
+            </td>
+            <td nowrap>
+              {{ props.item.display_name }}
+            </td>
+            <td nowrap style="cursor:pointer">
+              <a
+                style="text-decoration: none;"
+                :href="`tel:${props.item.phone_number}`"
+                >{{ props.item.phone_number }}</a
+              >
+            </td>
+            <td nowrap>
+              {{ props.item.branch }}
+            </td>
+            <td nowrap>
+              {{ props.item.role }}
             </td>
           </tr>
         </template>
@@ -104,23 +159,43 @@ export default {
       table: {
         headers: [
           {
-            text: "Quyền",
-            value: "username",
+            text: "Avatar",
+            value: "avatar",
             align: "center"
           },
           {
-            text: "Quyền",
+            text: "Tên tài khoản",
             value: "username",
-            align: "center"
+            align: "center",
+            sortable: true
+          },
+          {
+            text: "Họ tên",
+            value: "full_name",
+            align: "center",
+            sortable: true
+          },
+          {
+            text: "Tên hiển thị",
+            value: "display_name",
+            align: "center",
+            sortable: true
+          },
+          {
+            text: "Số điện thoại",
+            value: "phone_number",
+            align: "center",
+            sortable: true
+          },
+          {
+            text: "Chi nhánh",
+            value: "branch",
+            align: "center",
+            sortable: true
           },
           {
             text: "Quyền",
-            value: "username",
-            align: "center"
-          },
-          {
-            text: "Quyền",
-            value: "username",
+            value: "role",
             align: "center"
           }
         ]
@@ -134,10 +209,14 @@ export default {
         descending: false
       },
       datasourceFiltered: [],
-      isLoading: true
+      isLoading: -1,
+      branch: { id: 0, name: "" },
+      role: { id: 0, name: "" }
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters(["branchs", "roles"])
+  },
   created() {
     this.getList();
   },
@@ -161,8 +240,11 @@ export default {
           itemsPerPage,
           rowsPerPage
         } = this.pagination;
-        this.isLoading = true;
-        if (this.isLoading) {
+        if (this.isLoading < 0) {
+          this.isLoading = 0;
+        }
+        if (this.isLoading == 0) {
+          this.isLoading = 1;
           let rs = await this.GetUsers({
             Page: page,
             PageSize: rowsPerPage,
@@ -173,20 +255,20 @@ export default {
             FullName: this.fullName,
             PhoneNumber: this.phone,
             BranchId: this.branch.id,
-            RoleId: this.role.id
+            RoleId: 0 //this.role.id
           });
           if (rs != null && rs.data) {
-            this.isLoading = false;
+            this.isLoading = -1;
             this.datasourceFiltered = rs.data;
             this.pagination.totalRecords = rs.totalCount;
             this.pagination.itemsPerPage = rs.pageSize;
           } else {
-            this.isLoading = false;
+            this.isLoading = -1;
             window.getApp.showMessage(rs, "error");
           }
         }
       } catch (error) {
-        this.isLoading = false;
+        this.isLoading = -1;
       }
     },
     search() {
@@ -200,10 +282,9 @@ export default {
     },
     async getById(id) {
       let rs = await this.GetUser(id);
-      if (rs !== "") {
+      if (typeof rs == "object") {
         window.getApp.changeView("/Edit/" + id);
       } else {
-        this.$destroy();
         window.location.href = "#/404";
       }
     },
@@ -211,10 +292,16 @@ export default {
       if (e.keyCode === 13) {
         this.search();
       }
+    },
+    errorImgUrl(event) {
+      event.target.src = "/static/avatar/no-avatar.png";
     }
   }
 };
 </script>
 
-<style>
+<style scop>
+.table-row {
+  height: 64px;
+}
 </style>

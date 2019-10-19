@@ -69,7 +69,14 @@
                 v-on:keyup="validateForm"
               ></v-text-field>
               <br />
-              <v-btn block color="primary" :disabled="!valid" @click="validate" :loading="loading">Cập nhật</v-btn>
+              <v-btn
+                block
+                color="primary"
+                :disabled="!valid"
+                @click="validate"
+                :loading="loading"
+                >Cập nhật</v-btn
+              >
             </v-form>
           </v-card-text>
         </v-card>
@@ -97,9 +104,15 @@ export default {
       rules: [value => !!value || "Thông tin không được trống"],
       file: null,
       emailRules: [
-        v => !!v || "E-mail is required",
-        v => /.+@.+\..+/.test(v) || "E-mail must be valid"
-      ]
+        v => {
+          if (v == null || !v.length > 0) {
+          } else {
+            if (!/.+@.+\..+/.test(v)) {
+               return "Vui lòng nhập đúng định dạng email (VD: test@gmail.com)";
+            }
+          }
+        }
+      ],
     };
   },
   computed: {
@@ -149,7 +162,6 @@ export default {
       form.append("username", this.model.username);
       form.append("fullName", this.model.fullName);
       form.append("displayName", this.model.displayName);
-      form.append("username", this.model.username);
       form.append("phoneNumber", this.model.phoneNumber);
       form.append("avatar", this.model.avatar);
       try {
@@ -193,13 +205,6 @@ export default {
       const file = e.target.files[0];
       this.file = file;
       this.model.avatar = URL.createObjectURL(file);
-    },
-    isEmailValid: function() {
-      return this.profile.email == ""
-        ? ""
-        : this.reg.test(this.profile.email)
-        ? "has-success"
-        : "has-error";
     }
   }
 };

@@ -78,14 +78,13 @@ export default {
     async add(model) {
       try {
         let rs = await this.CreateRole(model);
-        if (rs != "") {
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          this.$destroy();
           window.location.href = "#/Setting/SystemRole";
         }
       } catch (error) {
@@ -93,7 +92,6 @@ export default {
       }
     },
     close() {
-      this.$destroy();
       window.location.href = "#/Setting/SystemRole";
     }
   }

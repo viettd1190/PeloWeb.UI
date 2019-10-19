@@ -16,7 +16,7 @@
         <v-toolbar-title class="ml-0 logged-user" slot="activator">
           <span>
             <small v-if="loggedUser">
-              {{loggedUser.d}}
+              {{loggedUser.u}}
               <v-icon>expand_more</v-icon>
             </small>
           </span>

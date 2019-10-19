@@ -7,7 +7,7 @@
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
               <v-select
-                :items="selectProvinces"
+                :items="provinces"
                 item-text="name"
                 item-value="id"
                 v-model="province"
@@ -115,9 +115,6 @@ export default {
     ...mapGetters(["provinces", "districts", "wards"])
   },
   watch: {
-    provinces() {
-      this.selectProvinces = this.provinces;
-    },
     districts() {
       this.selectDistricts = this.districts;
     },
@@ -130,7 +127,7 @@ export default {
     this.syncSelect();
   },
   methods: {
-    ...mapActions(["CreateBranch", "GetProvinces", "GetDistricts", "GetWards"]),
+    ...mapActions(["CreateBranch", "GetProvinceAll", "GetDistricts", "GetWards"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -161,14 +158,13 @@ export default {
     async add(model) {
       try {
         let rs = await this.CreateBranch(model);
-        if (rs != "") {
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          this.$destroy();
           window.location.href = "#/Setting/Branch";
         }
       } catch (error) {
@@ -176,11 +172,10 @@ export default {
       }
     },
     close() {
-      this.$destroy();
       window.location.href = "#/Setting/Branch";
     },
     syncSelect() {
-      this.GetProvinces();
+      //this.GetProvinceAll();
       this.GetDistricts(0);
       this.GetWards(0);
     },

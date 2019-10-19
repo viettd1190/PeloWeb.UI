@@ -169,20 +169,8 @@ export default {
       //window.location.href="#/Setting/AppConfig/Add";
     },
     selectConfig(item){
-      this.getAppConfigById(item.id);      
-      //window.location.href="#/Setting/AppConfig/Edit/"+item.id;
+      window.getApp.changeView("/Edit/"+item.id);
     },
-    async getAppConfigById(id) {
-      let rs = await this.GetAppConfig(id);
-      if (rs != "") {
-        window.getApp.changeView("/Edit/"+id);
-      } else {
-        this.$destroy();
-        this.STATE_UPDATE_EDIT_APPCONFIG(null);
-        window.location.href = "#/404";
-      }
-    },
-    
     inputSearch(e) {
       if (e.keyCode === 13) {
         this.getAppConfigList();

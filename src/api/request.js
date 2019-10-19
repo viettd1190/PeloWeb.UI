@@ -30,7 +30,8 @@ service.interceptors.response.use(
   },
   error => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.message =="Network Error" || error.response.status === 401 && !originalRequest._retry) {
+      window.getApp.showMessage("Vui lòng thử lại do tín hiệu không tốt hoặc máy chủ đang gặp sự cố","error");
       originalRequest._retry = true;
       const accessToken = getAccessToken();
       const loggedUser = getLoggedUser();
