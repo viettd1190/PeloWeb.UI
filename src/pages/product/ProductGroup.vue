@@ -55,6 +55,7 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
 import TitlePage from "@/components/TitlePage";
+import { url } from "@/utils/index";
 export default {
   components: {
     TitlePage
@@ -99,7 +100,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetProductGroups"]),
+    ...mapActions(["GetList"]),
     async getList() {
       try {
         const {
@@ -114,13 +115,13 @@ export default {
         }
         if (this.isLoading == 0) {
           this.isLoading = 1;
-          let rs = await this.GetProductGroups({
+          let rs = await this.GetList([url.productGroup.route,{
             Page: page,
             PageSize: rowsPerPage,
             ColumnOrder: sortBy,
             SortDir: descending ? "desc" : "asc",
             Name: this.name
-          });
+          }]);
           if (rs != null && rs.data) {
             this.isLoading = -1;
             this.datasourceFiltered = rs.data;

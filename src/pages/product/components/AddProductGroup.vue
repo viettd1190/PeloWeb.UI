@@ -36,7 +36,7 @@ import axios from "axios";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
-import { messageResult } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 export default {
   components: { TitlePage },
   props: {},
@@ -52,10 +52,9 @@ export default {
   computed: {},
   watch: {},
   created() {},
-  mounted() {
-  },
+  mounted() {},
   methods: {
-    ...mapActions(["CreateCustomerGroup"]),
+    ...mapActions(["Create"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -70,14 +69,14 @@ export default {
       if (this.form.name == "") {
         return;
       }
-      let p = {
+      var p = {
         name: this.form.name
       };
       this.add(p);
     },
     async add(model) {
       try {
-        let rs = await this.CreateCustomerGroup(model);
+        let rs = await this.Create([url.productGroup.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -85,14 +84,14 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/CRM/CustomerGroup";
+          window.location.href = "#/Product/ProductGroup";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/CRM/CustomerGroup";
+      window.location.href = "#/Product/ProductGroup";
     }
   }
 };

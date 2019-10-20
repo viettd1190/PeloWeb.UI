@@ -88,6 +88,7 @@
 </template>
 <script>
 import validate from "@/utils/validate";
+import { url } from "@/utils/index";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
@@ -155,13 +156,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
-      "GetBranchs",
-      "GetBranch",
-      "GetProvinceAll",
-      "GetDistricts",
-      "GetWards"
-    ]),
+    ...mapActions(["GetList", "GetProvinceAll", "GetDistricts", "GetWards"]),
     async getList() {
       try {
         const {
@@ -176,18 +171,21 @@ export default {
         }
         if (this.isLoading == 0) {
           this.isLoading = 1;
-          let rs = await this.GetBranchs({
-            Page: page,
-            PageSize: rowsPerPage,
-            ColumnOrder: sortBy,
-            SortDir: descending ? "desc" : "asc",
-            Name: this.name,
-            Hotline: this.hotline,
-            Address: this.address,
-            ProvinceId: this.province.id,
-            DistrictId: this.district.id,
-            WardId: this.ward.id
-          });
+          let rs = await this.GetList([
+            url.branch.route,
+            {
+              Page: page,
+              PageSize: rowsPerPage,
+              ColumnOrder: sortBy,
+              SortDir: descending ? "desc" : "asc",
+              Name: this.name,
+              Hotline: this.hotline,
+              Address: this.address,
+              ProvinceId: this.province.id,
+              DistrictId: this.district.id,
+              WardId: this.ward.id
+            }
+          ]);
           if (rs != null && rs.data) {
             this.isLoading = -1;
             this.datasourceFiltered = rs.data;
@@ -212,11 +210,9 @@ export default {
       this.getById(item.id);
     },
     getById(id) {
-      this.GetBranch(id);
       window.getApp.changeView("/Edit/" + id);
     },
     syncSelect() {
-      //this.GetProvinceAll();
       this.GetDistricts(0);
       this.GetWards(0);
     },

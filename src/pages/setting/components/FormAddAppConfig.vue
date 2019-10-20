@@ -37,7 +37,9 @@
           <v-layout row justify-center>
             <v-card-actions>
               <v-btn class="default" @click="close()">Trở lại</v-btn>
-              <v-btn class="primary" :disabled="!valid" @click="validate()">Thêm mới</v-btn>
+              <v-btn class="primary" :disabled="!valid" @click="validate()"
+                >Thêm mới</v-btn
+              >
             </v-card-actions>
           </v-layout>
         </v-container>
@@ -50,11 +52,10 @@ import axios from "axios";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
-import { messageResult } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 export default {
   components: { TitlePage },
-  props: {
-  },
+  props: {},
   data() {
     return {
       form: { name: "", value: "", description: "" },
@@ -72,7 +73,7 @@ export default {
   },
   created() {},
   methods: {
-    ...mapActions(["CreateAppConfig"]),
+    ...mapActions(["Create"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -96,8 +97,8 @@ export default {
     },
     async addAppCfg(model) {
       try {
-        let rs = await this.CreateAppConfig(model);
-       if (typeof rs == "string") {
+        let rs = await this.Create([url.config.route,model]);
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(

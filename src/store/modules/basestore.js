@@ -10,11 +10,10 @@ const product = {
   },
 
   actions: {
-    // /User
-    async GetProductGroups ({ state, commit }, params) {
-      return await new Promise((resolve, reject) => {
-        API.product
-          .getProductGroups(params)
+    GetList ({ state, commit },params) {
+      return new Promise((resolve, reject) => {
+        API.baseapi
+          .getList(params[0],params[1])
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
@@ -28,10 +27,10 @@ const product = {
           });
       });
     },
-    async GetProductGroupAll ({ state, commit }, params) {
+    async GetAll ({ state, commit }, params) {      
       return await new Promise((resolve, reject) => {
-        API.product
-          .getProductGroupAll(params)
+        API.baseapi
+          .getAll(params[0],params[1])
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
@@ -45,10 +44,10 @@ const product = {
           });
       });
     },
-    async CreateProductGroup ({ commit }, model) {
+    async Create ({ commit }, params) {
       return await new Promise((resolve, reject) => {
-        API.product
-          .createProductGroup(model)
+        API.baseapi
+          .create(params[0],params[1])
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
@@ -62,10 +61,10 @@ const product = {
           });
       });
     },
-    async UpdateProductGroup ({ commit }, model) {
+    async Update ({ commit },params) {
       return await new Promise((resolve, reject) => {
-        API.product
-          .updateProductGroup(model)
+        API.baseapi
+          .update(params[0],params[1])
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
@@ -79,10 +78,10 @@ const product = {
           });
       });
     },
-    async DeleteProductGroup ({ commit }, model) {
+    async DeleteById ({ commit },params) {
       return await new Promise((resolve, reject) => {
-        API.product
-          .deleteProductGroup(model)
+        API.baseapi
+          .deleteById(params[0],params[1])
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
@@ -96,10 +95,10 @@ const product = {
           });
       });
     },
-    async GetProductGroup ({ commit }, model) {
+    async GetById ({ commit },params) {
       return await new Promise((resolve, reject) => {
-        API.product
-          .getProductGroup(model)
+        API.baseapi
+          .getById(params[0],params[1])
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
@@ -112,7 +111,7 @@ const product = {
             reject(error);
           });
       });
-    }
+    },
   }
 };
 

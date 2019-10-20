@@ -1,14 +1,14 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm quyền</title-page>
+      <title-page>Thêm thương hiệu</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
               <v-text-field
                 hide-details
-                label="Tên quyền"
+                label="Tên"
                 v-model="form.name"
                 class="ma-2"
                 append-icon="search"
@@ -77,7 +77,7 @@ export default {
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.role.route,model]);
+        let rs = await this.Create([url.manufacturer.route,model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -85,14 +85,14 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/SystemRole";
+          window.location.href = "#/Product/Manufacturer";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Setting/SystemRole";
+      window.location.href = "#/Product/Manufacturer";
     }
   }
 };

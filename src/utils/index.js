@@ -45,6 +45,65 @@ export let messageResult = {
   Success: 'success',
   DeleteSuccess: 'Xóa thành công',
 };
+export let method={
+  get:'get',
+  delete:'delete',
+  put:'put',
+  post:'post'
+}
+export let url = {
+  productGroup: {
+    route:"product_group",
+    all:"product_group/all",
+    id:"product_group/"
+  },
+  config: {
+    route:"config",
+    all:"config/all",
+    id:"config/"
+  },
+  branch: {
+    route:"branch",
+    all:"branch/all",
+    id:"branch/"
+  },
+  manufacturer: {
+    route:"manufacturer",
+    all:"manufacturer/all",
+    id:"manufacturer/"
+  },
+  province: {
+    route:"province",
+    all:"province/all",
+    id:"province/"
+  },
+  district: {
+    route:"district",
+    all:"district/all",
+    id:"district/"
+  },
+  ward: {
+    route:"ward",
+    all:"ward/all",
+    id:"ward/"
+  },
+  role:{
+    route:"role",
+    all:"role/all",
+    id:"role/"
+  },
+  user:{
+    route:"user",
+    all:"user/all",
+    id:"user/"
+  },
+  customer_group:{
+    route:"customer_group",
+    all:"customer_group/all",
+    id:"customer_group/"
+  }
+
+};
 export let pagination = {
   keySearch: '',
   pageIndex: 1,

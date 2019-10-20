@@ -198,8 +198,24 @@ export default [
     meta: {
       breadcrumb: true
     },
-    name: 'Product/Manufacturer/Index',
+    name: 'Product/Manufacturer',
     component: () => import(`@/pages/product/Manufacturer.vue`)
+  }
+  ,{
+    path: '/Product/Manufacturer/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/Manufacturer',
+    component: () => import(`@/pages/product/components/AddManufacturer.vue`)
+  }
+  ,{
+    path: '/Product/Manufacturer/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/Manufacturer',
+    component: () => import(`@/pages/product/components/EditManufacturer.vue`)
   }
   ,{
     path: '/Setting/AppConfig',

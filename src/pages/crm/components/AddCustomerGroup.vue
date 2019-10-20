@@ -36,7 +36,7 @@ import axios from "axios";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
-import { messageResult } from "@/utils/index";
+import { messageResult,url } from "@/utils/index";
 export default {
   components: { TitlePage },
   props: {},
@@ -55,7 +55,7 @@ export default {
   mounted() {
   },
   methods: {
-    ...mapActions(["CreateCustomerGroup"]),
+    ...mapActions(["Create"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -77,7 +77,7 @@ export default {
     },
     async add(model) {
       try {
-        let rs = await this.CreateCustomerGroup(model);
+        let rs = await this.Create([url.customer_group.route,model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {

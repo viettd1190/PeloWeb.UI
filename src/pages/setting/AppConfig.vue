@@ -68,6 +68,7 @@
 </template>
 <script>
 import validate from "@/utils/validate";
+import {url} from "@/utils/index";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
@@ -124,7 +125,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetAppConfigList", "GetAppConfig"]),
+    ...mapActions(["GetList"]),
     async getAppConfigList() {
       try {
         const {
@@ -139,14 +140,14 @@ export default {
         }
         if (this.isLoading == 0) {
           this.isLoading = 1;
-          let rs = await this.GetAppConfigList({
+          let rs = await this.GetList([url.config.route,{
             Page: page,
             PageSize: rowsPerPage,
             ColumnOrder: sortBy,
             SortDir: descending ? "desc" : "asc",
             Name: this.name,
             Description: this.description
-          });
+          }]);
           if (rs != null && rs.data) {
             this.isLoading = -1;
             this.isLoading = false;
@@ -168,7 +169,6 @@ export default {
     },
     add() {
       window.getApp.changeView("/Add");
-      //window.location.href="#/Setting/AppConfig/Add";
     },
     selectConfig(item) {
       window.getApp.changeView("/Edit/" + item.id);

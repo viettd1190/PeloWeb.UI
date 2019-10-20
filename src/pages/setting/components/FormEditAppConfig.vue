@@ -57,7 +57,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult } from "@/utils/index";
+import { messageResult, url} from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 export default {
   components: { TitlePage },
@@ -92,7 +92,7 @@ export default {
     this.getById(this.form.id);
   },
   methods: {
-    ...mapActions(["UpdateAppConfig", "DeleteAppConfig", "GetAppConfig"]),
+    ...mapActions(["Update", "DeleteById", "GetById"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -120,7 +120,7 @@ export default {
     },
     async updateAppCfg(model) {
       try {
-        let rs = await this.UpdateAppConfig(model);
+        let rs = await this.Update([url.config.route,model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -142,7 +142,7 @@ export default {
     },
     async remove() {
       try {
-        let rs = await this.DeleteAppConfig(this.form.id);
+        let rs = await this.DeleteById([url.config.id,this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -158,7 +158,7 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetAppConfig(id);
+        let rs = await this.GetById([url.config.id,this.form.id]);
         if (typeof rs == "object") {
           this.form.name = rs.name;
           this.form.value = rs.value;

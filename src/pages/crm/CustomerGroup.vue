@@ -51,6 +51,7 @@
 </template>
 <script>
 import validate from "@/utils/validate";
+import {url} from "@/utils/index";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
@@ -99,7 +100,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetCustomerGroups"]),
+    ...mapActions(["GetList"]),
     async getList() {
       try {
         const {
@@ -114,13 +115,13 @@ export default {
         }
         if (this.isLoading == 0) {
           this.isLoading = 1;
-          let rs = await this.GetCustomerGroups({
+          let rs = await this.GetList([url.customer_group.route,{
             Page: page,
             PageSize: rowsPerPage,
             ColumnOrder: sortBy,
             SortDir: descending ? "desc" : "asc",
             Name: this.name
-          });
+          }]);
           if (rs != null && rs.data) {
             this.isLoading = -1;
             this.datasourceFiltered = rs.data;

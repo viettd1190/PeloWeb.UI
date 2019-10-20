@@ -40,7 +40,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult } from "@/utils/index";
+import { messageResult,url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
 export default {
@@ -75,7 +75,7 @@ export default {
     this.getById(this.form.id);
   },
   methods: {
-    ...mapActions(["UpdateRole", "DeleteRole", "GetRole"]),
+    ...mapActions(["Update", "DeleteById", "GetById"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -101,7 +101,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.UpdateRole(model);
+        let rs = await this.Update([url.role.route,model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -123,8 +123,8 @@ export default {
     },
     async remove() {
       try {
-        let rs = await this.DeleteRole(this.form.id);
-        if (rs != "") {
+        let rs = await this.DeleteById([url.role.id,this.form.id]);
+        if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(
@@ -139,8 +139,8 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetRole(id);
-        if (rs !== "") {
+        let rs = await this.GetById([url.role.id,id]);
+        if (typeof rs == "object") {
           this.form.id = rs.id;
           this.form.name = rs.name;
         } else {

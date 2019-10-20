@@ -4,7 +4,7 @@ import getters from './getters';
 import user from './modules/user';
 import setting from './modules/setting';
 import crm from './modules/crm';
-import product from './modules/product';
+import basestore from './modules/basestore';
 
 Vue.use(Vuex);
 
@@ -13,7 +13,7 @@ const store = new Vuex.Store({
     user,
     setting,
     crm,
-    product
+    basestore
   },
   getters
 });

@@ -85,7 +85,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult } from "@/utils/index";
+import { messageResult,url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
 export default {
@@ -127,20 +127,18 @@ export default {
     }
   },
   mounted() {
-    //this.syncSelect();
   },
   created() {
     this.getById(this.form.id);
   },
   methods: {
     ...mapActions([
-      "UpdateBranch",
-      "DeleteBranch",
-      "GetBranch",
+      "Update",
+      "DeleteById",
+      "GetById",
       "GetDistricts",
       "GetWards"
     ]),
-    ...mapMutations(["STATE_UPDATE_EDIT_BRANCH"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -171,7 +169,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.UpdateBranch(model);
+        let rs = await this.Update([url.branch.route,model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -179,7 +177,6 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          this.STATE_UPDATE_EDIT_BRANCH(null);
           window.location.href = "#/Setting/Branch";
         }
       } catch (error) {
@@ -188,12 +185,11 @@ export default {
     },
     close() {
       this.$refs.form.reset();
-      this.STATE_UPDATE_EDIT_BRANCH(null);
       window.location.href = "#/Setting/Branch";
     },
     async remove() {
       try {
-        let rs = await this.DeleteBranch(this.form.id);
+        let rs = await this.DeleteById([url.branch.id,this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -208,17 +204,6 @@ export default {
       }
     },
     syncSelect() {
-      // Promise.all([
-      //   this.GetDistricts({ ProvinceId: this.province.id }),
-      //   this.GetWards({
-      //     ProvinceId: this.province.id,
-      //     DistrictId: this.district.id
-      //   })
-      // ])
-      //   .then(function(values) {
-      //     console.log(values);
-      //   })
-      //   .catch(e => {});
       this.GetDistricts({ ProvinceId: this.province.id });
       this.GetWards({
         ProvinceId: this.province.id,
@@ -235,7 +220,7 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetBranch(id);
+        let rs = await this.GetById([url.branch.id,id]);
         if (typeof rs == "object") {
           this.selectProvinces = this.provinces;
           this.form.name = rs.name;

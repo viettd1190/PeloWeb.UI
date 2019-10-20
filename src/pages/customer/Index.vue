@@ -1,46 +1,182 @@
 <template>
-  <div>
+  <div style="min-height:400px">
+    <title-page>Danh sách thương hiệu</title-page>
+    <v-layout row justify-center>
+      <v-flex xs12 sm3 md3 lg3>
+        <v-text-field
+          hide-details
+          label="Tên"
+          v-model="name"
+          class="ma-2"
+          append-icon="search"
+          v-on:keyup="inputSearch"
+          :clearable="true"
+        ></v-text-field>
+      </v-flex>
+    </v-layout>
+    <v-layout row justify-center>
+      <v-flex xs4 sm2 md1 lg1>
+        <v-btn color="#666EE8" class="white--text" @click="search()">
+          <v-icon>sort</v-icon>Lọc
+        </v-btn>
+      </v-flex>
+    </v-layout>
+    <v-container>
+      <v-data-table
+        item-key="id"
+        dense
+        :headers="table.headers"
+        :items="datasourceFiltered"
+        :pagination.sync="pagination"
+        :total-items="pagination.totalRecords"
+        :rows-per-page-items="[10, 20, 50, 100]"
+        height="inherit"
+        class="elevation-1"
+        :loading="isLoading == 1"
+        loading-text="Loading... Please wait"
+      >
+        <template slot="items" slot-scope="props">
+          <tr class="table-row">
+            <td nowrap style="cursor:pointer" @click="select(props.item)">
+              <a>{{ props.item.name }}</a>
+            </td>
+          </tr>
+        </template>
+      </v-data-table>
+      <v-btn color="#666EE8" class="white--text" @click="add()">
+        <v-icon>add</v-icon>Thêm mới
+      </v-btn>
+    </v-container>
   </div>
 </template>
-
 <script>
-import axios from "axios";
-import { stringify } from "querystring";
+import validate from "@/utils/validate";
+import {url} from "@/utils/index";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
-import XLSX from "xlsx";
+import TitlePage from "@/components/TitlePage";
 export default {
   components: {
+    TitlePage
   },
-  props: {
-    beforeUpload: Function,
-    onSuccess: Function
-  },
+  props: {},
   data() {
     return {
+      name: "",
+      hotline: "",
+      address: "",
+      table: {
+        headers: [
+          {
+            text: "Tên",
+            value: "name",
+            align: "center"
+          },{
+            text: "Số điện thoại",
+            value: "name",
+            align: "center"
+          },
+          {
+            text: "Email",
+            value: "name",
+            align: "center"
+          },{
+            text: "Địa chỉ",
+            value: "name",
+            align: "center"
+          },{
+            text: "Ghi chú",
+            value: "name",
+            align: "center"
+          },{
+            text: "Cập nhật",
+            value: "name",
+            align: "center"
+          }
+        ]
+      },
+      pagination: {
+        page: 1,
+        itemsPerPage: 10,
+        rowsPerPage: 10,
+        totalRecords: 0,
+        sortBy: "name",
+        descending: false
+      },
+      datasourceFiltered: [],
+      isLoading: -1
     };
   },
-  computed: {
-    ...mapGetters([
-      "loggedUser"
-    ])
-  },
+  computed: {},
   created() {
-    if (!this.loggedUser) window.location.href = '#/login';
   },
-  mounted() {
-  },
+  mounted() {},
   watch: {
+    pagination: {
+      handler() {
+        this.search();
+      },
+      deep: true
+    }
   },
   methods: {
-    ...mapActions([]),
-    ...mapMutations([
-    ]),
+    ...mapActions(["GetList"]),
+    async getList() {
+      try {
+        const {
+          sortBy,
+          descending,
+          page,
+          itemsPerPage,
+          rowsPerPage
+        } = this.pagination;
+        if (this.isLoading < 0) {
+          this.isLoading = 0;
+        }
+        if (this.isLoading == 0) {
+          this.isLoading = 1;
+          let rs = await this.GetList([url.manufacturer.route,{
+            Page: page,
+            PageSize: rowsPerPage,
+            ColumnOrder: sortBy,
+            SortDir: descending ? "desc" : "asc",
+            Name: this.name
+          }]);
+          if (rs != null && rs.data) {
+            this.isLoading = -1;
+            this.datasourceFiltered = rs.data;
+            this.pagination.totalRecords = rs.totalCount;
+            this.pagination.itemsPerPage = rs.pageSize;
+          } else {
+            this.isLoading = -1;
+            window.getApp.showMessage(rs, "error");
+          }
+        }
+      } catch (error) {
+        this.isLoading = -1;
+      }
+    },
+    search() {
+      this.getList();
+    },
+    add() {
+      window.getApp.changeView("/Add");
+    },
+    select(item) {
+      this.getById(item.id);
+    },
+    getById(id) {
+      window.getApp.changeView("/Edit/" + id);
+    },
+    inputSearch(e) {
+      if (e.keyCode === 13) {
+        this.search();
+      }
+    }
   }
 };
 </script>
 
 <style>
-
 </style>

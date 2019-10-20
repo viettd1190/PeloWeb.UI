@@ -1,14 +1,14 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Cập nhật quyền</title-page>
+      <title-page>Cập nhật thương hiệu</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
               <v-text-field
                 hide-details
-                label="Tên quyền"
+                label="Tên"
                 v-model="form.name"
                 class="ma-2"
                 append-icon="search"
@@ -40,7 +40,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult,url } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
 export default {
@@ -95,7 +95,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.customer_group.route,model]);
+        let rs = await this.Update([url.manufacturer.route,model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -103,21 +103,21 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Crm/CustomerGroup";
+          window.location.href = "#/Product/Manufacturer";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Crm/CustomerGroup";
+      window.location.href = "#/Product/Manufacturer";
     },
     removeData() {
       this.isRemove = true;
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.customer_group.id,this.form.id]);
+        let rs = await this.DeleteById([url.manufacturer.id,this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -125,7 +125,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Crm/CustomerGroup";
+          window.location.href = "#/Product/Manufacturer";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -133,7 +133,7 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.customer_group.id,id]);
+        let rs = await this.GetById([url.manufacturer.id,id]);
         if (rs !== "") {
           this.form.id = rs.id;
           this.form.name = rs.name;
