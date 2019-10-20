@@ -226,6 +226,18 @@ const Menu = [
       title: 'Nhật ký người dùng',
       group: 'Setting',
       name: 'UserActivityLog/Index',
+    },{
+      title: 'Tỉnh Thành',
+      group: 'Setting',
+      name: 'Province',
+    },{
+      title: 'Quận Huyện',
+      group: 'Setting',
+      name: 'District',
+    },{
+      title: 'Xã phường',
+      group: 'Setting',
+      name: 'Ward',
     }]
   },
 ];

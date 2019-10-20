@@ -1,28 +1,16 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Chi nhánh</title-page>
+    <title-page>Danh sách xã phường</title-page>
     <v-layout row justify-center>
       <v-flex xs12 sm6 md4 lg4>
         <v-text-field
           hide-details
-          label="Tên chi nhánh"
+          label="Tên"
           v-model="name"
-          class="ma-2"
           append-icon="store"
           v-on:keyup="inputSearch"
           :clearable="true"
         ></v-text-field>
-        <v-text-field
-          hide-details
-          label="Hotline"
-          v-model="hotline"
-          class="ma-2"
-          append-icon="phone"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6 md4 lg4>
         <v-select
           :items="provinces"
           item-text="name"
@@ -31,36 +19,23 @@
           label="Tỉnh thành"
           persistent-hint
           return-object
-          :clearable="true"
           v-on:change="changeProvince"
+          :clearable="true"
         ></v-select>
         <v-select
-          :items="selectDistricts"
+          :items="districts"
           item-text="name"
           item-value="id"
           v-model="district"
-          label="Quận Huyện"
-          persistent-hint
-          return-object
-          :clearable="true"
-          v-on:change="changeDistrict"
-        ></v-select>
-        <v-select
-          :items="selectWards"
-          item-text="name"
-          item-value="id"
-          v-model="ward"
-          label="Xã phường"
+          label="Quận huyện"
           persistent-hint
           return-object
           :clearable="true"
         ></v-select>
+        <v-btn color="#666EE8" class="white--text" @click="search()">
+          <v-icon>sort</v-icon>Lọc
+        </v-btn>
       </v-flex>
-    </v-layout>
-    <v-layout row justify-center>
-      <v-btn color="#666EE8" class="white--text" @click="search()">
-        <v-icon>sort</v-icon>Lọc
-      </v-btn>
     </v-layout>
     <v-container>
       <v-data-table
@@ -80,9 +55,12 @@
           <tr class="table-row">
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
+            </td>            
+            <td nowrap>
+              {{ props.item.district }}
             </td>
             <td nowrap>
-              <v-layout>{{ props.item.hotline }}</v-layout>
+              {{ props.item.province }}
             </td>
           </tr>
         </template>
@@ -108,18 +86,25 @@ export default {
   data() {
     return {
       name: "",
-      hotline: "",
       table: {
         headers: [
           {
-            text: "Chi nhánh",
+            text: "Xã phường",
             value: "name",
-            align: "center"
+            align: "center",
+            sortable: true
           },
           {
-            text: "Hot line",
-            value: "hotline",
-            align: "center"
+            text: "Quận huyện",
+            value: "district",
+            align: "center",
+            sortable: true
+          },
+          {
+            text: "Tỉnh thành",
+            value: "province",
+            align: "center",
+            sortable: true
           }
         ]
       },
@@ -133,15 +118,12 @@ export default {
       },
       datasourceFiltered: [],
       isLoading: -1,
-      selectDistricts: [],
-      selectWards: [],
       province: { id: 0, name: "", type: "" },
-      district: { id: 0, name: "", type: "" },
-      ward: { id: 0, name: "", type: "" }
+      district: { id: 0, name: "", type: "" }
     };
   },
   computed: {
-    ...mapGetters(["provinces", "districts", "wards"])
+    ...mapGetters(["provinces", "districts"])
   },
   created() {
     this.syncSelect();
@@ -153,17 +135,10 @@ export default {
         this.search();
       },
       deep: true
-    },
-    districts() {
-      this.selectDistricts = this.districts;
-    },
-    wards() {
-      this.selectWards = this.wards;
     }
   },
   methods: {
-    ...mapActions(["GetList", "GetDistricts", "GetWards"]),
-
+    ...mapActions(["GetList", "GetDistricts"]),
     async getList() {
       try {
         const {
@@ -179,18 +154,15 @@ export default {
         if (this.isLoading == 0) {
           this.isLoading = 1;
           let rs = await this.GetList([
-            url.branch.route,
+            url.ward.route,
             {
               Page: page,
               PageSize: rowsPerPage,
               ColumnOrder: sortBy,
               SortDir: descending ? "desc" : "asc",
               Name: this.name,
-              Hotline: this.hotline,
-              Address: this.address,
-              ProvinceId: this.province == undefined ? 0 : this.province.id,
-              DistrictId: this.district == undefined ? 0 :this.district.id,
-              WardId: this.ward == undefined ? 0 : this.ward.id
+              ProvinceId: this.province != undefined ? this.province.id : 0,
+              DistrictId: this.district != undefined ? this.district.id : 0
             }
           ]);
           if (rs != null && rs.data) {
@@ -219,34 +191,19 @@ export default {
     getById(id) {
       window.getApp.changeView("/Edit/" + id);
     },
-    async syncSelect() {
-      this.GetDistricts({ ProvinceId: this.province.id });
-      this.GetWards({
-        ProvinceId: this.province.id,
-        DistrictId: this.district.id
-      });
-    },
     inputSearch(e) {
       if (e.keyCode === 13) {
         this.search();
       }
     },
+    syncSelect() {
+      this.GetDistricts({ ProvinceId: this.province.id });
+    },
     changeProvince(e) {
       if (e == undefined) {
         this.province = { id: 0, name: "" };
       }
-      this.GetDistricts({ ProvinceId: e.id });
-      this.selectWards = [];
-      this.GetWards({ ProvinceId: e.id, DistrictId: 0 });
-    },
-    changeDistrict(e) {
-      if (e == undefined) {
-        this.district = { id: 0, name: "" };
-      }
-      this.GetWards({
-        ProvinceId: this.province != undefined ? this.province.id : 0,
-        DistrictId: e.id
-      });
+      this.GetDistricts({ ProvinceId: this.province.id });
     }
   }
 };

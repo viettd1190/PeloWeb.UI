@@ -59,8 +59,11 @@
           item-value="id"
           v-model="branch"
           label="Chi nhánh"
+          class="ma-2"
           persistent-hint
           return-object
+          v-on:change="changeBranch"
+          clearable
         ></v-select>
       </v-flex>
       <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
@@ -70,9 +73,12 @@
           item-text="name"
           item-value="id"
           v-model="role"
+          class="ma-2"
           label="Quyền"
           persistent-hint
           return-object
+          v-on:change="changeRole"
+          clearable
         ></v-select>
       </v-flex>
     </v-layout>
@@ -141,6 +147,7 @@
 </template>
 <script>
 import validate from "@/utils/validate";
+import { url } from "@/utils/index";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
@@ -217,8 +224,7 @@ export default {
   computed: {
     ...mapGetters(["branchs", "roles"])
   },
-  created() {
-  },
+  created() {},
   mounted() {},
   watch: {
     pagination: {
@@ -229,7 +235,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetUsers", "GetUser"]),
+    ...mapActions(["GetList", "GetUser"]),
     async getList() {
       try {
         const {
@@ -244,18 +250,21 @@ export default {
         }
         if (this.isLoading == 0) {
           this.isLoading = 1;
-          let rs = await this.GetUsers({
-            Page: page,
-            PageSize: rowsPerPage,
-            ColumnOrder: sortBy,
-            SortDir: descending ? "desc" : "asc",
-            Username: this.userName,
-            DisplayName: this.displayName,
-            FullName: this.fullName,
-            PhoneNumber: this.phone,
-            BranchId: this.branch.id,
-            RoleId: 0 //this.role.id
-          });
+          let rs = await this.GetList([
+            url.user.route,
+            {
+              Page: page,
+              PageSize: rowsPerPage,
+              ColumnOrder: sortBy,
+              SortDir: descending ? "desc" : "asc",
+              Username: this.userName,
+              DisplayName: this.displayName,
+              FullName: this.fullName,
+              PhoneNumber: this.phone,
+              BranchId: this.branch.id,
+              RoleId: this.role.id
+            }
+          ]);
           if (rs != null && rs.data) {
             this.isLoading = -1;
             this.datasourceFiltered = rs.data;
@@ -280,12 +289,7 @@ export default {
       this.getById(item.id);
     },
     async getById(id) {
-      let rs = await this.GetUser(id);
-      if (typeof rs == "object") {
-        window.getApp.changeView("/Edit/" + id);
-      } else {
-        window.location.href = "#/404";
-      }
+      window.getApp.changeView("/Edit/" + id);
     },
     inputSearch(e) {
       if (e.keyCode === 13) {
@@ -294,6 +298,16 @@ export default {
     },
     errorImgUrl(event) {
       event.target.src = "/static/avatar/no-avatar.png";
+    },
+    changeBranch(e) {
+      if (e == undefined) {
+        this.branch = { id: 0, name: "" };
+      }
+    },
+    changeRole(e) {
+      if (e == undefined) {
+        this.role = { id: 0, name: "" };
+      }
     }
   }
 };

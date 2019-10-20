@@ -11,7 +11,7 @@ export default [
   {
     path: '/404',
     meta: {
-      public: true
+      breadcrumb: true
     },
     name: 'NotFound',
     component: () => import(`@/pages/notfound.vue`)
@@ -274,6 +274,72 @@ export default [
     name: 'Setting/UserActivityLog/Index',
     component: () => import(`@/pages/setting/UserActivityLog.vue`)
   },{
+    path: '/Setting/Province',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Province',
+    component: () => import(`@/pages/setting/Province.vue`)
+  },{
+    path: '/Setting/Province/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Province',
+    component: () => import(`@/pages/setting/components/AddProvince.vue`)
+  },{
+    path: '/Setting/Province/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Province',
+    component: () => import(`@/pages/setting/components/EditProvince.vue`)
+  },{
+    path: '/Setting/District',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/District',
+    component: () => import(`@/pages/setting/District.vue`)
+ },{
+  path: '/Setting/District/Add',
+  meta: {
+    breadcrumb: true
+  },
+  name: 'Setting/District',
+  component: () => import(`@/pages/setting/components/AddDistrict.vue`)
+},{
+  path: '/Setting/District/Edit/:id',
+  meta: {
+    breadcrumb: true
+  },
+  name: 'Setting/District',
+  component: () => import(`@/pages/setting/components/EditDistrict.vue`)
+},
+ {
+    path: '/Setting/Ward',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Ward',
+    component: () => import(`@/pages/setting/Ward.vue`)
+  },
+  {
+    path: '/Setting/Ward/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Ward',
+    component: () => import(`@/pages/setting/components/AddWard.vue`)
+  },{
+    path: '/Setting/Ward/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Ward',
+    component: () => import(`@/pages/setting/components/EditWard.vue`)
+  },
+  {
     path: '/Recruitment/Candidate',
     meta: {
       breadcrumb: true

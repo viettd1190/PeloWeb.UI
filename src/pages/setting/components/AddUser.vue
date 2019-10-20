@@ -130,7 +130,7 @@ import axios from "axios";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
-import { messageResult } from "@/utils/index";
+import { messageResult,url } from "@/utils/index";
 export default {
   components: { TitlePage },
   props: {},
@@ -186,7 +186,7 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    ...mapActions(["CreateUser"]),
+    ...mapActions(["Create"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -219,8 +219,8 @@ export default {
     },
     async add(model) {
       try {
-        let rs = await this.CreateUser(model);
-        if (rs != "") {
+        let rs = await this.Create([url.user.route,model]);
+        if (typeof rs != "object") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
           window.getApp.showMessage(

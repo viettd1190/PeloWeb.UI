@@ -1,6 +1,7 @@
 import axios from 'axios';
 import API from '@/api/index';
 import * as Auth from '@/utils/auth';
+import {url} from '@/utils/index';
 
 const user = {
   state: {
@@ -78,22 +79,7 @@ const user = {
           });
       });
     },
-    async CreateUser ({ commit }, model) {
-      return await new Promise((resolve, reject) => {
-        API.user
-          .insertUser(model)
-          .then(response => {
-            if (response.status == 200) {
-              resolve(response);
-            } else {
-              reject(result.data.Code);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
+    
     async UpdateUserInfo ({ commit }, model) {
       return await new Promise((resolve, reject) => {
         API.user
@@ -132,7 +118,6 @@ const user = {
       return await new Promise(resolve => {
         commit('SET_TOKEN', '');
         commit('SET_LOGGED_USER', '');
-
         Auth.removeToken();
         resolve();
       });
@@ -204,28 +189,10 @@ const user = {
           });
       });
     },
-    // /User
-    async GetUsers ({ state, commit }, params) {
-      return await new Promise((resolve, reject) => {
-        API.user
-          .getUsers(params)
-          .then(response => {
-            let result = response.data;
-            if (result.isSuccess) {
-              resolve(result.data);
-            } else {
-              reject(result.Message);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
     async GetUserAll ({ state, commit }, params) {
       return await new Promise((resolve, reject) => {
-        API.user
-          .getUserAll(params)
+        API.baseapi
+          .getAll(url.user.all,params)
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
@@ -239,74 +206,6 @@ const user = {
           });
       });
     },
-    async CreateUser ({ commit }, model) {
-      return await new Promise((resolve, reject) => {
-        API.user
-          .createUser(model)
-          .then(response => {
-            let result = response.data;
-            if (result.isSuccess) {
-              resolve(result.message);
-            } else {
-              reject(result.message);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
-    async UpdateUser ({ commit }, model) {
-      return await new Promise((resolve, reject) => {
-        API.user
-          .updateUser(model)
-          .then(response => {
-            let result = response.data;
-            if (result.isSuccess) {
-              resolve(result.message);
-            } else {
-              reject(result.message);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
-    async DeleteUser ({ commit }, model) {
-      return await new Promise((resolve, reject) => {
-        API.user
-          .deleteUser(model)
-          .then(response => {
-            let result = response.data;
-            if (result.isSuccess) {
-              resolve(result.message);
-            } else {
-              reject(result.message);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    },
-    async GetUser ({ commit }, model) {
-      return await new Promise((resolve, reject) => {
-        API.user
-          .getUser(model)
-          .then(response => {
-            let result = response.data;
-            if (result.isSuccess) {
-              resolve(result.data);
-            } else {
-              reject(result.message);
-            }
-          })
-          .catch(error => {
-            reject(error);
-          });
-      });
-    }
   }
 };
 

@@ -61,6 +61,7 @@ import AppToolbar from "@/components/AppToolbar";
 import AppFab from "@/components/AppFab";
 import PageHeader from "@/components/PageHeader";
 import menu from "@/api/menu";
+import {url} from "@/utils/index";
 import ThemeSettings from "@/components/ThemeSettings";
 import UpdatePassword from "@/components/UpdatePassword";
 import AppEvents from "./event";
@@ -103,7 +104,7 @@ export default {
   },
   methods: {
     ...mapMutations([]),
-    ...mapActions(["GetUserAll","GetBranchAll","GetProvinceAll","GetRoleAll"]),
+    ...mapActions(["GetUserAll","GetAll","GetProvinceAll","GetBranchAll","GetRoleAll"]),
     openThemeSettings() {
       this.$vuetify.goTo(0);
       this.rightDrawer = !this.rightDrawer;

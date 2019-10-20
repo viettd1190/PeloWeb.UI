@@ -41,6 +41,7 @@ export default {
 export let messageResult = {
   UpdateSuccess: 'Cập nhật thành công',
   InsertSuccess: 'Thêm mới thành công',
+  RequestFail:"Vui lòng thử lại do kết nối không tốt hoặc máy chủ đang gặp sự cố!",
   Error: 'error',
   Success: 'success',
   DeleteSuccess: 'Xóa thành công',

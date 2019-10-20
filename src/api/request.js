@@ -1,6 +1,7 @@
 import axios from 'axios';
 import store from '@/store';
 import { getAccessToken, getLoggedUser } from '@/utils/auth';
+import {messageResult} from '@/utils/index';
 
 const service = axios.create({
   baseURL: process.env.BASE_API,
@@ -31,7 +32,7 @@ service.interceptors.response.use(
   error => {
     const originalRequest = error.config;
     if (error.message =="Network Error" || error.response.status === 401 && !originalRequest._retry) {
-      window.getApp.showMessage("Vui lòng thử lại do tín hiệu không tốt hoặc máy chủ đang gặp sự cố","error");
+      window.getApp.showMessage(messageResult.RequestFail,messageResult.Error);
       originalRequest._retry = true;
       const accessToken = getAccessToken();
       const loggedUser = getLoggedUser();

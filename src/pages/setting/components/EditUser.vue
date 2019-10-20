@@ -1,7 +1,7 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm người dùng</title-page>
+      <title-page>Cập nhật người dùng</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <div style="cursor:pointer" @click="$refs.inputUpload.click()">
@@ -28,11 +28,10 @@
                 label="Tên đăng nhập"
                 counter
                 append-icon="person"
-                :clearable="true"
-                :rules="[rules.required]"
+                disabled                
               ></v-text-field>
               <v-select
-                :items="roles"
+                :items="selectRoles"
                 item-text="name"
                 item-value="id"
                 v-model="role"
@@ -43,7 +42,6 @@
               <v-text-field
                 v-model="form.password"
                 :append-icon="show2 ? 'visibility' : 'visibility_off'"
-                :rules="[rules.required]"
                 :type="show2 ? 'text' : 'password'"
                 name="input-10-1"
                 label="Mật khẩu mới"
@@ -54,7 +52,7 @@
               <v-text-field
                 v-model="form.confirmPassword"
                 :append-icon="show3 ? 'visibility' : 'visibility_off'"
-                :rules="[rules.required, rules.match]"
+                :rules="[rules.match]"
                 :type="show3 ? 'text' : 'password'"
                 name="input-10-1"
                 label="Xác nhận mật khẩu mới"
@@ -83,7 +81,7 @@
                 :rules="[rules.required]"
               ></v-text-field>
               <v-text-field
-                v-model="form.phone"
+                v-model="form.phoneNumber"
                 type="text"
                 name="input-10-1"
                 label="Số điện thoại"
@@ -101,7 +99,7 @@
                 :clearable="true"
               ></v-text-field>
               <v-select
-                :items="branchs"
+                :items="selectBranchs"
                 item-text="name"
                 item-value="id"
                 v-model="branch"
@@ -115,13 +113,16 @@
             <v-card-actions>
               <v-btn class="default" @click="close()">Trở lại</v-btn>
               <v-btn class="primary" :disabled="!valid" @click="validate()"
-                >Thêm mới</v-btn
-              >
+                >Cập nhật</v-btn
+              ><v-btn class="red white--text" @click="removeData()">
+                <v-icon>close</v-icon>Xóa
+              </v-btn>
             </v-card-actions>
           </v-layout>
         </v-container>
       </v-form>
     </v-card>
+    <dialog-confirm v-if="isRemove" @comfirm="confirmDelete"></dialog-confirm>
   </div>
 </template>
 <script>
@@ -129,18 +130,19 @@ import axios from "axios";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
-import { messageResult } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
+import DialogConfirm from "@/components/DialogConfirm";
 export default {
-  components: { TitlePage },
+  components: { TitlePage, DialogConfirm },
   props: {},
   data() {
     return {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
         username: "",
-        display_name: "",
-        full_name: "",
-        phone_nummber: "",
+        displayName: "",
+        fullName: "",
+        phonenummber: "",
         email: "",
         avatar: "/static/avatar/no-avatar.jpg",
         password: ""
@@ -155,8 +157,15 @@ export default {
           }
           return false;
         },
-        match: value =>
-          value == this.form.password || "Xác nhận mật khẩu không khớp."
+        match: value => {
+          if (this.form.password.length == 0) {
+            return false;
+          }
+          if (value != this.form.password) {
+            return "Xác nhận mật khẩu không khớp.";
+          }
+          return false;
+        }
       },
       emailRules: [
         v => {
@@ -173,36 +182,32 @@ export default {
       valid: true,
       role: { id: 0, name: "" },
       branch: { id: 0, name: "" },
+      selectBranchs: [],
+      selectRoles: [],
       show1: false,
       show2: false,
       show3: false,
-      file: null
+      file: null,
+      isRemove: false
     };
   },
   computed: {
     ...mapGetters(["branchs", "roles"])
   },
-  watch: {},
+  watch: {
+    branchs() {
+      this.selectBranchs = this.branchs;
+    },
+    roles() {
+      this.selectRoles = this.roles;
+    }
+  },
   created() {
     this.getById(this.form.id);
   },
-  mounted() {
-    if (this.editUser == null) {
-      this.getById(this.form.id);
-      return;
-    }
-    this.form.username = this.editUser.username;
-    this.form.display_name = this.editUser.display_name;
-    this.form.full_name = this.editUser.full_name;
-    this.form.phone_nummber = this.editUser.phone_nummber;
-    this.form.email = this.editUser.email;
-    this.branch.id = this.editUser.branchId;
-    this.role.id = this.editUser.roleId;
-    this.form.avatar = process.env.URL_IMAGE + this.editUser.avatar;
-  },
+  mounted() {},
   methods: {
-    ...mapActions(["CreateUser", "GetUser"]),
-    ...mapMutations(["STATE_EDIT_USER"]),
+    ...mapActions(["GetById", "DeleteById", "Update"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -216,42 +221,25 @@ export default {
     save() {
       if (
         this.form.username == "" ||
-        this.form.full_name == "" ||
-        this.form.display_name
+        this.form.fullName == "" ||
+        this.form.displayName == ""
       ) {
         return;
       }
       const p = new FormData();
-      form.append("image", this.file);
-      form.append("branchid", this.branch.id);
-      form.append("roleid", this.role.id);
-      form.append("email", this.form.email);
-      form.append("username", this.form.username);
-      form.append("full_name", this.form.full_name);
-      form.append("display_name", this.form.display_name);
-      form.append("phone_number", this.form.phone_nummber);
-      form.append("id", this.form.id);
-      this.add(p);
-    },
-    async add(model) {
-      try {
-        let rs = await this.CreateUser(model);
-        if (typeof rs == "string") {
-          window.getApp.showMessage(rs, messageResult.Error);
-        } else {
-          window.getApp.showMessage(
-            messageResult.InsertSuccess,
-            messageResult.Success
-          );
-          this.STATE_EDIT_USER(null);
-          window.location.href = "#/Setting/SystemUser";
-        }
-      } catch (error) {
-        window.getApp.showMessage(error, messageResult.Error);
-      }
+      p.append("Avatar", this.file);
+      p.append("BranchId", this.branch.id);
+      p.append("RoleId", this.role.id);
+      p.append("Email", this.form.email);
+      p.append("Username", this.form.username);
+      p.append("FullName", this.form.fullName);
+      p.append("DisplayName", this.form.displayName);
+      p.append("PhoneNumber", this.form.phoneNumber);
+      p.append("Password", this.form.password);
+      p.append("id", this.form.id);
+      this.update(p);
     },
     close() {
-      this.STATE_EDIT_USER(null);
       window.location.href = "#/Setting/SystemUser";
     },
     errorImgUrl(event) {
@@ -262,24 +250,67 @@ export default {
       this.file = file;
       this.form.avatar = URL.createObjectURL(file);
     },
+    removeData() {
+      this.isRemove = true;
+    },
+    async update(model) {
+      try {
+        let rs = await this.Update([url.user.route, model]);
+        if (typeof rs == "string") {
+          window.getApp.showMessage(rs, messageResult.Error);
+        } else {
+          window.getApp.showMessage(
+            messageResult.UpdateSuccess,
+            messageResult.Success
+          );
+          window.location.href = "#/Setting/SystemUser";
+        }
+      } catch (error) {
+        window.getApp.showMessage(error, messageResult.Error);
+      }
+    },
+    async remove() {
+      try {
+        let rs = await this.DeleteById([url.user.id, this.form.id]);
+        if (typeof rs == "string") {
+          window.getApp.showMessage(rs, messageResult.Error);
+        } else {
+          window.getApp.showMessage(
+            messageResult.DeleteSuccess,
+            messageResult.Success
+          );
+          window.location.href = "#/Setting/SystemUser";
+        }
+      } catch (error) {
+        window.getApp.showMessage(error, messageResult.Error);
+      }
+    },
     async getById(id) {
       try {
-        let rs = await this.GetUser(id);
-        if (rs !== "") {
+        let rs = await this.GetById([url.user.id, id]);
+        if (typeof rs != "string") {
           this.form.username = rs.username;
-          this.form.display_name = rs.displayName;
-          this.form.full_name = rs.fullName;
-          this.form.phone_nummber = rs.phoneNumber;
+          this.form.displayName = rs.displayName;
+          this.form.fullName = rs.fullName;
+          this.form.phoneNumber = rs.phoneNumber;
           this.form.email = rs.email;
           this.branch.id = rs.branchId;
           this.role.id = rs.roleId;
-          this.form.avatar = process.env.URL_IMAGE + rs.avatar;
+          this.form.avatar =rs.avatar!=null? process.env.URL_IMAGE + rs.avatar:"";
+          this.selectBranchs = this.branchs;
+          this.selectRoles = this.roles;
         } else {
           window.location.href = "#/404";
         }
       } catch (error) {
         window.location.href = "#/404";
       }
+    },
+    confirmDelete(flag) {
+      if (flag) {
+        this.remove();
+      }
+      this.isRemove = false;
     }
   }
 };

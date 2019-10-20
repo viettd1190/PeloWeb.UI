@@ -10,8 +10,8 @@ const product = {
   },
 
   actions: {
-    GetList ({ state, commit },params) {
-      return new Promise((resolve, reject) => {
+    async GetList ({ state, commit },params) {
+      return await new Promise((resolve, reject) => {
         API.baseapi
           .getList(params[0],params[1])
           .then(response => {
@@ -27,10 +27,10 @@ const product = {
           });
       });
     },
-    async GetAll ({ state, commit }, params) {      
+    async GetAll ({ state, commit }, url) {      
       return await new Promise((resolve, reject) => {
         API.baseapi
-          .getAll(params[0],params[1])
+          .getAll(url)
           .then(response => {
             let result = response.data;
             if (result.isSuccess) {
@@ -78,7 +78,7 @@ const product = {
           });
       });
     },
-    async DeleteById ({ commit },params) {
+     async DeleteById ({ commit },params) {
       return await new Promise((resolve, reject) => {
         API.baseapi
           .deleteById(params[0],params[1])
