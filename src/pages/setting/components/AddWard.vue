@@ -148,8 +148,11 @@ export default {
       this.changeProvince(this.province);
     },
     changeProvince(e) {
+      if (e == undefined) {
+        this.province = { id: 0, name: "" };
+      }
       this.selectDistrict = [];
-      this.GetDistricts({ ProvinceId: e.id });
+      this.GetDistricts({ ProvinceId: this.province.id });
     }
   }
 };

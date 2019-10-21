@@ -215,9 +215,12 @@ export default {
     removeData() {
       this.isRemove = true;
     },
-    changeProvince(id) {
+    changeProvince(e) {
+      if (e == undefined) {
+        this.province = { id: 0, name: "" };
+      }
       this.selectDistricts = [];
-      this.GetDistricts({ ProvinceId: id });
+      this.GetDistricts({ ProvinceId: this.province.id });
     }
   }
 };

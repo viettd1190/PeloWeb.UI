@@ -147,7 +147,7 @@ export default {
     return {
       name: "",
       phone: "",
-      address: "",      
+      address: "",
       table: {
         headers: [
           {

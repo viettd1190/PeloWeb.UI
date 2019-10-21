@@ -6,8 +6,43 @@
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
+              <v-text-field
+                v-model="form.name"
+                :rules="[rules.required]"
+                type="text"
+                name="input-10-1"
+                label="Tên"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.phone"
+                :rules="[rules.required]"
+                type="text"
+                name="input-10-1"
+                label="Điện thoại"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.email"
+                :rules="[rules.required, rules.validateEmail]"
+                type="text"
+                name="input-10-1"
+                label="Email"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.address"
+                type="text"
+                name="input-10-1"
+                label="Địa chỉ"
+                counter
+                :clearable="true"
+              ></v-text-field>
               <v-select
-                :items="selectProvinces"
+                :items="provinces"
                 item-text="name"
                 item-value="id"
                 v-model="province"
@@ -15,6 +50,10 @@
                 persistent-hint
                 return-object
                 v-on:change="changeProvince"
+                :error-messages="errors.collect('type')"
+                v-validate="'required'"
+                data-vv-name="type"
+                required
               ></v-select>
               <v-select
                 :items="selectDistricts"
@@ -35,30 +74,12 @@
                 persistent-hint
                 return-object
               ></v-select>
-              <v-text-field
-                v-model="form.name"
-                :rules="[rules.required]"
-                type="text"
-                name="input-10-1"
-                label="Tên"
-                counter
-                @click:append="show1 = !show1"
-              ></v-text-field>
-              <v-text-field
-                v-model="form.address"
-                type="text"
-                name="input-10-1"
-                label="Địa chỉ"
-                counter
-                @click:append="show2 = !show2"
-              ></v-text-field>
               <v-textarea
-                v-model="form.hotline"
+                v-model="form.description"
                 type="text"
                 name="input-10-1"
-                label="Hotline"
+                label="Ghi chú"
                 counter
-                @click:append="show3 = !show3"
               ></v-textarea>
             </v-flex>
           </v-layout>
@@ -85,7 +106,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult,url } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
 export default {
@@ -96,11 +117,23 @@ export default {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
         name: "",
-        hotline: "",
-        address: ""
+        phone: "",
+        description: "",
+        address: "",
+        email: ""
       },
       rules: {
-        required: value => !!value || "Bắt buộc nhập."
+        required: value => !!value || "Bắt buộc nhập.",
+        validateEmail: v => {
+          if (v == null || !v.length > 0) {
+            return false;
+          } else {
+            if (!/.+@.+\..+/.test(v)) {
+              return "Vui lòng nhập đúng định dạng email (VD: test@gmail.com)";
+            }
+          }
+          return false;
+        }
       },
       valid: true,
       province: { id: 0, name: "", type: "" },
@@ -126,8 +159,7 @@ export default {
       this.selectWards = this.wards;
     }
   },
-  mounted() {
-  },
+  mounted() {},
   created() {
     this.getById(this.form.id);
   },
@@ -160,7 +192,9 @@ export default {
         id: this.form.id,
         address: this.form.address,
         name: this.form.name,
-        hotline: this.form.hotline,
+        phone: this.form.phone,
+        email: this.form.email,
+        description: this.form.description,
         provinceId: this.province.id,
         districtId: this.district.id,
         wardId: this.ward.id
@@ -169,7 +203,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.branch.route,model]);
+        let rs = await this.Update([url.customer.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -189,7 +223,7 @@ export default {
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.branch.id,this.form.id]);
+        let rs = await this.DeleteById([url.customer.id, this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -211,24 +245,35 @@ export default {
       });
     },
     changeProvince(e) {
-      this.GetDistricts({ ProvinceId: e.id });
+      if (e == undefined) {
+        this.province = { id: 0, name: "" };
+      }
+      this.GetDistricts({ ProvinceId: this.province.id });
       this.selectWards = [];
-      this.GetWards({ ProvinceId: e.id, DistrictId: 0 });
+      this.GetWards({ ProvinceId: this.province.id, DistrictId: 0 });
     },
     changeDistrict(e) {
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: e.id });
+      if (e == undefined) {
+        this.district = { id: 0, name: "" };
+      }
+      this.GetWards({
+        ProvinceId: this.province.id,
+        DistrictId: this.district.id
+      });
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.branch.id,id]);
+        let rs = await this.GetById([url.customer.id, id]);
         if (typeof rs == "object") {
-          this.selectProvinces = this.provinces;
           this.form.name = rs.name;
+          this.form.phone = rs.phone;
           this.form.address = rs.address;
-          this.form.hotline = rs.hotline;
-          this.ward.id = rs.wardId;
-          this.province.id = rs.provinceId;
-          this.district.id = rs.districtId;
+          this.form.email = rs.email;
+          this.form.description = rs.description;
+          this.ward.id = rs.wardId == null ? rs.wardId : 0;
+          this.province.id = rs.provinceId == null ? rs.provinceId : 0;
+          this.district.id = rs.districtId == null ? rs.districtId : 0;
+          this.selectProvinces = this.provinces;
           this.syncSelect();
         } else {
           window.location.href = "#/404";
@@ -245,7 +290,7 @@ export default {
     },
     removeData() {
       this.isRemove = true;
-    },
+    }
   }
 };
 </script>

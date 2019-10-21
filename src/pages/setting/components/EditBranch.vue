@@ -211,24 +211,30 @@ export default {
       });
     },
     changeProvince(e) {
-      this.GetDistricts({ ProvinceId: e.id });
+      if (e == undefined) {
+        this.province = { id: 0, name: "" };
+      }
+      this.GetDistricts({ ProvinceId: this.province.id });
       this.selectWards = [];
-      this.GetWards({ ProvinceId: e.id, DistrictId: 0 });
+      this.GetWards({ ProvinceId: this.province.id, DistrictId: 0 });
     },
     changeDistrict(e) {
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: e.id });
+      if (e == undefined) {
+        this.district = { id: 0, name: "" };
+      }
+      this.GetWards({ ProvinceId: this.province.id, DistrictId: this.district.id });
     },
     async getById(id) {
       try {
         let rs = await this.GetById([url.branch.id,id]);
-        if (typeof rs == "object") {
-          this.selectProvinces = this.provinces;
+        if (typeof rs == "object") {          
           this.form.name = rs.name;
           this.form.address = rs.address;
           this.form.hotline = rs.hotline;
           this.ward.id = rs.wardId;
           this.province.id = rs.provinceId;
           this.district.id = rs.districtId;
+          this.selectProvinces = this.provinces;
           this.syncSelect();
         } else {
           window.location.href = "#/404";

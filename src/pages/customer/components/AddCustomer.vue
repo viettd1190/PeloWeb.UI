@@ -6,6 +6,41 @@
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
+              <v-text-field
+                v-model="form.name"
+                :rules="[rules.required]"
+                type="text"
+                name="input-10-1"
+                label="Tên"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.phone"
+                :rules="[rules.required]"
+                type="text"
+                name="input-10-1"
+                label="Điện thoại"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.email"
+                :rules="[rules.required,rules.validateEmail]"
+                type="text"
+                name="input-10-1"
+                label="Email"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.address"
+                type="text"
+                name="input-10-1"
+                label="Địa chỉ"
+                counter
+                :clearable="true"
+              ></v-text-field>
               <v-select
                 :items="provinces"
                 item-text="name"
@@ -39,35 +74,13 @@
                 persistent-hint
                 return-object
               ></v-select>
-              <v-text-field
-                v-model="form.name"
-                :rules="[rules.required]"
+              <v-textarea
+                v-model="form.description"
                 type="text"
                 name="input-10-1"
-                label="Tên"
+                label="Ghi chú"
                 counter
-                @click:append="show1 = !show1"
-                :clearable="true"
-              ></v-text-field>
-              <v-text-field
-                v-model="form.address"
-                type="text"
-                name="input-10-1"
-                label="Địa chỉ"
-                counter
-                @click:append="show2 = !show2"
-                :clearable="true"
-              ></v-text-field>
-              <v-text-field
-                v-model="form.hotline"
-                type="text"
-                name="input-10-1"
-                label="Hot line"
-                counter
-                append-icon="phone"
-                @click:append="show3 = !show3"
-                :clearable="true"
-              ></v-text-field>
+              ></v-textarea>
             </v-flex>
           </v-layout>
           <v-layout row justify-center>
@@ -96,11 +109,23 @@ export default {
     return {
       form: {
         name: "",
-        hotline: "",
+        phone: "",
+        description: "",
         address: "",
+        email: ""
       },
       rules: {
-        required: value => !!value || "Bắt buộc nhập."
+        required: value => !!value || "Bắt buộc nhập.",
+        validateEmail: v => {
+          if (v == null || !v.length > 0) {
+            return false;
+          } else {
+            if (!/.+@.+\..+/.test(v)) {
+              return "Vui lòng nhập đúng định dạng email (VD: test@gmail.com)";
+            }
+          }
+          return false;
+        }
       },
       valid: true,
       selectProvinces: [],
@@ -120,14 +145,14 @@ export default {
     },
     wards() {
       this.selectWards = this.wards;
-    }    
+    }
   },
   created() {},
   mounted() {
     this.syncSelect();
   },
   methods: {
-    ...mapActions(["Create", "GetProvinceAll", "GetDistricts", "GetWards"]),
+    ...mapActions(["Create", "GetDistricts", "GetWards"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -139,16 +164,15 @@ export default {
       }
     },
     save() {
-      if (
-        this.form.name == "" ||
-        this.province.id == 0
-      ) {
+      if (this.form.name == "" || this.province.id == 0) {
         return;
       }
       let p = {
         address: this.form.address,
         name: this.form.name,
-        hotline: this.form.hotline,
+        phone: this.form.phone,
+        email: this.form.email,
+        description: this.form.description,
         provinceId: this.province.id,
         districtId: this.district.id,
         wardId: this.ward.id
@@ -157,7 +181,7 @@ export default {
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.branch.route,model]);
+        let rs = await this.Create([url.customer.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -179,10 +203,19 @@ export default {
       this.GetWards(0);
     },
     changeProvince(e) {
-      this.GetDistricts({ ProvinceId: e.id });      
+      if (e == undefined) {
+        this.province = { id: 0, name: "" };
+      }
+      this.GetDistricts({ ProvinceId: this.province.id });
     },
     changeDistrict(e) {
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: e.id });
+      if (e == undefined) {
+        this.district = { id: 0, name: "" };
+      }
+      this.GetWards({
+        ProvinceId: this.province.id,
+        DistrictId: this.district.id
+      });
     }
   }
 };

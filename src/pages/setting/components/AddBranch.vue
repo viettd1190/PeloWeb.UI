@@ -179,11 +179,19 @@ export default {
       this.GetWards(0);
     },
     changeProvince(e) {
-      this.GetDistricts({ ProvinceId: e.id });      
+      if (e == undefined) {
+        this.province = { id: 0, name: "" };
+      }
+      this.GetDistricts({ ProvinceId: this.province.id });
+      this.selectWards = [];
+      this.GetWards({ ProvinceId: this.province.id, DistrictId: 0 });
     },
     changeDistrict(e) {
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: e.id });
-    }
+      if (e == undefined) {
+        this.district = { id: 0, name: "" };
+      }
+      this.GetWards({ ProvinceId: this.province.id, DistrictId: this.district.id });
+    },
   }
 };
 </script>
