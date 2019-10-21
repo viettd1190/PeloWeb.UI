@@ -1,32 +1,39 @@
 <template>
   <div style="min-height:400px">
     <title-page>Danh sách quận huyện</title-page>
-    <v-layout row justify-center>
-      <v-flex xs12 sm6 md4 lg4>
-        <v-text-field
-          hide-details
-          label="Tên"
-          v-model="name"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>
-        <v-select
-          :items="provinces"
-          item-text="name"
-          item-value="id"
-          v-model="province"
-          label="Tỉnh thành"
-          persistent-hint
-          return-object
-          clearable
-          v-on:change="changeProvince"
-        ></v-select>
-        <v-btn color="#666EE8" class="white--text" @click="search()">
-          <v-icon>sort</v-icon>Lọc
-        </v-btn>
-      </v-flex>
-    </v-layout>
     <v-container>
+      <v-layout row justify-center>
+        <v-flex xs12 sm6 md6 lg6>
+          <v-text-field
+            hide-details
+            label="Tên"
+            v-model="name"
+            v-on:keyup="inputSearch"
+            :clearable="true"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs1 sm1 md1 lg1></v-flex>
+        <v-flex xs12 sm6 md6 lg6>
+          <v-select
+            :items="provinces"
+            item-text="name"
+            item-value="id"
+            v-model="province"
+            label="Tỉnh thành"
+            persistent-hint
+            return-object
+            clearable
+            v-on:change="changeProvince"
+          ></v-select>
+        </v-flex>
+      </v-layout>
+      <v-layout row justify-center>
+        <v-flex md1 lg1>
+          <v-btn color="#666EE8" class="white--text" @click="search()">
+            <v-icon>sort</v-icon>Lọc
+          </v-btn>
+        </v-flex>
+      </v-layout>
       <v-data-table
         item-key="id"
         dense
@@ -45,9 +52,7 @@
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
             </td>
-            <td nowrap>
-              {{ props.item.province }}
-            </td>
+            <td nowrap>{{ props.item.province }}</td>
           </tr>
         </template>
       </v-data-table>

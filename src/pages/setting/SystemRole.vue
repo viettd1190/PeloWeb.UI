@@ -1,27 +1,24 @@
 <template>
   <div style="min-height:400px">
     <title-page>Quyền hệ thống</title-page>
-    <v-layout row justify-center>
-      <v-flex xs12 sm3 md3 lg3>
+    <v-container>
+      <v-layout row justify-center>
         <v-text-field
           hide-details
           label="Tên quyền"
           v-model="name"
-          class="ma-2"
           append-icon="search"
           v-on:keyup="inputSearch"
           :clearable="true"
         ></v-text-field>
-      </v-flex>
-    </v-layout>
-    <v-layout row justify-center>
-      <v-flex xs4 sm2 md1 lg1>
-        <v-btn color="#666EE8" class="white--text" @click="search()">
-          <v-icon>sort</v-icon>Lọc
-        </v-btn>
-      </v-flex>
-    </v-layout>
-    <v-container>
+      </v-layout>
+      <v-layout row justify-center>
+        <v-flex xs4 sm2 md1 lg1>
+          <v-btn color="#666EE8" class="white--text" @click="search()">
+            <v-icon>sort</v-icon>Lọc
+          </v-btn>
+        </v-flex>
+      </v-layout>
       <v-data-table
         item-key="id"
         dense
@@ -51,7 +48,7 @@
 </template>
 <script>
 import validate from "@/utils/validate";
-import {url} from "@/utils/index";
+import { url } from "@/utils/index";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
@@ -88,8 +85,7 @@ export default {
     };
   },
   computed: {},
-  created() {
-  },
+  created() {},
   mounted() {},
   watch: {
     pagination: {
@@ -110,18 +106,21 @@ export default {
           itemsPerPage,
           rowsPerPage
         } = this.pagination;
-        if(this.isLoading < 0){
+        if (this.isLoading < 0) {
           this.isLoading = 0;
         }
-        if (this.isLoading==0) {
+        if (this.isLoading == 0) {
           this.isLoading = 1;
-          let rs = await this.GetList([url.role.route,{
-            Page: page,
-            PageSize: rowsPerPage,
-            ColumnOrder: sortBy,
-            SortDir: descending ? "desc" : "asc",
-            Name: this.name
-          }]);
+          let rs = await this.GetList([
+            url.role.route,
+            {
+              Page: page,
+              PageSize: rowsPerPage,
+              ColumnOrder: sortBy,
+              SortDir: descending ? "desc" : "asc",
+              Name: this.name
+            }
+          ]);
           if (rs != null && rs.data) {
             this.isLoading = -1;
             this.datasourceFiltered = rs.data;
@@ -145,7 +144,7 @@ export default {
     select(item) {
       this.getById(item.id);
     },
-    getById(id) {      
+    getById(id) {
       window.getApp.changeView("/Edit/" + id);
     },
     inputSearch(e) {

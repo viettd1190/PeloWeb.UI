@@ -1,68 +1,81 @@
 <template>
   <div style="min-height:400px">
     <title-page>Chi nhánh</title-page>
-    <v-layout row justify-center>
-      <v-flex xs12 sm6 md4 lg4>
-        <v-text-field
-          hide-details
-          label="Tên chi nhánh"
-          v-model="name"
-          class="ma-2"
-          append-icon="store"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>
-        <v-text-field
-          hide-details
-          label="Hotline"
-          v-model="hotline"
-          class="ma-2"
-          append-icon="phone"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12 sm6 md4 lg4>
-        <v-select
-          :items="provinces"
-          item-text="name"
-          item-value="id"
-          v-model="province"
-          label="Tỉnh thành"
-          persistent-hint
-          return-object
-          :clearable="true"
-          v-on:change="changeProvince"
-        ></v-select>
-        <v-select
-          :items="selectDistricts"
-          item-text="name"
-          item-value="id"
-          v-model="district"
-          label="Quận Huyện"
-          persistent-hint
-          return-object
-          :clearable="true"
-          v-on:change="changeDistrict"
-        ></v-select>
-        <v-select
-          :items="selectWards"
-          item-text="name"
-          item-value="id"
-          v-model="ward"
-          label="Xã phường"
-          persistent-hint
-          return-object
-          :clearable="true"
-        ></v-select>
-      </v-flex>
-    </v-layout>
-    <v-layout row justify-center>
-      <v-btn color="#666EE8" class="white--text" @click="search()">
-        <v-icon>sort</v-icon>Lọc
-      </v-btn>
-    </v-layout>
     <v-container>
+      <v-layout row justify-center>
+        <v-flex md6 lg6>
+          <v-text-field
+            hide-details
+            label="Tên chi nhánh"
+            v-model="name"
+            class="ma-2"
+            v-on:keyup="inputSearch"
+            :clearable="true"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs1 sm1 md1 lg1></v-flex>
+        <v-flex md6 lg6>
+          <v-select
+            :items="provinces"
+            item-text="name"
+            item-value="id"
+            v-model="province"
+            label="Tỉnh thành"
+            persistent-hint
+            return-object
+            :clearable="true"
+            v-on:change="changeProvince"
+          ></v-select>
+        </v-flex>
+      </v-layout>
+      <v-layout row justify-center>
+        <v-flex md6 lg6>
+          <v-text-field
+            hide-details
+            label="Hotline"
+            v-model="hotline"
+            class="ma-2"
+            v-on:keyup="inputSearch"
+            :clearable="true"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs1 sm1 md1 lg1></v-flex>
+        <v-flex md6 lg6>
+          <v-select
+            :items="selectDistricts"
+            item-text="name"
+            item-value="id"
+            v-model="district"
+            label="Quận Huyện"
+            persistent-hint
+            return-object
+            :clearable="true"
+            v-on:change="changeDistrict"
+          ></v-select>
+        </v-flex>
+      </v-layout>
+      <v-layout row justify-center>
+        <v-flex md6 lg6>
+        </v-flex>
+        <v-flex xs1 sm1 md1 lg1></v-flex>
+        <v-flex md6 lg6>
+          <v-select
+            :items="selectWards"
+            item-text="name"
+            item-value="id"
+            v-model="ward"
+            label="Xã phường"
+            persistent-hint
+            return-object
+            :clearable="true"
+          ></v-select>
+        </v-flex>
+      </v-layout>
+      <v-layout row justify-center>
+        <v-btn color="#666EE8" class="white--text" @click="search()">
+          <v-icon>sort</v-icon>Lọc
+        </v-btn>
+      </v-layout>
       <v-data-table
         item-key="id"
         dense
@@ -189,7 +202,7 @@ export default {
               Hotline: this.hotline,
               Address: this.address,
               ProvinceId: this.province == undefined ? 0 : this.province.id,
-              DistrictId: this.district == undefined ? 0 :this.district.id,
+              DistrictId: this.district == undefined ? 0 : this.district.id,
               WardId: this.ward == undefined ? 0 : this.ward.id
             }
           ]);
@@ -235,9 +248,9 @@ export default {
       if (e == undefined) {
         this.province = { id: 0, name: "" };
       }
-      this.GetDistricts({ ProvinceId: e.id });
+      this.GetDistricts({ ProvinceId: this.province.id });
       this.selectWards = [];
-      this.GetWards({ ProvinceId: e.id, DistrictId: 0 });
+      this.GetWards({ ProvinceId: this.province.id, DistrictId: 0 });
     },
     changeDistrict(e) {
       if (e == undefined) {
@@ -245,7 +258,7 @@ export default {
       }
       this.GetWards({
         ProvinceId: this.province != undefined ? this.province.id : 0,
-        DistrictId: e.id
+        DistrictId: this.district.id
       });
     }
   }

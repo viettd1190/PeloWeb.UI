@@ -102,8 +102,12 @@ export let url = {
     route:"customer_group",
     all:"customer_group/all",
     id:"customer_group/"
+  },
+  customer:{
+    route:"customer",
+    all:"customer/all",
+    id:"customer/"
   }
-
 };
 export let pagination = {
   keySearch: '',

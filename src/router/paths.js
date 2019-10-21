@@ -510,6 +510,18 @@ export default [
     component: () => import(`@/pages/customer/index.vue`)
   },
   {
+    path: '/Customer/Add',
+    meta: { breadcrumb: true },
+    name: 'Customer',
+    component: () => import(`@/pages/customer/components/AddCustomer.vue`)
+  },
+  {
+    path: '/Customer/Edit/:id',
+    meta: { breadcrumb: true },
+    name: 'Customer',
+    component: () => import(`@/pages/customer/components/EditCustomer.vue`)
+  },
+  {
     path: '/Setting/AppConfig/Add',
     meta: {
       breadcrumb: true

@@ -1,18 +1,16 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Danh sách nhóm khách hàng</title-page>
-    <v-layout row justify-center>
-      <v-flex xs12 sm3 md3 lg3>
-        <v-text-field
+    <title-page>Danh sách nhóm khách hàng</title-page>    
+    <v-container>
+      <v-layout row>
+      <v-text-field
           hide-details
           label="Tên"
           v-model="name"
-          class="ma-2"
           append-icon="search"
           v-on:keyup="inputSearch"
           :clearable="true"
         ></v-text-field>
-      </v-flex>
     </v-layout>
     <v-layout row justify-center>
       <v-flex xs4 sm2 md1 lg1>
@@ -21,7 +19,6 @@
         </v-btn>
       </v-flex>
     </v-layout>
-    <v-container>
       <v-data-table
         item-key="id"
         dense

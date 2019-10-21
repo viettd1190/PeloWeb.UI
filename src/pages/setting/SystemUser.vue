@@ -1,22 +1,21 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Người dùng</title-page>
-    <v-layout row justify-center>
-      <v-flex xs12 sm3 md3 lg3>
+    <title-page>Người dùng</title-page>    
+    <v-container>
+      <v-layout row justify-center>
+      <v-flex xs12 sm6 md6 lg6>
         <v-text-field
           hide-details
           label="Tên đăng nhập"
           v-model="userName"
-          class="ma-2"
           append-icon="person"
           v-on:keyup="inputSearch"
           :clearable="true"
         ></v-text-field>
       </v-flex>
       <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
-      <v-flex xs12 sm3 md3 lg3>
+      <v-flex xs12 sm6 md6 lg6>
         <v-text-field
-          class="ma-2"
           hide-details
           label="Tên hiển thị"
           v-model="displayName"
@@ -27,21 +26,19 @@
       </v-flex>
     </v-layout>
     <v-layout row justify-center>
-      <v-flex xs12 sm3 md3 lg3>
+      <v-flex xs12 sm6 md6 lg6>
         <v-text-field
           hide-details
           label="Tên đầy đủ"
           v-model="fullName"
-          class="ma-2"
           append-icon="assignment_ind"
           v-on:keyup="inputSearch"
           :clearable="true"
         ></v-text-field>
       </v-flex>
       <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
-      <v-flex xs12 sm3 md3 lg3>
+      <v-flex xs12 sm6 md6 lg6>
         <v-text-field
-          class="ma-2"
           hide-details
           label="Điện thoại"
           v-model="phone"
@@ -52,14 +49,13 @@
       </v-flex>
     </v-layout>
     <v-layout row justify-center>
-      <v-flex xs12 sm3 md3 lg3>
+      <v-flex xs12 sm6 md6 lg6>
         <v-select
           :items="branchs"
           item-text="name"
           item-value="id"
           v-model="branch"
           label="Chi nhánh"
-          class="ma-2"
           persistent-hint
           return-object
           v-on:change="changeBranch"
@@ -67,13 +63,12 @@
         ></v-select>
       </v-flex>
       <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
-      <v-flex xs12 sm3 md3 lg3>
+      <v-flex xs12 sm6 md6 lg6>
         <v-select
           :items="roles"
           item-text="name"
           item-value="id"
           v-model="role"
-          class="ma-2"
           label="Quyền"
           persistent-hint
           return-object
@@ -89,7 +84,6 @@
         </v-btn>
       </v-flex>
     </v-layout>
-    <v-container>
       <v-data-table
         item-key="id"
         :headers="table.headers"

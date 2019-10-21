@@ -1,16 +1,20 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Danh sách xã phường</title-page>
-    <v-layout row justify-center>
-      <v-flex xs12 sm6 md4 lg4>
+    <title-page>Danh sách xã phường</title-page>    
+    <v-container>
+      <v-layout row justify-center>
+      <v-flex xs12 sm6 md6 lg6>
         <v-text-field
           hide-details
           label="Tên"
           v-model="name"
-          append-icon="store"
           v-on:keyup="inputSearch"
           :clearable="true"
-        ></v-text-field>
+        ></v-text-field>       
+      </v-flex>
+      <v-flex xs1 sm1 md1 lg1>
+      </v-flex>
+      <v-flex xs12 sm6 md6 lg6>
         <v-select
           :items="provinces"
           item-text="name"
@@ -32,12 +36,15 @@
           return-object
           :clearable="true"
         ></v-select>
+      </v-flex>
+    </v-layout>
+    <v-layout row justify-center>
+      <v-flex md1 lg1>
         <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
         </v-btn>
       </v-flex>
     </v-layout>
-    <v-container>
       <v-data-table
         item-key="id"
         dense

@@ -1,21 +1,22 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Tham số cấu hình</title-page>
-    <v-layout row justify-center>
-      <v-flex xs12 sm3 md3 lg3>
+    <title-page>Tham số cấu hình</title-page>    
+    <v-container>
+      <v-layout row justify-center>
+      <v-flex xs12 sm6 md6 lg6>
         <v-text-field
           hide-details
           label="Tên tham số"
           v-model="name"
-          class="ma-2"
           append-icon="search"
           v-on:keyup="inputSearch"
           :clearable="true"
         ></v-text-field>
       </v-flex>
-      <v-flex xs12 sm3 md3 lg3>
+      <v-flex xs1 sm1 md1 lg1>       
+      </v-flex>
+      <v-flex xs12 sm6 md6 lg6>
         <v-text-field
-          class="ma-2"
           hide-details
           label="Giá trị"
           v-model="description"
@@ -32,7 +33,6 @@
         </v-btn>
       </v-flex>
     </v-layout>
-    <v-container>
       <v-data-table
         item-key="id"
         dense
