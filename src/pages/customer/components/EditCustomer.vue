@@ -42,7 +42,7 @@
                 :clearable="true"
               ></v-text-field>
               <v-select
-                :items="provinces"
+                :items="selectProvinces"
                 item-text="name"
                 item-value="id"
                 v-model="province"
@@ -270,9 +270,9 @@ export default {
           this.form.address = rs.address;
           this.form.email = rs.email;
           this.form.description = rs.description;
-          this.ward.id = rs.wardId == null ? rs.wardId : 0;
-          this.province.id = rs.provinceId == null ? rs.provinceId : 0;
-          this.district.id = rs.districtId == null ? rs.districtId : 0;
+          this.province.id = rs.provinceId;
+          this.district.id = rs.districtId;
+          this.ward.id = rs.wardId;
           this.selectProvinces = this.provinces;
           this.syncSelect();
         } else {

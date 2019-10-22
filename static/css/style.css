@@ -2,3 +2,9 @@
     background: #666EE8;
     color: white;
 }
+.row-command{
+    margin: 10px 10px 10px 0 !important;
+}
+.row-command .v-btn{
+    margin: 10px 10px 10px 0 !important;
+}

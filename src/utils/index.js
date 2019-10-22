@@ -112,6 +112,11 @@ export let url = {
     route:"product_unit",
     all:"product_unit/all",
     id:"product_unit/"
+  },
+  product_status:{
+    route:"product_status",
+    all:"product_status/all",
+    id:"product_status/"
   }
 };
 export let pagination = {

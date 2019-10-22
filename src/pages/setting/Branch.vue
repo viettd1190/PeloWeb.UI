@@ -71,11 +71,14 @@
           ></v-select>
         </v-flex>
       </v-layout>
-      <v-layout row justify-center>
-        <v-btn color="#666EE8" class="white--text" @click="search()">
+      <v-layout row class="row-command">
+      <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
         </v-btn>
-      </v-layout>
+        <v-btn color="orange" class="white--text" @click="add()">
+        <v-icon>add</v-icon>Thêm mới
+      </v-btn>
+    </v-layout>
       <v-data-table
         item-key="id"
         dense
@@ -100,9 +103,6 @@
           </tr>
         </template>
       </v-data-table>
-      <v-btn color="#666EE8" class="white--text" @click="add()">
-        <v-icon>add</v-icon>Thêm mới
-      </v-btn>
     </v-container>
   </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm nhóm sản phẩm</title-page>
+      <title-page>Thêm trạng thái sản phẩm</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
@@ -36,7 +36,7 @@ import axios from "axios";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
-import { messageResult, url } from "@/utils/index";
+import { messageResult,url } from "@/utils/index";
 export default {
   components: { TitlePage },
   props: {},
@@ -52,7 +52,8 @@ export default {
   computed: {},
   watch: {},
   created() {},
-  mounted() {},
+  mounted() {
+  },
   methods: {
     ...mapActions(["Create"]),
     validateForm(e) {
@@ -69,14 +70,14 @@ export default {
       if (this.form.name == "") {
         return;
       }
-      var p = {
+      let p = {
         name: this.form.name
       };
       this.add(p);
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.productGroup.route, model]);
+        let rs = await this.Create([url.product_status.route,model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -84,14 +85,14 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Product/ProductGroup";
+          window.location.href = "#/Product/ProductStatus";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Product/ProductGroup";
+      window.location.href = "#/Product/ProductStatus";
     }
   }
 };

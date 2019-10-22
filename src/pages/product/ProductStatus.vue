@@ -1,6 +1,6 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Danh sách đơn vị tính</title-page>    
+    <title-page>Danh sách trạng thái sản phẩm</title-page>    
     <v-container>
       <v-layout row>
       <v-text-field
@@ -12,12 +12,13 @@
           :clearable="true"
         ></v-text-field>
     </v-layout>
-    <v-layout row justify-center>
-      <v-flex xs4 sm2 md1 lg1>
-        <v-btn color="#666EE8" class="white--text" @click="search()">
+    <v-layout row class="row-command">
+      <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
         </v-btn>
-      </v-flex>
+        <v-btn color="orange" class="white--text" @click="add()">
+        <v-icon>add</v-icon>Thêm mới
+      </v-btn>
     </v-layout>
       <v-data-table
         item-key="id"
@@ -40,9 +41,6 @@
           </tr>
         </template>
       </v-data-table>
-      <v-btn color="#666EE8" class="white--text" @click="add()">
-        <v-icon>add</v-icon>Thêm mới
-      </v-btn>
     </v-container>
   </div>
 </template>
@@ -112,7 +110,7 @@ export default {
         }
         if (this.isLoading == 0) {
           this.isLoading = 1;
-          let rs = await this.GetList([url.product_unit.route,{
+          let rs = await this.GetList([url.product_status.route,{
             Page: page,
             PageSize: rowsPerPage,
             ColumnOrder: sortBy,

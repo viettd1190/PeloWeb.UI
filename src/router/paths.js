@@ -69,6 +69,7 @@ export default [
     name: 'updateprofile',
     component: () => import(`@/pages/updateprofile.vue`)
   },
+  //Crm
   {
     path: '/CRM/Index',
     meta: {
@@ -161,8 +162,11 @@ export default [
     name: 'CRM/CustomerGroup',
     component: () => import(`@/pages/crm/components/EditCustomerGroup.vue`)
   },
+  //end Crm
+
+  //product
   ,{
-    path: '/Product/Index',
+    path: '/Product',
     meta: {
       breadcrumb: true
     },
@@ -194,6 +198,53 @@ export default [
     component: () => import(`@/pages/product/components/EditProductGroup.vue`)
   },
   ,{
+    path: '/Product/ProductUnit',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/ProductUnit',
+    component: () => import(`@/pages/product/ProductUnit.vue`)
+  },
+  {
+    path: '/Product/ProductUnit/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/ProductUnit',
+    component: () => import(`@/pages/product/components/AddProductUnit.vue`)
+  },
+  {
+    path: '/Product/ProductUnit/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/ProductUnit',
+    component: () => import(`@/pages/product/components/EditProductUnit.vue`)
+  },{
+    path: '/Product/ProductStatus',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/ProductStatus',
+    component: () => import(`@/pages/product/ProductStatus.vue`)
+  },
+  {
+    path: '/Product/ProductStatus/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/ProductStatus',
+    component: () => import(`@/pages/product/components/AddProductStatus.vue`)
+  },
+  {
+    path: '/Product/ProductStatus/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/ProductStatus',
+    component: () => import(`@/pages/product/components/EditProductStatus.vue`)
+  },
+  ,{
     path: '/Product/Manufacturer',
     meta: {
       breadcrumb: true
@@ -218,12 +269,38 @@ export default [
     component: () => import(`@/pages/product/components/EditManufacturer.vue`)
   }
   ,{
+    path: '/Product',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/Index',
+    component: () => import(`@/pages/product/Index.vue`)
+  },
+  //end Product
+  //Setting
+  ,{
     path: '/Setting/AppConfig',
     meta: {
       breadcrumb: true
     },
     name: 'Setting/AppConfig/Index',
     component: () => import(`@/pages/setting/AppConfig.vue`)
+  },
+  {
+    path: '/Setting/AppConfig/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/AppConfig',
+    component: () => import(`@/pages/setting/components/FormAddAppConfig.vue`)
+  },
+  {
+    path: '/Setting/AppConfig/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/AppConfig',
+    component: () => import(`@/pages/setting/components/FormEditAppConfig.vue`)
   },{
     path: '/Setting/Branch',
     meta: {
@@ -231,6 +308,22 @@ export default [
     },
     name: 'Setting/Branch/Index',
     component: () => import(`@/pages/setting/Branch.vue`)
+  },  
+  {
+    path: '/Setting/Branch/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Branch',
+    component: () => import(`@/pages/setting/components/AddBranch.vue`)
+  },
+  {
+    path: '/Setting/Branch/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Branch',
+    component: () => import(`@/pages/setting/components/EditBranch.vue`)
   },{
     path: '/Setting/MainNavigation',
     meta: {
@@ -252,13 +345,46 @@ export default [
     },
     name: 'Setting/SystemUser/Index',
     component: () => import(`@/pages/setting/SystemUser.vue`)
-  },{
+  },  
+  {
+    path: '/Setting/SystemUser/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemUser',
+    component: () => import(`@/pages/setting/components/AddUser.vue`)
+  },
+  {
+    path: '/Setting/SystemUser/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemUser',
+    component: () => import(`@/pages/setting/components/EditUser.vue`)
+  },
+  {
     path: '/Setting/SystemRole',
     meta: {
       breadcrumb: true
     },
     name: 'Setting/SystemRole/Index',
     component: () => import(`@/pages/setting/SystemRole.vue`)
+  },  
+  {
+    path: '/Setting/SystemRole/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemRole',
+    component: () => import(`@/pages/setting/components/AddRole.vue`)
+  },
+  {
+    path: '/Setting/SystemRole/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/SystemRole',
+    component: () => import(`@/pages/setting/components/EditRole.vue`)
   },{
     path: '/Setting/Admin/Icons',
     meta: {
@@ -339,6 +465,8 @@ export default [
     name: 'Setting/Ward',
     component: () => import(`@/pages/setting/components/EditWard.vue`)
   },
+  //end Setting
+  //Recruitment
   {
     path: '/Recruitment/Candidate',
     meta: {
@@ -367,7 +495,10 @@ export default [
     },
     name: 'Recruitment/RecruitmentStatus/Index',
     component: () => import(`@/pages/recruitment/RecruitmentStatus.vue`)
-  },{
+  },
+  //end Recruitment
+  //Warranty
+  {
     path: '/Warranty/WarrantyStatus',
     meta: {
       breadcrumb: true
@@ -395,7 +526,10 @@ export default [
     },
     name: 'Warranty/WarrantyDescription/Index',
     component: () => import(`@/pages/warranty/WarrantyDescription.vue`)
-  },{
+  },
+  //end Warranty
+  //Receipt
+  {
     path: '/Receipt/ReceiptStatus',
     meta: {
       breadcrumb: true
@@ -424,6 +558,8 @@ export default [
     name: 'Receipt/ReceiptDescription/Index',
     component: () => import(`@/pages/receipt/ReceiptDescription.vue`)
   }
+  //end Receipt
+  //Task
   ,{
     path: '/Task/TaskStatus',
     meta: {
@@ -472,6 +608,8 @@ export default [
     name: 'Task/Index',
     component: () => import(`@/pages/task/Index.vue`)
   }
+  //end Task
+//Invoice  
   ,{
     path: '/Invoice/Index',
     meta: {
@@ -503,6 +641,8 @@ export default [
     name: 'Invoice/InvoiceStatusInRole/Index',
     component: () => import(`@/pages/invoice/InvoiceStatusInRole.vue`)
   },
+  //end Invoice
+  //Customer
   {
     path: '/Customer',
     meta: { breadcrumb: true },
@@ -521,68 +661,5 @@ export default [
     name: 'Customer',
     component: () => import(`@/pages/customer/components/EditCustomer.vue`)
   },
-  {
-    path: '/Setting/AppConfig/Add',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/AppConfig',
-    component: () => import(`@/pages/setting/components/FormAddAppConfig.vue`)
-  },
-  {
-    path: '/Setting/AppConfig/Edit/:id',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/AppConfig',
-    component: () => import(`@/pages/setting/components/FormEditAppConfig.vue`)
-  },
-  {
-    path: '/Setting/Branch/Add',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/Branch',
-    component: () => import(`@/pages/setting/components/AddBranch.vue`)
-  },
-  {
-    path: '/Setting/Branch/Edit/:id',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/Branch',
-    component: () => import(`@/pages/setting/components/EditBranch.vue`)
-  },
-  {
-    path: '/Setting/SystemRole/Add',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/SystemRole',
-    component: () => import(`@/pages/setting/components/AddRole.vue`)
-  },
-  {
-    path: '/Setting/SystemRole/Edit/:id',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/SystemRole',
-    component: () => import(`@/pages/setting/components/EditRole.vue`)
-  },
-  {
-    path: '/Setting/SystemUser/Add',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/SystemUser',
-    component: () => import(`@/pages/setting/components/AddUser.vue`)
-  },
-  {
-    path: '/Setting/SystemUser/Edit/:id',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/SystemUser',
-    component: () => import(`@/pages/setting/components/EditUser.vue`)
-  },
+  //end Customer
 ];

@@ -1,7 +1,7 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Cập nhật đơn vị tính</title-page>
+      <title-page>Cập nhật trạng thái sản phẩm</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
@@ -95,7 +95,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.product_unit.route,model]);
+        let rs = await this.Update([url.product_status.route,model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -103,21 +103,21 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Product/Manufacturer";
+          window.location.href = "#/Product/ProductStatus";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Product/Manufacturer";
+      window.location.href = "#/Product/ProductStatus";
     },
     removeData() {
       this.isRemove = true;
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.product_unit.id,this.form.id]);
+        let rs = await this.DeleteById([url.product_status.id,this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -125,7 +125,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Product/Manufacturer";
+          window.location.href = "#/Product/ProductStatus";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -133,7 +133,7 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.product_unit.id,id]);
+        let rs = await this.GetById([url.product_status.id,id]);
         if (rs !== "") {
           this.form.id = rs.id;
           this.form.name = rs.name;

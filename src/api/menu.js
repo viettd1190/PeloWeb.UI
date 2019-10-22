@@ -59,8 +59,6 @@ const Menu = [
       title: 'Danh sách sản phẩm',
       group: 'Product',
       name: 'Index',
-      //component:'crm'
-      //href: '#/crm'
     },{
       title: 'Nhóm sản phẩm',
       group: 'Product',
@@ -69,6 +67,14 @@ const Menu = [
       title: 'Thương hiệu',
       group: 'Product',
       name: 'Manufacturer',
+    },{
+      title: 'Đơn vị tính',
+      group: 'Product',
+      name: 'ProductUnit',
+    },{
+      title: 'Trạng thái sản phẩm',
+      group: 'Product',
+      name: 'ProductStatus',
     }]
   },{
     title:'Đơn hàng',

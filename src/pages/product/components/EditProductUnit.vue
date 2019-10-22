@@ -1,7 +1,7 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Cập nhật nhóm sản phẩm</title-page>
+      <title-page>Cập nhật đơn vị tính</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
@@ -40,7 +40,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult,url } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
 export default {
@@ -95,7 +95,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.productGroup.route,model]);
+        let rs = await this.Update([url.product_unit.route,model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -103,21 +103,21 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Product/ProductGroup";
+          window.location.href = "#/Product/ProductUnit";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Product/ProductGroup";
+      window.location.href = "#/Product/ProductUnit";
     },
     removeData() {
       this.isRemove = true;
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.productGroup.id,this.form.id]);
+        let rs = await this.DeleteById([url.product_unit.id,this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -125,7 +125,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Product/ProductGroup";
+          window.location.href = "#/Product/ProductUnit";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -133,7 +133,7 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.productGroup.id,id]);
+        let rs = await this.GetById([url.product_unit.id,id]);
         if (rs !== "") {
           this.form.id = rs.id;
           this.form.name = rs.name;
