@@ -1,51 +1,44 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Danh sách xã phường</title-page>    
+    <title-page>Danh sách xã phường</title-page>
     <v-container>
       <v-layout row justify-center>
-      <v-flex xs12 sm6 md6 lg6>
-        <v-text-field
-          hide-details
-          label="Tên"
-          v-model="name"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>       
-      </v-flex>
-      <v-flex xs1 sm1 md1 lg1>
-      </v-flex>
-      <v-flex xs12 sm6 md6 lg6>
-        <v-select
-          :items="provinces"
-          item-text="name"
-          item-value="id"
-          v-model="province"
-          label="Tỉnh thành"
-          persistent-hint
-          return-object
-          v-on:change="changeProvince"
-          :clearable="true"
-        ></v-select>
-        <v-select
-          :items="districts"
-          item-text="name"
-          item-value="id"
-          v-model="district"
-          label="Quận huyện"
-          persistent-hint
-          return-object
-          :clearable="true"
-        ></v-select>
-      </v-flex>
-    </v-layout>
-    <v-layout row class="row-command">
-      <v-btn color="#666EE8" class="white--text" @click="search()">
+        <v-flex xs12 sm6 md6 lg6>
+          <v-text-field
+            hide-details
+            label="Tên"
+            v-model="name"
+            v-on:keyup="inputSearch"
+            :clearable="true"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs1 sm1 md1 lg1> </v-flex>
+        <v-flex xs12 sm6 md6 lg6>
+          <select2
+            :options="provinces"
+            :reduce="province => province.id"
+            placeholder="Tỉnh thành"
+            label="name"
+            v-model="selectedProvince"
+          ></select2>
+          <select2
+            :options="districts"
+            :reduce="district => district.id"
+            placeholder="Quận huyện"
+            label="name"
+            v-model="selectedDistrict"
+            :loading="districts.length == 0 && selectedProvince != null"
+          ></select2>
+        </v-flex>
+      </v-layout>
+      <v-layout row class="row-command">
+        <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
         </v-btn>
         <v-btn color="orange" class="white--text" @click="add()">
-        <v-icon>add</v-icon>Thêm mới
-      </v-btn>
-    </v-layout>
+          <v-icon>add</v-icon>Thêm mới
+        </v-btn>
+      </v-layout>
       <v-data-table
         item-key="id"
         dense
@@ -63,7 +56,7 @@
           <tr class="table-row">
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
-            </td>            
+            </td>
             <td nowrap>
               {{ props.item.district }}
             </td>
@@ -123,8 +116,8 @@ export default {
       },
       datasourceFiltered: [],
       isLoading: -1,
-      province: { id: 0, name: "", type: "" },
-      district: { id: 0, name: "", type: "" }
+      selectedProvince: null,
+      selectedDistrict: null
     };
   },
   computed: {
@@ -140,6 +133,9 @@ export default {
         this.search();
       },
       deep: true
+    },
+    selectedProvince(){
+      this.changeProvince();
     }
   },
   methods: {
@@ -166,8 +162,8 @@ export default {
               ColumnOrder: sortBy,
               SortDir: descending ? "desc" : "asc",
               Name: this.name,
-              ProvinceId: this.province != undefined ? this.province.id : 0,
-              DistrictId: this.district != undefined ? this.district.id : 0
+              ProvinceId: this.selectedProvince != null ? this.selectedProvince : 0,
+              DistrictId: this.selectedDistrict != null ? this.selectedDistrict : 0
             }
           ]);
           if (rs != null && rs.data) {
@@ -202,13 +198,10 @@ export default {
       }
     },
     syncSelect() {
-      this.GetDistricts({ ProvinceId: this.province.id });
+      this.GetDistricts({ ProvinceId: 0 });
     },
-    changeProvince(e) {
-      if (e == undefined) {
-        this.province = { id: 0, name: "" };
-      }
-      this.GetDistricts({ ProvinceId: this.province.id });
+    changeProvince() {
+      this.GetDistricts({ ProvinceId: this.selectedProvince });
     }
   }
 };

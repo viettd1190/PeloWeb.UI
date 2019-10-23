@@ -14,27 +14,23 @@
         </v-flex>
         <v-flex xs1 sm1 md1 lg1></v-flex>
         <v-flex xs12 sm6 md6 lg6>
-          <v-select
-            :items="provinces"
-            item-text="name"
-            item-value="id"
-            v-model="province"
-            label="Tỉnh thành"
-            persistent-hint
-            return-object
-            clearable
-            v-on:change="changeProvince"
-          ></v-select>
+          <select2
+            :options="provinces"
+            :reduce="province => province.id"
+            placeholder="Tỉnh thành"
+            label="name"
+            v-model="selectedProvince"
+          ></select2>
         </v-flex>
       </v-layout>
       <v-layout row class="row-command">
-      <v-btn color="#666EE8" class="white--text" @click="search()">
+        <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
         </v-btn>
         <v-btn color="orange" class="white--text" @click="add()">
-        <v-icon>add</v-icon>Thêm mới
-      </v-btn>
-    </v-layout>
+          <v-icon>add</v-icon>Thêm mới
+        </v-btn>
+      </v-layout>
       <v-data-table
         item-key="id"
         dense
@@ -99,7 +95,8 @@ export default {
       },
       datasourceFiltered: [],
       isLoading: -1,
-      province: { id: 0, name: "", type: "" }
+      province: { id: 0, text: "" },
+      selectedProvince: null
     };
   },
   computed: {
@@ -139,7 +136,7 @@ export default {
               ColumnOrder: sortBy,
               SortDir: descending ? "desc" : "asc",
               Name: this.name,
-              ProvinceId: this.province != undefined ? this.province.id : 0
+              ProvinceId: this.selectedProvince != null ? this.selectedProvince : 0 //this.province != undefined ? this.province.id : 0
             }
           ]);
           if (rs != null && rs.data) {
@@ -173,7 +170,7 @@ export default {
         this.search();
       }
     },
-    changeProvince(e) {
+    changeProvince({ id, text }) {
       if (e == undefined) {
         this.province = { id: 0, name: "" };
       }

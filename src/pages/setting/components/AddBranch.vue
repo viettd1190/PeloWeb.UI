@@ -6,39 +6,32 @@
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
-              <v-select
-                :items="provinces"
-                item-text="name"
-                item-value="id"
-                v-model="province"
-                label="Tỉnh thành"
-                persistent-hint
-                return-object
-                v-on:change="changeProvince"
-                :error-messages="errors.collect('type')"
-                v-validate="'required'"
-                data-vv-name="type"
-                required
-              ></v-select>
-              <v-select
-                :items="selectDistricts"
-                item-text="name"
-                item-value="id"
-                v-model="district"
-                label="Quận huyện"
-                persistent-hint
-                return-object
-                v-on:change="changeDistrict"
-              ></v-select>
-              <v-select
-                :items="selectWards"
-                item-text="name"
-                item-value="id"
-                v-model="ward"
-                label="Xã phường"
-                persistent-hint
-                return-object
-              ></v-select>
+              <select2
+                :options="provinces"
+                :reduce="province => province.id"
+                placeholder="Tỉnh thành"
+                label="name"
+                :clearable="false"
+                v-model="selectedprovince"
+              ></select2>
+              <select2
+                :options="selectDistricts"
+                :reduce="district => district.id"
+                placeholder="Quận huyện"
+                label="name"
+                :clearable="false"
+                v-model="selecteddistrict"
+                :loading="selectDistricts.length == 0 && selectedprovince != null"
+              ></select2>
+              <select2
+                :options="selectWards"
+                :reduce="ward => ward.id"
+                placeholder="Xã phường"
+                label="name"
+                :clearable="false"
+                v-model="selectedward"
+                :loading="selectWards.length == 0 && selecteddistrict != null"
+              ></select2>
               <v-text-field
                 v-model="form.name"
                 :rules="[rules.required]"
@@ -46,7 +39,6 @@
                 name="input-10-1"
                 label="Tên"
                 counter
-                @click:append="show1 = !show1"
                 :clearable="true"
               ></v-text-field>
               <v-text-field
@@ -55,7 +47,6 @@
                 name="input-10-1"
                 label="Địa chỉ"
                 counter
-                @click:append="show2 = !show2"
                 :clearable="true"
               ></v-text-field>
               <v-text-field
@@ -65,7 +56,6 @@
                 label="Hot line"
                 counter
                 append-icon="phone"
-                @click:append="show3 = !show3"
                 :clearable="true"
               ></v-text-field>
             </v-flex>
@@ -97,7 +87,7 @@ export default {
       form: {
         name: "",
         hotline: "",
-        address: "",
+        address: ""
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
@@ -106,9 +96,9 @@ export default {
       selectProvinces: [],
       selectDistricts: [],
       selectWards: [],
-      province: { id: 0, name: "", type: "" },
-      district: { id: 0, name: "", type: "" },
-      ward: { id: 0, name: "", type: "" }
+      selectedprovince: null,
+      selecteddistrict: null,
+      selectedward: null
     };
   },
   computed: {
@@ -120,7 +110,13 @@ export default {
     },
     wards() {
       this.selectWards = this.wards;
-    }    
+    },
+    selectedprovince() {
+      this.changeProvince();
+    },
+    selecteddistrict() {
+      this.changeDistrict();
+    }
   },
   created() {},
   mounted() {
@@ -141,7 +137,8 @@ export default {
     save() {
       if (
         this.form.name == "" ||
-        this.province.id == 0
+        this.selectedprovince == null ||
+        this.selecteddistrict == null
       ) {
         return;
       }
@@ -149,15 +146,15 @@ export default {
         address: this.form.address,
         name: this.form.name,
         hotline: this.form.hotline,
-        provinceId: this.province.id,
-        districtId: this.district.id,
-        wardId: this.ward.id
+        provinceId: this.selectedprovince,
+        districtId: this.selecteddistrict,
+        wardId: this.selectedward
       };
       this.add(p);
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.branch.route,model]);
+        let rs = await this.Create([url.branch.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -178,20 +175,16 @@ export default {
       this.GetDistricts(0);
       this.GetWards(0);
     },
-    changeProvince(e) {
-      if (e == undefined) {
-        this.province = { id: 0, name: "" };
-      }
-      this.GetDistricts({ ProvinceId: this.province.id });
+    changeProvince() {
+      this.GetDistricts({ ProvinceId: this.selectedprovince });
       this.selectWards = [];
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: 0 });
     },
-    changeDistrict(e) {
-      if (e == undefined) {
-        this.district = { id: 0, name: "" };
-      }
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: this.district.id });
-    },
+    changeDistrict() {
+      this.GetWards({
+        ProvinceId: this.selectedprovince,
+        DistrictId: this.selecteddistrict
+      });
+    }
   }
 };
 </script>

@@ -6,35 +6,34 @@
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
-              <v-select
-                :items="selectProvinces"
-                item-text="name"
-                item-value="id"
-                v-model="province"
-                label="Tỉnh thành"
-                persistent-hint
-                return-object
-                v-on:change="changeProvince"
-              ></v-select>
-              <v-select
-                :items="selectDistricts"
-                item-text="name"
-                item-value="id"
-                v-model="district"
-                label="Quận huyện"
-                persistent-hint
-                return-object
-                v-on:change="changeDistrict"
-              ></v-select>
-              <v-select
-                :items="selectWards"
-                item-text="name"
-                item-value="id"
-                v-model="ward"
-                label="Xã phường"
-                persistent-hint
-                return-object
-              ></v-select>
+              <select2
+                :options="provinces"
+                :reduce="province => province.id"
+                placeholder="Tỉnh thành"
+                label="name"
+                :clearable="false"
+                v-model="selectedprovince"
+              ></select2>
+              <select2
+                :options="selectDistricts"
+                :reduce="district => district.id"
+                placeholder="Quận huyện"
+                label="name"
+                :clearable="false"
+                v-model="selecteddistrict"
+                :loading="
+                  selectDistricts.length == 0 && selectedprovince != null
+                "
+              ></select2>
+              <select2
+                :options="selectWards"
+                :reduce="ward => ward.id"
+                placeholder="Xã phường"
+                label="name"
+                :clearable="false"
+                v-model="selectedward"
+                :loading="selectWards.length == 0 && selecteddistrict != null"
+              ></select2>
               <v-text-field
                 v-model="form.name"
                 :rules="[rules.required]"
@@ -85,7 +84,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult,url } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
 export default {
@@ -109,7 +108,10 @@ export default {
       isRemove: false,
       selectProvinces: [],
       selectDistricts: [],
-      selectWards: []
+      selectWards: [],
+      selectedprovince: null,
+      selecteddistrict: null,
+      selectedward: null
     };
   },
   computed: {
@@ -126,8 +128,7 @@ export default {
       this.selectWards = this.wards;
     }
   },
-  mounted() {
-  },
+  mounted() {},
   created() {
     this.getById(this.form.id);
   },
@@ -161,15 +162,15 @@ export default {
         address: this.form.address,
         name: this.form.name,
         hotline: this.form.hotline,
-        provinceId: this.province.id,
-        districtId: this.district.id,
-        wardId: this.ward.id
+        provinceId: this.selectedprovince,
+        districtId: this.selecteddistrict,
+        wardId: this.selectedward
       };
       this.update(p);
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.branch.route,model]);
+        let rs = await this.Update([url.branch.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -189,7 +190,7 @@ export default {
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.branch.id,this.form.id]);
+        let rs = await this.DeleteById([url.branch.id, this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -204,36 +205,33 @@ export default {
       }
     },
     syncSelect() {
-      this.GetDistricts({ ProvinceId: this.province.id });
-      this.GetWards({
-        ProvinceId: this.province.id,
-        DistrictId: this.district.id
-      });
+      // this.GetDistricts({ ProvinceId: this.selectedprovince });
+      // this.GetWards({
+      //   ProvinceId: this.province.id,
+      //   DistrictId: this.district.id
+      // });
     },
-    changeProvince(e) {
-      if (e == undefined) {
-        this.province = { id: 0, name: "" };
-      }
-      this.GetDistricts({ ProvinceId: this.province.id });
+    changeProvince() {
+      this.GetDistricts({ ProvinceId: this.selectedprovince});
       this.selectWards = [];
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: 0 });
+      //this.GetWards({ ProvinceId: this.province.id, DistrictId: 0 });
     },
-    changeDistrict(e) {
-      if (e == undefined) {
-        this.district = { id: 0, name: "" };
-      }
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: this.district.id });
+    changeDistrict() {
+      this.GetWards({
+        ProvinceId: this.selectedprovince,
+        DistrictId: this.selecteddistrict
+      });
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.branch.id,id]);
-        if (typeof rs == "object") {          
+        let rs = await this.GetById([url.branch.id, id]);
+        if (typeof rs == "object") {
           this.form.name = rs.name;
           this.form.address = rs.address;
           this.form.hotline = rs.hotline;
-          this.ward.id = rs.wardId;
-          this.province.id = rs.provinceId;
-          this.district.id = rs.districtId;
+          this.selectedward = rs.wardId;
+          this.selectedprovince = rs.provinceId;
+          this.selecteddistrict = rs.districtId;
           this.selectProvinces = this.provinces;
           this.syncSelect();
         } else {
@@ -251,7 +249,7 @@ export default {
     },
     removeData() {
       this.isRemove = true;
-    },
+    }
   }
 };
 </script>

@@ -8,3 +8,15 @@
 .row-command .v-btn{
     margin: 10px 10px 10px 0 !important;
 }
+input::placeholder {
+    color:#777777 !important;
+}
+.v-select{
+    padding-top: 12px;
+    margin-top: 8px;
+}
+.vs__dropdown-toggle{
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid rgb(145, 145, 145) !important;
+}

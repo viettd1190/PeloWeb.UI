@@ -1,90 +1,82 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Người dùng</title-page>    
+    <title-page>Người dùng</title-page>
     <v-container>
       <v-layout row justify-center>
-      <v-flex xs12 sm6 md6 lg6>
-        <v-text-field
-          hide-details
-          label="Tên đăng nhập"
-          v-model="userName"
-          append-icon="person"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>
-      </v-flex>
-      <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
-      <v-flex xs12 sm6 md6 lg6>
-        <v-text-field
-          hide-details
-          label="Tên hiển thị"
-          v-model="displayName"
-          append-icon="face"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>
-      </v-flex>
-    </v-layout>
-    <v-layout row justify-center>
-      <v-flex xs12 sm6 md6 lg6>
-        <v-text-field
-          hide-details
-          label="Tên đầy đủ"
-          v-model="fullName"
-          append-icon="assignment_ind"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>
-      </v-flex>
-      <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
-      <v-flex xs12 sm6 md6 lg6>
-        <v-text-field
-          hide-details
-          label="Điện thoại"
-          v-model="phone"
-          append-icon="phone"
-          v-on:keyup="inputSearch"
-          :clearable="true"
-        ></v-text-field>
-      </v-flex>
-    </v-layout>
-    <v-layout row justify-center>
-      <v-flex xs12 sm6 md6 lg6>
-        <v-select
-          :items="branchs"
-          item-text="name"
-          item-value="id"
-          v-model="branch"
-          label="Chi nhánh"
-          persistent-hint
-          return-object
-          v-on:change="changeBranch"
-          clearable
-        ></v-select>
-      </v-flex>
-      <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
-      <v-flex xs12 sm6 md6 lg6>
-        <v-select
-          :items="roles"
-          item-text="name"
-          item-value="id"
-          v-model="role"
-          label="Quyền"
-          persistent-hint
-          return-object
-          v-on:change="changeRole"
-          clearable
-        ></v-select>
-      </v-flex>
-    </v-layout>
-   <v-layout row class="row-command">
-      <v-btn color="#666EE8" class="white--text" @click="search()">
+        <v-flex xs12 sm6 md6 lg6>
+          <v-text-field
+            hide-details
+            label="Tên đăng nhập"
+            v-model="userName"
+            append-icon="person"
+            v-on:keyup="inputSearch"
+            :clearable="true"
+          ></v-text-field>
+        </v-flex>
+        <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
+        <v-flex xs12 sm6 md6 lg6>
+          <v-text-field
+            hide-details
+            label="Tên hiển thị"
+            v-model="displayName"
+            append-icon="face"
+            v-on:keyup="inputSearch"
+            :clearable="true"
+          ></v-text-field>
+        </v-flex>
+      </v-layout>
+      <v-layout row justify-center>
+        <v-flex xs12 sm6 md6 lg6>
+          <v-text-field
+            hide-details
+            label="Tên đầy đủ"
+            v-model="fullName"
+            append-icon="assignment_ind"
+            v-on:keyup="inputSearch"
+            :clearable="true"
+          ></v-text-field>
+        </v-flex>
+        <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
+        <v-flex xs12 sm6 md6 lg6>
+          <v-text-field
+            hide-details
+            label="Điện thoại"
+            v-model="phone"
+            append-icon="phone"
+            v-on:keyup="inputSearch"
+            :clearable="true"
+          ></v-text-field>
+        </v-flex>
+      </v-layout>
+      <v-layout row justify-center>
+        <v-flex xs12 sm6 md6 lg6>
+          <select2
+            :options="branchs"
+            :reduce="branch => branch.id"
+            placeholder="Chi nhánh"
+            label="name"
+            v-model="selectedbranch"
+          ></select2>
+        </v-flex>
+        <v-flex hidden-xs-only sm1 md1 lg1> </v-flex>
+        <v-flex xs12 sm6 md6 lg6>
+          <select2
+            :options="roles"
+            :reduce="role => role.id"
+            placeholder="Quyền"
+            label="name"
+            v-model="selectedrole"
+          ></select2>
+        </v-flex>
+      </v-layout>
+      <v-layout row class="row-command">
+        <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
         </v-btn>
         <v-btn color="orange" class="white--text" @click="add()">
-        <v-icon>add</v-icon>Thêm mới
-      </v-btn>
-    </v-layout>
+          <v-icon>add</v-icon>Thêm mới
+        </v-btn>
+      </v-layout>
       <v-data-table
         item-key="id"
         :headers="table.headers"
@@ -210,7 +202,9 @@ export default {
       datasourceFiltered: [],
       isLoading: -1,
       branch: { id: 0, name: "" },
-      role: { id: 0, name: "" }
+      role: { id: 0, name: "" },
+      selectedbranch: null,
+      selectedrole: null
     };
   },
   computed: {
@@ -253,8 +247,8 @@ export default {
               DisplayName: this.displayName,
               FullName: this.fullName,
               PhoneNumber: this.phone,
-              BranchId: this.branch.id,
-              RoleId: this.role.id
+              BranchId: this.selectedbranch,
+              RoleId: this.selectedrole
             }
           ]);
           if (rs != null && rs.data) {
@@ -291,16 +285,6 @@ export default {
     errorImgUrl(event) {
       event.target.src = "/static/avatar/no-avatar.png";
     },
-    changeBranch(e) {
-      if (e == undefined) {
-        this.branch = { id: 0, name: "" };
-      }
-    },
-    changeRole(e) {
-      if (e == undefined) {
-        this.role = { id: 0, name: "" };
-      }
-    }
   }
 };
 </script>

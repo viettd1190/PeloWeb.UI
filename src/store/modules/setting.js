@@ -11,19 +11,19 @@ const setting = {
   },
   mutations: {
     STATE_UPDATE_PROVINCES: (state, data) => {
-      state.provinces = data;
+      state.provinces = data;//.map(x => {return {id:x.id, text: x.name}});
     },
     STATE_UPDATE_DISTRICTS: (state, data) => {
-      state.districts = data;
+      state.districts = data;//.map(x => {return {id:x.id, text: x.name}});
     },
     STATE_UPDATE_WARDS: (state, data) => {
-      state.wards = data;
+      state.wards = data;//.map(x => {return {id:x.id, text: x.name}});
     },
     STATE_UPDATE_BRANCHS: (state, data) => {
-      state.branchs = data;
+      state.branchs = data;//.map(x => {return {id:x.id, text: x.name}});
     },
     STATE_UPDATE_ROLES: (state, data) => {
-      state.roles = data;
+      state.roles = data;//.map(x => {return {id:x.id, text: x.name}});
     },
   },
   actions: {    

@@ -5,9 +5,11 @@ import router from './router';
 import store from './store';
 
 import 'font-awesome/css/font-awesome.css';
+import 'vue-select/dist/vue-select.css';
 import './theme/default.styl';
 import VeeValidate from 'vee-validate';
 import Truncate from 'lodash.truncate';
+import vSelect from 'vue-select'
 Vue.config.productionTip = false;
 
 Vue.filter('truncate', Truncate);
@@ -26,7 +28,7 @@ Vue.use(Vuetify, {
     }
   }
 });
-
+Vue.component('select2', vSelect)
 // eslint-disable-next-line
 new Vue({
   el: '#app',
