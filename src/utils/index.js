@@ -128,7 +128,11 @@ export let url = {
     all:"country/all",
     id:"country/"
   },
-
+  crm_status:{
+    route:"crm_status",
+    all:"crm_status/all",
+    id:"crm_status/"
+}
 };
 export let pagination = {
   keySearch: '',
