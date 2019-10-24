@@ -7,6 +7,7 @@ import store from './store';
 import 'font-awesome/css/font-awesome.css';
 import 'vue-select/dist/vue-select.css';
 import './theme/default.styl';
+import '@/assets/styles/style.css'
 import VeeValidate from 'vee-validate';
 import Truncate from 'lodash.truncate';
 import vSelect from 'vue-select'
