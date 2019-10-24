@@ -45,10 +45,6 @@ const Menu = [
       title: 'Nguồn khách hàng',
       group: 'CRM',
       name: 'CustomerSource/Index',
-    },{
-      title: 'Nhóm khách hàng',
-      group: 'CRM',
-      name: 'CustomerGroup',
     }]
   },
   {
@@ -99,10 +95,17 @@ const Menu = [
     }]
   },{
     title: 'Khách hàng',
-    group: 'customer',
+    group: 'Customer',
     icon: 'how_to_reg',
-    name: 'Customer',
-    url: '/Customer',
+    items:[{
+      title: 'Khách hàng',
+      group: 'Customer',
+      name: 'Customer'
+    },{
+      title: 'Nhóm khách hàng',
+      group: 'Customer',
+      name: 'CustomerGroup',
+    }]
   },{
     title:'Công việc',
     icon:'insert_invitation',
@@ -209,14 +212,6 @@ const Menu = [
       group: 'Setting',
       name: 'Branch/Index',
     },{
-      title: 'Menu điều hướng',
-      group: 'Setting',
-      name: 'MainNavigation/Index',
-    },{
-      title: 'Nhóm menu điều hướng',
-      group: 'Setting',
-      name: 'MainNavigationGroup/Index',
-    },{
       title: 'Danh sách người dùng',
       group: 'Setting',
       name: 'SystemUser/Index',
@@ -224,10 +219,6 @@ const Menu = [
       title: 'Quyền hệ thống',
       group: 'Setting',
       name: 'SystemRole/Index',
-    },{
-      title: 'Biểu tượng',
-      group: 'Setting',
-      name: 'Admin/Icons',
     },{
       title: 'Nhật ký người dùng',
       group: 'Setting',
