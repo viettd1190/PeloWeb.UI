@@ -2,63 +2,61 @@
   <div style="min-height:400px">
     <title-page>Chi nhánh</title-page>
     <v-container>
-      <v-layout row justify-center>
-        <v-flex md6 lg6>
-          <v-text-field
-            hide-details
-            label="Tên chi nhánh"
-            v-model="name"
-            class="ma-2"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
+      <v-layout row wrap>
+        <v-flex xs12 sm12 md6 lg6>
+          <v-layout row wrap>
+            <v-text-field
+              hide-details
+              label="Tên chi nhánh"
+              v-model="name"
+              v-on:keyup="inputSearch"
+              :clearable="true"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row wrap>
+            <v-text-field
+              hide-details
+              label="Hotline"
+              v-model="hotline"
+              v-on:keyup="inputSearch"
+              :clearable="true"
+            ></v-text-field>
+          </v-layout>
         </v-flex>
         <v-flex xs1 sm1 md1 lg1></v-flex>
-        <v-flex md6 lg6>
-          <select2
-            :options="provinces"
-            :reduce="province => province.id"
-            placeholder="Tỉnh thành"
-            label="name"
-            v-model="selectedProvince"
-          ></select2>
-        </v-flex>
-      </v-layout>
-      <v-layout row justify-center>
-        <v-flex md6 lg6>
-          <v-text-field
-            hide-details
-            label="Hotline"
-            v-model="hotline"
-            class="ma-2"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs1 sm1 md1 lg1></v-flex>
-        <v-flex md6 lg6>
-          <select2
-            :options="selectDistricts"
-            :reduce="district => district.id"
-            placeholder="Quận huyện"
-            label="name"
-            v-model="selectedDistrict"
-            :loading="selectDistricts.length == 0 && selectedProvince != null"
-          ></select2>
-        </v-flex>
-      </v-layout>
-      <v-layout row justify-center>
-        <v-flex md6 lg6> </v-flex>
-        <v-flex xs1 sm1 md1 lg1></v-flex>
-        <v-flex md6 lg6>
-          <select2
-            :options="selectWards"
-            :reduce="ward => ward.id"
-            placeholder="Xã phường"
-            label="name"
-            v-model="selectedWard"
-            :loading="selectWards.length == 0 && selectedDistrict != null"
-          ></select2>
+        <v-flex xs12 sm12 md5 lg5>
+          <v-layout row wrap>
+            <select2
+              :options="provinces"
+              :reduce="province => province.id"
+              placeholder="Tỉnh thành"
+              label="name"
+              v-model="selectedProvince"
+              class="command-control"
+            ></select2>
+          </v-layout>
+          <v-layout row wrap>
+            <select2
+              :options="selectDistricts"
+              :reduce="district => district.id"
+              placeholder="Quận huyện"
+              label="name"
+              v-model="selectedDistrict"
+              :loading="selectDistricts.length == 0 && selectedProvince != null"
+              class="command-control"
+            ></select2>
+          </v-layout>
+          <v-layout row wrap>
+            <select2
+              :options="selectWards"
+              :reduce="ward => ward.id"
+              placeholder="Xã phường"
+              label="name"
+              v-model="selectedWard"
+              :loading="selectWards.length == 0 && selectedDistrict != null"
+              class="command-control"
+            ></select2>
+          </v-layout>
         </v-flex>
       </v-layout>
       <v-layout row class="row-command">

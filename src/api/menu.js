@@ -41,10 +41,6 @@ const Menu = [
       title: 'Mức độ khẩn cấp',
       group: 'CRM',
       name: 'CRMPriority/Index',
-    },{
-      title: 'Nguồn khách hàng',
-      group: 'CRM',
-      name: 'CustomerSource/Index',
     }]
   },
   {
@@ -100,11 +96,15 @@ const Menu = [
     items:[{
       title: 'Khách hàng',
       group: 'Customer',
-      name: 'Customer'
+      name: 'Index'
     },{
       title: 'Nhóm khách hàng',
       group: 'Customer',
       name: 'CustomerGroup',
+    },{
+      title: 'Nguồn khách hàng',
+      group: 'Customer',
+      name: 'CustomerSource',
     }]
   },{
     title:'Công việc',
@@ -223,7 +223,8 @@ const Menu = [
       title: 'Nhật ký người dùng',
       group: 'Setting',
       name: 'UserActivityLog/Index',
-    },{
+    },
+    {
       title: 'Tỉnh Thành',
       group: 'Setting',
       name: 'Province',
@@ -235,7 +236,11 @@ const Menu = [
       title: 'Xã phường',
       group: 'Setting',
       name: 'Ward',
-    }]
+    },{
+      title: 'Quốc gia',
+      group: 'Setting',
+      name: 'Country',
+    },]
   },
 ];
 

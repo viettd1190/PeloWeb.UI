@@ -1,18 +1,18 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Cập nhật quyền</title-page>
+      <title-page>Cập nhật quốc gia</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md8 lg8>
               <v-text-field
-                hide-details
-                label="Tên quyền"
+                type="text"
+                label="Tên"
+                name="input-10-1"
                 v-model="form.name"
-                class="ma-2"
-                append-icon="search"
                 v-on:keyup="validateForm"
+                counter
                 :rule="rules"
               ></v-text-field>
             </v-flex>
@@ -40,7 +40,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult,url } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
 export default {
@@ -50,7 +50,9 @@ export default {
     return {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
-        name: ""
+        name: "",
+        type: "",
+        sortOder: 0
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
@@ -63,8 +65,7 @@ export default {
     ...mapGetters([])
   },
   watch: {},
-  mounted() {
-  },
+  mounted() {},
   created() {
     this.getById(this.form.id);
   },
@@ -89,13 +90,15 @@ export default {
       }
       let p = {
         id: this.form.id,
-        name: this.form.name
+        name: this.form.name,
+        type: this.form.type,
+        sortOrder: this.form.sortOrder
       };
       this.update(p);
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.customer_group.route,model]);
+        let rs = await this.Update([url.country.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -103,21 +106,21 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Crm/CustomerGroup";
+          window.location.href = "#/Setting/Country";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Crm/CustomerGroup";
+      window.location.href = "#/Setting/Country";
     },
     removeData() {
       this.isRemove = true;
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.customer_group.id,this.form.id]);
+        let rs = await this.DeleteById([url.country.id, this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -125,7 +128,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Crm/CustomerGroup";
+          window.location.href = "#/Setting/Country";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -133,10 +136,12 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.customer_group.id,id]);
-        if (rs !== "") {
+        let rs = await this.GetById([url.country.id, id]);
+        if (typeof rs == "object") {
           this.form.id = rs.id;
           this.form.name = rs.name;
+          this.form.type = rs.type;
+          this.form.sortOrder = rs.sortOrder;
         } else {
           window.location.href = "#/404";
         }

@@ -2,21 +2,34 @@
   <div>
     <v-toolbar color="primary" fixed dark app class="full-nav">
       <v-toolbar-title class="ml-0">
-                <v-toolbar-side-icon @click.stop="handleDrawerToggle"></v-toolbar-side-icon>
+        <v-toolbar-side-icon
+          @click.stop="handleDrawerToggle"
+        ></v-toolbar-side-icon>
       </v-toolbar-title>
       <v-toolbar-title class="ml-0">
-        <v-avatar size="32"><img src="/static/logo.png" /></v-avatar>
-        <span>{{pageTitle}}</span>
+        <v-avatar size="32"><img :src="image"/></v-avatar>
+        <span>{{ pageTitle }}</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn v-for="(item,index) in navItems" :key="index" flat :to="item.url">{{item.title}}</v-btn>
+        <v-btn
+          v-for="(item, index) in navItems"
+          :key="index"
+          flat
+          :to="item.url"
+          >{{ item.title }}</v-btn
+        >
       </v-toolbar-items>
-      <v-menu offset-y origin="center center" :nudge-bottom="16" :nudge-right="12">
+      <v-menu
+        offset-y
+        origin="center center"
+        :nudge-bottom="16"
+        :nudge-right="12"
+      >
         <v-toolbar-title class="ml-0 logged-user" slot="activator">
           <span>
             <small v-if="loggedUser">
-              {{loggedUser.u}}
+              {{ loggedUser.u }}
               <v-icon>expand_more</v-icon>
             </small>
           </span>
@@ -30,7 +43,11 @@
               <v-list-tile-title>Đổi mật khấu</v-list-tile-title>
             </v-list-tile-content>
           </v-list-tile>
-          <v-list-tile @click="changeInformation()" ripple="ripple" rel="noopener">
+          <v-list-tile
+            @click="changeInformation()"
+            ripple="ripple"
+            rel="noopener"
+          >
             <v-list-tile-action>
               <v-icon>build</v-icon>
             </v-list-tile-action>
@@ -57,10 +74,12 @@ import Util from "@/utils";
 import { mapActions, mapMutations, mapGetters } from "vuex";
 import menu from "@/api/menu";
 import validate from "@/utils/validate";
+import image from "@/assets/logo.png";
 
 export default {
   name: "app-toolbar",
   data: () => ({
+    image: image,
     pageTitle: "Vidia Admin",
     menuItems: [
       {
@@ -102,7 +121,9 @@ export default {
     }
   },
   mounted() {
-    this.menuItems[0].title = this.loggedUser ? this.loggedUser.u : this.loggedUser.d;
+    this.menuItems[0].title = this.loggedUser
+      ? this.loggedUser.u
+      : this.loggedUser.d;
   },
   methods: {
     ...mapActions(["GetProfile"]),

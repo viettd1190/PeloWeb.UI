@@ -101,10 +101,11 @@ export default {
     this.getBranchs();
     this.getProvinceAll();
     this.getRoleAll();
+    this.getCountryAll();
   },
   methods: {
     ...mapMutations([]),
-    ...mapActions(["GetUserAll","GetAll","GetProvinceAll","GetBranchAll","GetRoleAll"]),
+    ...mapActions(["GetUserAll","GetAll","GetProvinceAll","GetBranchAll","GetRoleAll","GetCountryAll"]),
     openThemeSettings() {
       this.$vuetify.goTo(0);
       this.rightDrawer = !this.rightDrawer;
@@ -152,6 +153,9 @@ export default {
     },
     async getRoleAll() {
       this.GetRoleAll();
+    },
+    async getCountryAll(){
+      await this.GetCountryAll();
     }
   }
 };

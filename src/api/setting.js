@@ -31,3 +31,9 @@ export function getWardsByDistrict (params) {
     params
   });
 }
+export function getCountries () {
+  return request({
+    url: 'country/all',
+    method: 'get',
+  });
+}

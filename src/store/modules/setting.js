@@ -1,5 +1,6 @@
 import axios from 'axios';
 import API from '@/api/index';
+import * as Auth from '@/utils/auth';
 
 const setting = {
   state: {
@@ -8,6 +9,7 @@ const setting = {
     districts: [],
     wards: [],
     branchs: [],
+    countries: Auth.getCountry()
   },
   mutations: {
     STATE_UPDATE_PROVINCES: (state, data) => {
@@ -121,6 +123,27 @@ const setting = {
             reject(error);
           });
       });
+    },
+    //country
+    async GetCountryAll ({ state, commit }, params) {
+      if(state.countries==null){
+        return await new Promise((resolve, reject) => {
+          API.setting
+            .getRolehAll()
+            .then(response => {
+              let result = response.data;
+              if (result.isSuccess) {
+                commit('STATE_UPDATE_ROLES', result.data);
+                resolve(result.data);
+              } else {
+                reject(result.Message);
+              }
+            })
+            .catch(error => {
+              reject(error);
+            });
+        });
+      }      
     },
   }
 };

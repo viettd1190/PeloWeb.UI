@@ -1,5 +1,7 @@
 const AccessTokenKey = 'Access-Token';
 const LoggedUserKey = 'LoggedUserInfo';
+const CountryKey ='Country';
+const Province ='Province';
 import Cookies from 'js-cookie';
 
 export function getAccessToken () {
@@ -34,4 +36,25 @@ export function removeToken () {
   localStorage.removeItem(LoggedUserKey);
   Cookies.remove(LoggedUserKey);
   return Cookies.remove(AccessTokenKey);
+}
+
+export function saveCountry(countries){
+  let json = JSON.stringify(countries);
+  localStorage.setItem(CountryKey, json);
+  return Cookies.set(CountryKey, json);
+}
+export function saveProvince(provinces){
+  let json = JSON.stringify(provinces);
+  localStorage.setItem(Province, json);
+  return Cookies.set(Province, json);
+}
+export function getCountry () {
+  let countrystorage = localStorage.getItem(CountryKey);
+  let countrycookie = Cookies.get(CountryKey);
+
+  return countrystorage
+    ? JSON.parse(countrystorage)
+    : countrycookie
+      ? JSON.parse(countrycookie)
+      : null;
 }

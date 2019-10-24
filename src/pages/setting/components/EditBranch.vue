@@ -205,11 +205,11 @@ export default {
       }
     },
     syncSelect() {
-      // this.GetDistricts({ ProvinceId: this.selectedprovince });
-      // this.GetWards({
-      //   ProvinceId: this.province.id,
-      //   DistrictId: this.district.id
-      // });
+      this.GetDistricts({ ProvinceId: this.selectedprovince });
+      this.GetWards({
+        ProvinceId: this.selectedprovince,
+        DistrictId: this.selecteddistrict
+      });
     },
     changeProvince() {
       this.GetDistricts({ ProvinceId: this.selectedprovince});

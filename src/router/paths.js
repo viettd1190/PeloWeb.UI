@@ -129,39 +129,7 @@ export default [
     },
     name: 'CRM/CRMPriority/Index',
     component: () => import(`@/pages/crm/CRMPriority.vue`)
-  },
-  ,{
-    path: '/CRM/CustomerSource',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'CRM/CustomerSource/Index',
-    component: () => import(`@/pages/crm/CustomerSource.vue`)
-  },
-  ,{
-    path: '/CRM/CustomerGroup',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'CRM/CustomerGroup',
-    component: () => import(`@/pages/crm/CustomerGroup.vue`)
-  },
-  ,{
-    path: '/CRM/CustomerGroup/Add',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'CRM/CustomerGroup',
-    component: () => import(`@/pages/crm/components/AddCustomerGroup.vue`)
-  },
-  ,{
-    path: '/CRM/CustomerGroup/Edit/:id',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'CRM/CustomerGroup',
-    component: () => import(`@/pages/crm/components/EditCustomerGroup.vue`)
-  },
+  },  
   //end Crm
 
   //product
@@ -386,13 +354,6 @@ export default [
     name: 'Setting/SystemRole',
     component: () => import(`@/pages/setting/components/EditRole.vue`)
   },{
-    path: '/Setting/Admin/Icons',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/Admin/Icons',
-    component: () => import(`@/pages/setting/Icons.vue`)
-  },{
     path: '/Setting/UserActivityLog',
     meta: {
       breadcrumb: true
@@ -464,6 +425,28 @@ export default [
     },
     name: 'Setting/Ward',
     component: () => import(`@/pages/setting/components/EditWard.vue`)
+  },{
+    path: '/Setting/Country',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Country',
+    component: () => import(`@/pages/setting/Country.vue`)
+  },
+  {
+    path: '/Setting/Country/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Country',
+    component: () => import(`@/pages/setting/components/AddCountry.vue`)
+  },{
+    path: '/Setting/Country/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Setting/Country',
+    component: () => import(`@/pages/setting/components/EditCountry.vue`)
   },
   //end Setting
   //Recruitment
@@ -646,7 +629,7 @@ export default [
   {
     path: '/Customer',
     meta: { breadcrumb: true },
-    name: 'Customer',
+    name: 'Customer/Index',
     component: () => import(`@/pages/customer/index.vue`)
   },
   {
@@ -660,6 +643,54 @@ export default [
     meta: { breadcrumb: true },
     name: 'Customer',
     component: () => import(`@/pages/customer/components/EditCustomer.vue`)
+  },
+  ,{
+    path: '/Customer/CustomerSource',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Customer/CustomerSource',
+    component: () => import(`@/pages/customer/CustomerSource.vue`)
+  },
+  ,{
+    path: '/Customer/CustomerSource/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Customer/CustomerSource',
+    component: () => import(`@/pages/customer/components/AddCustomerSource.vue`)
+  },
+  ,{
+    path: '/Customer/CustomerSource/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Customer/CustomerSource',
+    component: () => import(`@/pages/customer/components/EditCustomerSource.vue`)
+  },
+  ,{
+    path: '/Customer/CustomerGroup',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Customer/CustomerGroup',
+    component: () => import(`@/pages/customer/CustomerGroup.vue`)
+  },
+  ,{
+    path: '/Customer/CustomerGroup/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Customer/CustomerGroup',
+    component: () => import(`@/pages/customer/components/AddCustomerGroup.vue`)
+  },
+  ,{
+    path: '/Customer/CustomerGroup/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Customer/CustomerGroup',
+    component: () => import(`@/pages/customer/components/EditCustomerGroup.vue`)
   },
   //end Customer
 ];

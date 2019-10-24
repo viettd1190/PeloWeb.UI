@@ -2,102 +2,80 @@
   <div style="min-height:400px">
     <title-page>Danh sách khách hàng</title-page>
     <v-container>
-      <v-layout row justify-center>
-        <v-flex md6 lg6>
-          <v-text-field
-            hide-details
-            label="Tên"
-            v-model="name"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
+      <v-layout row wrap>
+        <v-flex xs12 sm12 md6 lg6>
+          <v-layout row wrap>
+            <v-text-field
+              hide-details
+              label="Tên"
+              v-model="name"
+              v-on:keyup="inputSearch"
+              :clearable="true"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row wrap>
+            <v-text-field
+              hide-details
+              label="Điện thoại"
+              v-model="phone"
+              v-on:keyup="inputSearch"
+              :clearable="true"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row wrap>
+            <v-text-field
+              hide-details
+              label="Địa chỉ"
+              v-model="address"
+              v-on:keyup="inputSearch"
+              :clearable="true"
+            ></v-text-field>
+          </v-layout>
         </v-flex>
-        <v-flex xs1 sm1 md1 lg1></v-flex>
-        <v-flex md6 lg6>
-          <v-select
-            :items="provinces"
-            item-text="name"
-            item-value="id"
-            v-model="province"
-            label="Tỉnh thành"
-            persistent-hint
-            return-object
-            :clearable="true"
-            v-on:change="changeProvince"
-          ></v-select>
-        </v-flex>
-      </v-layout>
-      <v-layout row justify-center>
-        <v-flex md6 lg6>
-          <v-text-field
-            hide-details
-            label="Điện thoại"
-            v-model="phone"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs1 sm1 md1 lg1></v-flex>
-        <v-flex md6 lg6>
-          <v-select
-            :items="selectDistricts"
-            item-text="name"
-            item-value="id"
-            v-model="district"
-            label="Quận Huyện"
-            persistent-hint
-            return-object
-            :clearable="true"
-            v-on:change="changeDistrict"
-          ></v-select>
-        </v-flex>
-      </v-layout>
-      <v-layout row justify-center>
-        <v-flex md6 lg6>
-          <v-text-field
-            hide-details
-            label="Địa chỉ"
-            v-model="address"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs1 sm1 md1 lg1></v-flex>
-        <v-flex md6 lg6>
-          <v-select
-            :items="selectWards"
-            item-text="name"
-            item-value="id"
-            v-model="ward"
-            label="Xã phường"
-            persistent-hint
-            return-object
-            :clearable="true"
-          ></v-select>
+        <v-flex xs12 sm12 md1 lg1> </v-flex>        
+        <v-flex xs12 sm12 md5 lg5>
+          <v-layout row wrap>
+            <select2
+              :options="provinces"
+              :reduce="province => province.id"
+              placeholder="Tỉnh thành"
+              label="name"
+              v-model="selectedProvince"
+              class="command-control"
+            ></select2>
+          </v-layout>
+          <v-layout row wrap>
+            <select2
+              :options="selectDistricts"
+              :reduce="district => district.id"
+              placeholder="Quận huyện"
+              label="name"
+              v-model="selectedDistrict"
+              :loading="selectDistricts.length == 0 && selectedProvince != null"
+              class="command-control"
+            ></select2>
+          </v-layout>
+          <v-layout row wrap>
+            <select2
+              :options="selectWards"
+              :reduce="ward => ward.id"
+              placeholder="Xã phường"
+              label="name"
+              v-model="selectedWard"
+              :loading="selectWards.length == 0 && selectedDistrict != null"
+              class="command-control"
+            ></select2>
+          </v-layout>
         </v-flex>
       </v-layout>
-      <!-- <v-layout row justify-center>
-        <v-flex md6 lg6>
-          <v-text-field
-            hide-details
-            label="Ghi chú"
-            v-model="description"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs1 sm1 md1 lg1></v-flex>
-        <v-flex md6 lg6>
-        </v-flex>
-      </v-layout> -->
       <v-layout row class="row-command">
-      <v-btn color="#666EE8" class="white--text" @click="search()">
+        <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
         </v-btn>
         <v-btn color="orange" class="white--text" @click="add()">
-        <v-icon>add</v-icon>Thêm mới
-      </v-btn>
-    </v-layout>
+          <v-icon>add</v-icon>Thêm mới
+        </v-btn>
+      </v-layout>
       <v-data-table
         item-key="id"
         dense
@@ -204,11 +182,16 @@ export default {
       selectWards: [],
       province: { id: 0, name: "", type: "" },
       district: { id: 0, name: "", type: "" },
-      ward: { id: 0, name: "", type: "" }
+      ward: { id: 0, name: "", type: "" },
+      selectedProvince: null,
+      selectedDistrict: null,
+      selectedWard: null
     };
   },
-  computed: {...mapGetters(["provinces", "districts", "wards"])},
-  created() {this.syncSelect();},
+  computed: { ...mapGetters(["provinces", "districts", "wards"]) },
+  created() {
+    this.syncSelect();
+  },
   mounted() {},
   watch: {
     pagination: {
@@ -222,10 +205,16 @@ export default {
     },
     wards() {
       this.selectWards = this.wards;
+    },
+    selectedProvince() {
+      this.changeProvince();
+    },
+    selectedDistrict() {
+      this.changeDistrict();
     }
   },
   methods: {
-    ...mapActions(["GetList","GetDistricts","GetWards"]),
+    ...mapActions(["GetList", "GetDistricts", "GetWards"]),
     async getList() {
       try {
         const {
@@ -250,9 +239,9 @@ export default {
               Name: this.name,
               Phone: this.phone,
               Email: this.email,
-              ProvinceId: this.province.id,
-              DistrictId: this.district.id,
-              WardId: this.ward.id,
+              ProvinceId: this.selectedProvince,
+              DistrictId: this.selectedDistrict,
+              WardId: this.selectedWard,
               Address: this.address,
               Description: this.description
             }
@@ -289,27 +278,17 @@ export default {
       }
     },
     async syncSelect() {
-      this.GetDistricts({ ProvinceId: this.province.id });
-      this.GetWards({
-        ProvinceId: this.province.id,
-        DistrictId: this.district.id
-      });
+      //this.GetDistricts({ ProvinceId: this.selectedProvince });
     },
-    changeProvince(e) {
-      if (e == undefined) {
-        this.province = { id: 0, name: "" };
-      }
-      this.GetDistricts({ ProvinceId: this.province.id });
+    changeProvince() {
+      this.GetDistricts({ ProvinceId: this.selectedProvince });
       this.selectWards = [];
-      this.GetWards({ ProvinceId: this.province.id, DistrictId: 0 });
+      //this.GetWards({ ProvinceId: this.selectedProvince, DistrictId: 0 });
     },
-    changeDistrict(e) {
-      if (e == undefined) {
-        this.district = { id: 0, name: "" };
-      }
+    changeDistrict() {
       this.GetWards({
-        ProvinceId: this.province != undefined ? this.province.id : 0,
-        DistrictId: e.id
+        ProvinceId: this.selectedProvince != null ? this.selectedProvince : 0,
+        DistrictId: this.selectedDistrict
       });
     }
   }

@@ -103,6 +103,11 @@ export let url = {
     all:"customer_group/all",
     id:"customer_group/"
   },
+  customer_source:{
+    route:"customer_source",
+    all:"customer_source/all",
+    id:"customer_source/"
+  },
   customer:{
     route:"customer",
     all:"customer/all",
@@ -117,7 +122,13 @@ export let url = {
     route:"product_status",
     all:"product_status/all",
     id:"product_status/"
-  }
+  },
+  country:{
+    route:"country",
+    all:"country/all",
+    id:"country/"
+  },
+
 };
 export let pagination = {
   keySearch: '',
