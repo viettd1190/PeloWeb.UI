@@ -6,62 +6,62 @@
         <v-flex xs12 sm12 md6 lg6>
           <v-layout row wrap>
             <v-text-field
-            hide-details
-            label="Tên đăng nhập"
-            v-model="userName"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
+              hide-details
+              label="Tên đăng nhập"
+              v-model="userName"
+              v-on:keyup="inputSearch"
+              :clearable="true"
+            ></v-text-field>
           </v-layout>
           <v-layout row wrap>
             <v-text-field
-            hide-details
-            label="Tên hiển thị"
-            v-model="displayName"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
+              hide-details
+              label="Tên hiển thị"
+              v-model="displayName"
+              v-on:keyup="inputSearch"
+              :clearable="true"
+            ></v-text-field>
           </v-layout>
           <v-layout row wrap>
-          <select2
-            :options="branchs"
-            :reduce="branch => branch.id"
-            placeholder="Chi nhánh"
-            label="name"
-            v-model="selectedbranch"
-            class="command-control"
-          ></select2>
+            <select2
+              :options="branchs"
+              :reduce="branch => branch.id"
+              placeholder="Chi nhánh"
+              label="name"
+              v-model="selectedbranch"
+              class="command-control"
+            ></select2>
           </v-layout>
         </v-flex>
         <v-flex xs1 sm1 md1 lg1></v-flex>
         <v-flex xs12 sm12 md5 lg5>
           <v-layout row wrap>
             <v-text-field
-            hide-details
-            label="Tên đầy đủ"
-            v-model="fullName"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
+              hide-details
+              label="Tên đầy đủ"
+              v-model="fullName"
+              v-on:keyup="inputSearch"
+              :clearable="true"
+            ></v-text-field>
           </v-layout>
           <v-layout row wrap>
             <v-text-field
-            hide-details
-            label="Điện thoại"
-            v-model="phone"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
+              hide-details
+              label="Điện thoại"
+              v-model="phone"
+              v-on:keyup="inputSearch"
+              :clearable="true"
+            ></v-text-field>
           </v-layout>
           <v-layout row wrap>
             <select2
-            :options="roles"
-            :reduce="role => role.id"
-            placeholder="Quyền"
-            label="name"
-            v-model="selectedrole"
-            class="command-control"
-          ></select2>
+              :options="roles"
+              :reduce="role => role.id"
+              placeholder="Quyền"
+              label="name"
+              v-model="selectedrole"
+              class="command-control"
+            ></select2>
           </v-layout>
         </v-flex>
       </v-layout>
@@ -89,36 +89,23 @@
           <tr class="table-row">
             <td nowrap>
               <v-avatar size="48">
-                <img
-                  v-if="props.item.avatar != null"
-                  :src="props.item.avatar"
-                  @error="errorImgUrl"
-                />
+                <img v-if="props.item.avatar != null" :src="props.item.avatar" @error="errorImgUrl" />
                 <img v-else src="/static/avatar/no-avatar.jpg" />
               </v-avatar>
             </td>
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.username }}</a>
             </td>
-            <td nowrap>
-              {{ props.item.full_name }}
-            </td>
-            <td nowrap>
-              {{ props.item.display_name }}
-            </td>
+            <td nowrap>{{ props.item.full_name }}</td>
+            <td nowrap>{{ props.item.display_name }}</td>
             <td nowrap style="cursor:pointer">
               <a
                 style="text-decoration: none;"
                 :href="`tel:${props.item.phone_number}`"
-                >{{ props.item.phone_number }}</a
-              >
+              >{{ props.item.phone_number }}</a>
             </td>
-            <td nowrap>
-              {{ props.item.branch }}
-            </td>
-            <td nowrap>
-              {{ props.item.role }}
-            </td>
+            <td nowrap>{{ props.item.branch }}</td>
+            <td nowrap>{{ props.item.role }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -132,6 +119,7 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
 import TitlePage from "@/components/TitlePage";
+import image from "@/assets/no-avatar.jpg";
 export default {
   components: {
     TitlePage
@@ -200,7 +188,8 @@ export default {
       branch: { id: 0, name: "" },
       role: { id: 0, name: "" },
       selectedbranch: null,
-      selectedrole: null
+      selectedrole: null,
+      imageerror: image
     };
   },
   computed: {
@@ -279,8 +268,8 @@ export default {
       }
     },
     errorImgUrl(event) {
-      event.target.src = "/static/avatar/no-avatar.png";
-    },
+      event.target.src = this.imageerror;
+    }
   }
 };
 </script>
