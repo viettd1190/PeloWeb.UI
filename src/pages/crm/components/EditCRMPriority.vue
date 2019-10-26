@@ -1,34 +1,35 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Cập nhật tham số cấu hình</title-page>
+      <title-page>Cập nhật trạng thái khẩn cấp</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
-            <v-text-field
-                v-model="form.name"
-                :rules="[rules.required]"
-                type="text"
-                name="input-10-1"
+            <v-flex xs12 sm12 md8 lg8>
+              <v-text-field
+                hide-details
                 label="Tên"
+                v-model="form.name"
+                class="ma-2"
+                append-icon="search"
+                v-on:keyup="validateForm"
+                :rule="rules"
               ></v-text-field>
+            </v-flex>
           </v-layout>
           <v-layout row justify-center>
-            <v-text-field
-                v-model="form.value"
-                :rules="[rules.required]"
-                type="text"
-                name="input-10-1"
-                label="Giá trị"
-              ></v-text-field>
+            <v-card-title primary-title>Màu sắc</v-card-title>
           </v-layout>
           <v-layout row justify-center>
-            <v-textarea
-                v-model="form.description"
-                type="text"
-                name="input-10-1"
-                label="Ghi chú"
-              ></v-textarea>
+            <color-picker
+            v-if="form.color!=''"
+              :color="form.color"
+              :sucker-hide="false"
+              :sucker-canvas="suckerCanvas"
+              :sucker-area="suckerArea"
+              @changeColor="changeColor"
+              @openSucker="openSucker"
+            />
           </v-layout>
           <v-layout row justify-center>
             <v-card-actions>
@@ -46,43 +47,43 @@
         </v-container>
       </v-form>
     </v-card>
+    <dialog-confirm v-if="isRemove" @comfirm="confirmDelete"></dialog-confirm>
   </div>
 </template>
 <script>
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult, url} from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
+import DialogConfirm from "@/components/DialogConfirm";
+import ColorPicker from "@caohenghu/vue-colorpicker";
+
 export default {
-  components: { TitlePage },
+  components: { TitlePage, DialogConfirm, ColorPicker },
   props: {},
   data() {
     return {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
         name: "",
-        value: "",
-        description: ""
+        color: ""
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
       },
-      valid: true
+      valid: true,
+      isRemove: false,
+      suckerCanvas: null,
+      suckerArea: [],
+      isSucking: false
     };
   },
   computed: {
     ...mapGetters([])
   },
   watch: {},
-  mounted() {
-    if (this.editAppConfig == null) {
-      return;
-    }
-    this.form.name = this.editAppConfig.name;
-    this.form.value = this.editAppConfig.value;
-    this.form.description = this.editAppConfig.description;
-  },
+  mounted() {},
   created() {
     this.getById(this.form.id);
   },
@@ -102,20 +103,19 @@ export default {
       if (this.id == 0) {
         this.close();
       }
-      if (this.value == "" || this.value == "") {
+      if (this.form.name == "") {
         return;
       }
       let p = {
         id: this.form.id,
-        value: this.form.value,
         name: this.form.name,
-        description: this.form.description
+        color: this.form.color
       };
-      this.updateAppCfg(p);
+      this.update(p);
     },
-    async updateAppCfg(model) {
+    async update(model) {
       try {
-        let rs = await this.Update([url.config.route,model]);
+        let rs = await this.Update([url.crm_priority.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -123,21 +123,21 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/AppConfig";
+          window.location.href = "#/CRM/CRMPriority";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Setting/AppConfig";
+      window.location.href = "#/CRM/CRMPriority";
     },
     removeData() {
-      this.remove();
+      this.isRemove = true;
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.config.id,this.form.id]);
+        let rs = await this.DeleteById([url.crm_priority.id, this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -145,24 +145,58 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/AppConfig";
+          window.location.href = "#/CRM/CRMPriority";
         }
       } catch (error) {
-        window.getApp.showMessage(rs, messageResult.Error);
+        window.getApp.showMessage(error, messageResult.Error);
       }
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.config.id,this.form.id]);
+        let rs = await this.GetById([url.crm_priority.id, id]);
         if (typeof rs == "object") {
+          this.form.id = rs.id;
           this.form.name = rs.name;
-          this.form.value = rs.value;
-          this.form.description = rs.description;
+          this.form.color = rs.color;
         } else {
           window.location.href = "#/404";
         }
       } catch (error) {
         window.location.href = "#/404";
+      }
+    },
+    confirmDelete(flag) {
+      if (flag) {
+        this.remove();
+      }
+      this.isRemove = false;
+    },
+    updateColor(color) {
+      this.form.color = color;
+    },
+    changeColor(color) {
+      this.form.color = this.rGBToHex(color.rgba);
+    },
+    rGBToHex(rgba) {
+      let r = rgba.r.toString(16);
+      let g = rgba.g.toString(16);
+      let b = rgba.b.toString(16);
+      let a = Math.round(rgba.a * 255).toString(16);
+
+      if (r.length == 1) r = "0" + r;
+      if (g.length == 1) g = "0" + g;
+      if (b.length == 1) b = "0" + b;
+      if (a.length == 1) a = "0" + a;
+
+      return "#" + r + g + b + a;
+    },
+    openSucker(isOpen) {
+      if (isOpen) {
+        // ... canvas be created
+        // this.suckerCanvas = canvas
+        // this.suckerArea = [x1, y1, x2, y2]
+      } else {
+        // this.suckerCanvas && this.suckerCanvas.remove
       }
     }
   }

@@ -5,26 +5,34 @@
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
-            <v-flex xs12 sm12 md8 lg8>
+            <v-flex xs12 sm12 md10 lg10>
               <select2
-                :options="provinces"
-                :reduce="province => province.id"
-                placeholder="Tỉnh thành"
-                label="name"
-                :clearable="false"
-                v-model="selectedprovince"
-              ></select2>
-              <select2
-                :options="selectDistricts"
-                :reduce="district => district.id"
-                placeholder="Quận huyện"
-                label="name"
-                :clearable="false"
-                v-model="selecteddistrict"
-                :loading="
-                  selectDistricts.length == 0 && selectedprovince != null
-                "
-              ></select2>
+              :options="provinces"
+              :reduce="province => province.id"
+              placeholder="Tỉnh thành"
+              label="name"
+              :clearable="false"
+              v-model="selectedprovince"
+              class="select2-form-control"
+            ></select2>
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs12 sm12 md10 lg10>
+            <select2
+              :options="selectDistricts"
+              :reduce="district => district.id"
+              placeholder="Quận huyện"
+              label="name"
+              :clearable="false"
+              v-model="selecteddistrict"
+              :loading="selectDistricts.length == 0 && selectedprovince != null"
+              class="select2-form-control"
+            ></select2>
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs12 sm12 md10 lg10>
               <select2
                 :options="selectWards"
                 :reduce="ward => ward.id"
@@ -33,32 +41,42 @@
                 :clearable="false"
                 v-model="selectedward"
                 :loading="selectWards.length == 0 && selecteddistrict != null"
+                class="select2-form-control"
               ></select2>
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs12 sm12 md10 lg10>
               <v-text-field
                 v-model="form.name"
                 :rules="[rules.required]"
                 type="text"
                 name="input-10-1"
                 label="Tên"
-                counter
-                @click:append="show1 = !show1"
+                :clearable="true"
               ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs12 sm12 md10 lg10>
               <v-text-field
                 v-model="form.address"
                 type="text"
                 name="input-10-1"
                 label="Địa chỉ"
-                counter
-                @click:append="show2 = !show2"
+                :clearable="true"
               ></v-text-field>
-              <v-textarea
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs12 sm12 md10 lg10>
+              <v-text-field
                 v-model="form.hotline"
                 type="text"
                 name="input-10-1"
-                label="Hotline"
-                counter
-                @click:append="show3 = !show3"
-              ></v-textarea>
+                label="Hot line"
+                :clearable="true"
+              ></v-text-field>
             </v-flex>
           </v-layout>
           <v-layout row justify-center>

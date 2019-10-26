@@ -6,7 +6,6 @@ const Menu = [
     name: 'Home',
     url: '/home',
   },
-  //{ header: 'CRM' },
   {
     title:'CRM',
     icon:'phone',
@@ -14,9 +13,7 @@ const Menu = [
     items:[{
       title: 'CRM',
       group: 'CRM',
-      name: 'Index',
-      //component:'crm'
-      //href: '#/crm'
+      name: 'Index'
     },{
       title: 'Khách chưa xử lý trong ngày',
       group: 'CRM',
@@ -40,7 +37,7 @@ const Menu = [
     },{
       title: 'Mức độ khẩn cấp',
       group: 'CRM',
-      name: 'CRMPriority/Index',
+      name: 'CRMPriority',
     },{
       title: 'Nguồn khách hàng',
       group: 'CRM',

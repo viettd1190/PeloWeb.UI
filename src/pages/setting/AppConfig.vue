@@ -2,8 +2,8 @@
   <div style="min-height:400px">
     <title-page>Tham số cấu hình</title-page>    
     <v-container>
-      <v-layout row justify-center>
-      <v-flex xs12 sm6 md6 lg6>
+      <v-layout row wrap>
+      <v-flex xs12 sm12 md6 lg6>
         <v-text-field
           hide-details
           label="Tên tham số"
@@ -15,7 +15,7 @@
       </v-flex>
       <v-flex xs1 sm1 md1 lg1>       
       </v-flex>
-      <v-flex xs12 sm6 md6 lg6>
+      <v-flex xs12 sm12 md5 lg5>
         <v-text-field
           hide-details
           label="Giá trị"

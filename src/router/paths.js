@@ -142,8 +142,23 @@ export default [
     meta: {
       breadcrumb: true
     },
-    name: 'CRM/CRMPriority/Index',
+    name: 'CRM/CRMPriority',
     component: () => import(`@/pages/crm/CRMPriority.vue`)
+  },{
+    path: '/CRM/CRMPriority/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CRMPriority',
+    component: () => import(`@/pages/crm/components/AddCRMPriority.vue`)
+  },
+  {
+    path: '/CRM/CRMPriority/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CRMPriority',
+    component: () => import(`@/pages/crm/components/EditCRMPriority.vue`)
   }
   ,{
     path: '/CRM/CustomerSource',
@@ -170,7 +185,6 @@ export default [
     component: () => import(`@/pages/crm/components/EditCustomerSource.vue`)
   },
   //end Crm
-
   //product
   ,{
     path: '/Product',

@@ -17,10 +17,15 @@
             ></v-text-field>
           </v-layout>
           <v-layout row justify-center>
-            <v-checkbox label="Gửi Sms" v-model="form.sendSms" value="value"></v-checkbox>
+            <v-checkbox label="Gửi Sms" v-model="form.sendSms" value="value"></v-checkbox>            
           </v-layout>
           <v-layout row wrap>
-            <v-text-field hide-details name="input-7-1" label="Nội dung sms" v-model="form.sms_content" textarea></v-text-field>
+            <v-textarea
+                v-model="form.sms_content"
+                type="text"
+                name="input-10-1"
+                label="Nội dung sms"
+              ></v-textarea>
           </v-layout>          
           <v-layout row justify-center style="padding-bottom:20px">
             <pick-color :selectColor="color" @updateColor="updateColor"></pick-color>

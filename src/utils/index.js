@@ -41,98 +41,104 @@ export default {
 export let messageResult = {
   UpdateSuccess: 'Cập nhật thành công',
   InsertSuccess: 'Thêm mới thành công',
-  RequestFail:"Vui lòng thử lại do kết nối không tốt hoặc máy chủ đang gặp sự cố!",
+  RequestFail:
+    'Vui lòng thử lại do kết nối không tốt hoặc máy chủ đang gặp sự cố!',
   Error: 'error',
   Success: 'success',
-  DeleteSuccess: 'Xóa thành công',
+  DeleteSuccess: 'Xóa thành công'
 };
-export let method={
-  get:'get',
-  delete:'delete',
-  put:'put',
-  post:'post'
-}
+export let method = {
+  get: 'get',
+  delete: 'delete',
+  put: 'put',
+  post: 'post'
+};
 export let url = {
   productGroup: {
-    route:"product_group",
-    all:"product_group/all",
-    id:"product_group/"
+    route: 'product_group',
+    all: 'product_group/all',
+    id: 'product_group/'
   },
   config: {
-    route:"config",
-    all:"config/all",
-    id:"config/"
+    route: 'config',
+    all: 'config/all',
+    id: 'config/'
   },
   branch: {
-    route:"branch",
-    all:"branch/all",
-    id:"branch/"
+    route: 'branch',
+    all: 'branch/all',
+    id: 'branch/'
   },
   manufacturer: {
-    route:"manufacturer",
-    all:"manufacturer/all",
-    id:"manufacturer/"
+    route: 'manufacturer',
+    all: 'manufacturer/all',
+    id: 'manufacturer/'
   },
   province: {
-    route:"province",
-    all:"province/all",
-    id:"province/"
+    route: 'province',
+    all: 'province/all',
+    id: 'province/'
   },
   district: {
-    route:"district",
-    all:"district/all",
-    id:"district/"
+    route: 'district',
+    all: 'district/all',
+    id: 'district/'
   },
   ward: {
-    route:"ward",
-    all:"ward/all",
-    id:"ward/"
+    route: 'ward',
+    all: 'ward/all',
+    id: 'ward/'
   },
-  role:{
-    route:"role",
-    all:"role/all",
-    id:"role/"
+  role: {
+    route: 'role',
+    all: 'role/all',
+    id: 'role/'
   },
-  user:{
-    route:"user",
-    all:"user/all",
-    id:"user/"
+  user: {
+    route: 'user',
+    all: 'user/all',
+    id: 'user/'
   },
-  customer_group:{
-    route:"customer_group",
-    all:"customer_group/all",
-    id:"customer_group/"
+  customer_group: {
+    route: 'customer_group',
+    all: 'customer_group/all',
+    id: 'customer_group/'
   },
-  customer_source:{
-    route:"customer_source",
-    all:"customer_source/all",
-    id:"customer_source/"
+  customer_source: {
+    route: 'customer_source',
+    all: 'customer_source/all',
+    id: 'customer_source/'
   },
-  customer:{
-    route:"customer",
-    all:"customer/all",
-    id:"customer/"
+  customer: {
+    route: 'customer',
+    all: 'customer/all',
+    id: 'customer/'
   },
-  product_unit:{
-    route:"product_unit",
-    all:"product_unit/all",
-    id:"product_unit/"
+  product_unit: {
+    route: 'product_unit',
+    all: 'product_unit/all',
+    id: 'product_unit/'
   },
-  product_status:{
-    route:"product_status",
-    all:"product_status/all",
-    id:"product_status/"
+  product_status: {
+    route: 'product_status',
+    all: 'product_status/all',
+    id: 'product_status/'
   },
-  country:{
-    route:"country",
-    all:"country/all",
-    id:"country/"
+  country: {
+    route: 'country',
+    all: 'country/all',
+    id: 'country/'
   },
-  crm_status:{
-    route:"crm_status",
-    all:"crm_status/all",
-    id:"crm_status/"
-}
+  crm_status: {
+    route: 'crm_status',
+    all: 'crm_status/all',
+    id: 'crm_status/'
+  },
+  crm_priority: {
+    route: 'crm_priority',
+    all: 'crm_priority/all',
+    id: 'crm_priority/'
+  }
 };
 export let pagination = {
   keySearch: '',

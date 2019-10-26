@@ -2,8 +2,9 @@
   <div style="min-height:400px">
     <title-page>Danh sách xã phường</title-page>
     <v-container>
-      <v-layout row justify-center>
-        <v-flex xs12 sm6 md6 lg6>
+      <v-layout row wrap>
+        <v-flex xs12 sm12 md6 lg6>
+        <v-layout row wrap>
           <v-text-field
             hide-details
             label="Tên"
@@ -11,25 +12,32 @@
             v-on:keyup="inputSearch"
             :clearable="true"
           ></v-text-field>
-        </v-flex>
-        <v-flex xs1 sm1 md1 lg1> </v-flex>
-        <v-flex xs12 sm6 md6 lg6>
+        </v-layout>
+      </v-flex>
+      <v-flex xs1 sm1 md1 lg1></v-flex>
+      <v-flex xs12 sm12 md5 lg5>
+        <v-layout row wrap>
           <select2
             :options="provinces"
             :reduce="province => province.id"
             placeholder="Tỉnh thành"
             label="name"
             v-model="selectedProvince"
+            class="command-control"
           ></select2>
+        </v-layout>
+        <v-layout row wrap>
           <select2
             :options="districts"
             :reduce="district => district.id"
             placeholder="Quận huyện"
             label="name"
             v-model="selectedDistrict"
+            class="command-control"
             :loading="districts.length == 0 && selectedProvince != null"
           ></select2>
-        </v-flex>
+        </v-layout>
+      </v-flex>
       </v-layout>
       <v-layout row class="row-command">
         <v-btn color="#666EE8" class="white--text" @click="search()">
@@ -57,12 +65,8 @@
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
             </td>
-            <td nowrap>
-              {{ props.item.district }}
-            </td>
-            <td nowrap>
-              {{ props.item.province }}
-            </td>
+            <td nowrap>{{ props.item.district }}</td>
+            <td nowrap>{{ props.item.province }}</td>
           </tr>
         </template>
       </v-data-table>
@@ -134,7 +138,7 @@ export default {
       },
       deep: true
     },
-    selectedProvince(){
+    selectedProvince() {
       this.changeProvince();
     }
   },
@@ -162,8 +166,10 @@ export default {
               ColumnOrder: sortBy,
               SortDir: descending ? "desc" : "asc",
               Name: this.name,
-              ProvinceId: this.selectedProvince != null ? this.selectedProvince : 0,
-              DistrictId: this.selectedDistrict != null ? this.selectedDistrict : 0
+              ProvinceId:
+                this.selectedProvince != null ? this.selectedProvince : 0,
+              DistrictId:
+                this.selectedDistrict != null ? this.selectedDistrict : 0
             }
           ]);
           if (rs != null && rs.data) {

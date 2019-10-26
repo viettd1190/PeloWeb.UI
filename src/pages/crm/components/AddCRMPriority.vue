@@ -1,41 +1,28 @@
+
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm tham số cấu hình</title-page>
+      <title-page>Thêm trạng thái khẩn cấp</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
             <v-text-field
-                v-model="form.name"
-                :rules="[rules.required]"
-                type="text"
-                name="input-10-1"
-                label="Tên"
-              ></v-text-field>
+              hide-details
+              label="Tên"
+              v-model="form.name"
+              append-icon="search"
+              v-on:keyup="validateForm"
+              :rule="rules"
+              :clearable="true"
+            ></v-text-field>
           </v-layout>
-          <v-layout row justify-center>
-            <v-text-field
-                v-model="form.value"
-                :rules="[rules.required]"
-                type="text"
-                name="input-10-1"
-                label="Giá trị"
-              ></v-text-field>
-          </v-layout>
-          <v-layout row justify-center>
-            <v-textarea
-                v-model="form.description"
-                type="text"
-                name="input-10-1"
-                label="Ghi chú"
-              ></v-textarea>
+          <v-layout row justify-center style="padding-bottom:20px">
+            <pick-color :selectColor="color" @updateColor="updateColor"></pick-color>
           </v-layout>
           <v-layout row justify-center>
             <v-card-actions>
               <v-btn class="default" @click="close()">Trở lại</v-btn>
-              <v-btn class="primary" :disabled="!valid" @click="validate()"
-                >Thêm mới</v-btn
-              >
+              <v-btn class="primary" :disabled="!valid" @click="validate()">Thêm mới</v-btn>
             </v-card-actions>
           </v-layout>
         </v-container>
@@ -49,25 +36,24 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
 import { messageResult, url } from "@/utils/index";
+import PickColor from "@/components/PickColor";
 export default {
-  components: { TitlePage },
+  components: { TitlePage, PickColor },
   props: {},
   data() {
     return {
-      form: { name: "", value: "", description: "" },
-      rules: {
-        required: value => !!value || "Bắt buộc nhập."
+      form: {
+        name: "",
+        color: "#59c7f9",
       },
+      rules: [value => !!value || "Thông tin không được trống"],
       valid: true
     };
   },
   computed: {},
-  watch: {
-    isAddAppCfg() {
-      this.showForm = this.isAddAppCfg;
-    }
-  },
+  watch: {},
   created() {},
+  mounted() {},
   methods: {
     ...mapActions(["Create"]),
     validateForm(e) {
@@ -81,19 +67,18 @@ export default {
       }
     },
     save() {
-      if (this.value == "" || this.value == "") {
+      if (this.form.name == "" || this.color == "") {
         return;
       }
       let p = {
-        value: this.form.value,
         name: this.form.name,
-        description: this.form.description
+        color: this.color
       };
-      this.addAppCfg(p);
+      this.add(p);
     },
-    async addAppCfg(model) {
+    async add(model) {
       try {
-        let rs = await this.Create([url.config.route,model]);
+        let rs = await this.Create([url.crm_priority.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -101,14 +86,17 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/AppConfig";
+          window.location.href = "#/CRM/CRMPriority";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Setting/AppConfig";
+      window.location.href = "#/CRM/CRMPriority";
+    },
+    updateColor(color) {
+      this.color = color;
     }
   }
 };
