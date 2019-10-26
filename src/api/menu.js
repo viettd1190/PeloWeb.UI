@@ -41,6 +41,10 @@ const Menu = [
       title: 'Mức độ khẩn cấp',
       group: 'CRM',
       name: 'CRMPriority/Index',
+    },{
+      title: 'Nguồn khách hàng',
+      group: 'CRM',
+      name: 'CustomerSource',
     }]
   },
   {
@@ -101,10 +105,6 @@ const Menu = [
       title: 'Nhóm khách hàng',
       group: 'Customer',
       name: 'CustomerGroup',
-    },{
-      title: 'Nguồn khách hàng',
-      group: 'Customer',
-      name: 'CustomerSource',
     }]
   },{
     title:'Công việc',

@@ -113,7 +113,7 @@ export default [
     },
     name: 'CRM/KhachToiHenNgayMai',
     component: () => import(`@/pages/crm/KhachToiHenNgayMai.vue`)
-  },
+  }
   ,{
     path: '/CRM/CRMStatus',
     meta: {
@@ -121,7 +121,22 @@ export default [
     },
     name: 'CRM/CRMStatus/Index',
     component: () => import(`@/pages/crm/CRMStatus.vue`)
+  },{
+    path: '/CRM/CRMStatus/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CRMStatus',
+    component: () => import(`@/pages/crm/components/AddCRMStatus.vue`)
   },
+  {
+    path: '/CRM/CRMStatus/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CRMStatus',
+    component: () => import(`@/pages/crm/components/EditCRMStatus.vue`)
+  }
   ,{
     path: '/CRM/CRMPriority',
     meta: {
@@ -129,7 +144,31 @@ export default [
     },
     name: 'CRM/CRMPriority/Index',
     component: () => import(`@/pages/crm/CRMPriority.vue`)
-  },  
+  }
+  ,{
+    path: '/CRM/CustomerSource',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CustomerSource',
+    component: () => import(`@/pages/crm/CustomerSource.vue`)
+  },
+  ,{
+    path: '/CRM/CustomerSource/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CustomerSource',
+    component: () => import(`@/pages/crm/components/AddCustomerSource.vue`)
+  },
+  ,{
+    path: '/CRM/CustomerSource/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/CustomerSource',
+    component: () => import(`@/pages/crm/components/EditCustomerSource.vue`)
+  },
   //end Crm
 
   //product
@@ -643,31 +682,7 @@ export default [
     meta: { breadcrumb: true },
     name: 'Customer/Edit',
     component: () => import(`@/pages/customer/components/EditCustomer.vue`)
-  },
-  ,{
-    path: '/Customer/CustomerSource',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Customer/CustomerSource',
-    component: () => import(`@/pages/customer/CustomerSource.vue`)
-  },
-  ,{
-    path: '/Customer/CustomerSource/Add',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Customer/CustomerSource',
-    component: () => import(`@/pages/customer/components/AddCustomerSource.vue`)
-  },
-  ,{
-    path: '/Customer/CustomerSource/Edit/:id',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Customer/CustomerSource',
-    component: () => import(`@/pages/customer/components/EditCustomerSource.vue`)
-  },
+  }
   ,{
     path: '/Customer/CustomerGroup',
     meta: {

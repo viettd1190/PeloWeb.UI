@@ -134,7 +134,7 @@ export default {
     async getById(id) {
       try {
         let rs = await this.GetById([url.customer_group.id,id]);
-        if (rs !== "") {
+        if (typeof rs == "object") {
           this.form.id = rs.id;
           this.form.name = rs.name;
         } else {

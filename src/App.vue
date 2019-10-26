@@ -61,7 +61,7 @@ import AppToolbar from "@/components/AppToolbar";
 import AppFab from "@/components/AppFab";
 import PageHeader from "@/components/PageHeader";
 import menu from "@/api/menu";
-import {url} from "@/utils/index";
+import { url } from "@/utils/index";
 import ThemeSettings from "@/components/ThemeSettings";
 import UpdatePassword from "@/components/UpdatePassword";
 import AppEvents from "./event";
@@ -84,7 +84,8 @@ export default {
       color: ""
     },
     loadingDialog: false,
-    showUpdatePassword: false
+    showUpdatePassword: false 
+    
   }),
   computed: {
     ...mapGetters([])
@@ -94,9 +95,9 @@ export default {
     AppEvents.forEach(item => {
       this.$on(item.name, item.callback);
     });
-    window.getApp = this;    
+    window.getApp = this;
   },
-  mounted(){
+  mounted() {
     this.getUserAll();
     this.getBranchs();
     this.getProvinceAll();
@@ -105,7 +106,14 @@ export default {
   },
   methods: {
     ...mapMutations([]),
-    ...mapActions(["GetUserAll","GetAll","GetProvinceAll","GetBranchAll","GetRoleAll","GetCountryAll"]),
+    ...mapActions([
+      "GetUserAll",
+      "GetAll",
+      "GetProvinceAll",
+      "GetBranchAll",
+      "GetRoleAll",
+      "GetCountryAll"
+    ]),
     openThemeSettings() {
       this.$vuetify.goTo(0);
       this.rightDrawer = !this.rightDrawer;
@@ -139,22 +147,22 @@ export default {
       this.showUpdatePassword = false;
     },
     changeView(url) {
-      window.location.href = "#"+this.$route.path + url;
+      window.location.href = "#" + this.$route.path + url;
     },
-    getUserAll(){
-      console.log("Lấy tất cả user");      
+    getUserAll() {
+      console.log("Lấy tất cả user");
       //this.GetUserAll();
     },
-    getBranchs(){
+    getBranchs() {
       this.GetBranchAll();
     },
-    getProvinceAll(){
+    getProvinceAll() {
       this.GetProvinceAll();
     },
     async getRoleAll() {
       this.GetRoleAll();
     },
-    async getCountryAll(){
+    async getCountryAll() {
       await this.GetCountryAll();
     }
   }

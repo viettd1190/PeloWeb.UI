@@ -85,14 +85,14 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Customer/CustomerSource";
+          window.location.href = "#/CRM/CustomerSource";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Customer/CustomerSource";
+      window.location.href = "#/CRM/CustomerSource";
     }
   }
 };

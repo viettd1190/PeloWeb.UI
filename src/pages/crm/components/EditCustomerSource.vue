@@ -103,14 +103,14 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Customer/CustomerSoure";
+          window.location.href = "#/CRM/CustomerSoure";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Customer/CustomerSource";
+      window.location.href = "#/CRM/CustomerSource";
     },
     removeData() {
       this.isRemove = true;
@@ -125,7 +125,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Customer/CustomerSource";
+          window.location.href = "#/CRM/CustomerSource";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -134,7 +134,7 @@ export default {
     async getById(id) {
       try {
         let rs = await this.GetById([url.customer_source.id,id]);
-         if (typeof rs == "obj") {
+         if (typeof rs == "object") {
           this.form.id = rs.id;
           this.form.name = rs.name;
         } else {

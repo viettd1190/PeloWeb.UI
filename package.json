@@ -19,6 +19,7 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "@caohenghu/vue-colorpicker": "^1.2.2",
     "axios": "0.17.1",
     "exceljs": "^1.6.2",
     "font-awesome": "^4.7.0",
@@ -33,6 +34,7 @@
     "vee-validate": "^2.0.9",
     "vue": "^2.5.16",
     "vue-bus": "^1.2.1",
+    "vue-color": "^2.7.0",
     "vue-context": "^3.4.0",
     "vue-perfect-scrollbar": "^0.1.0",
     "vue-resize": "^0.4.4",
