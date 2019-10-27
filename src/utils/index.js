@@ -138,6 +138,11 @@ export let url = {
     route: 'crm_priority',
     all: 'crm_priority/all',
     id: 'crm_priority/'
+  },
+  crm: {
+    route: 'crm',
+    all: 'crm/all',
+    id: 'crm/'
   }
 };
 export let pagination = {
