@@ -1,6 +1,6 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Danh sách trạng thái CRM</title-page>
+    <title-page>Danh sách CRM</title-page>
     <v-container>
       <v-layout row wrap>
         <v-flex xs12 sm12 md6 lg6>
