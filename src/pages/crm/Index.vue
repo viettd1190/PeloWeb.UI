@@ -152,7 +152,7 @@
 </template>
 <script>
 import validate from "@/utils/validate";
-import {url} from "@/utils/index";
+import { url } from "@/utils/index";
 import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
@@ -173,18 +173,19 @@ export default {
             text: "Trạng thái",
             value: "crm_status",
             align: "center",
-            sorable:true
+            sorable: true
           },
           {
             text: "Mức độ khẩn cấp",
             value: "crm_priority",
             align: "center",
-            sorable:true
-          },{
+            sorable: true
+          },
+          {
             text: "Mã cơ hội",
             value: "code",
             align: "center",
-            sorable:true
+            sorable: true
           },
           {
             text: "Khách hàng",
@@ -200,7 +201,7 @@ export default {
             text: "Nguồn",
             value: "customer_source",
             align: "center",
-            sorable:true
+            sorable: true
           },
           {
             text: "Phụ trách",
@@ -211,13 +212,13 @@ export default {
             text: "Ngày liên hệ tiếp",
             value: "next_contact_date",
             align: "center",
-            sorable:true
+            sorable: true
           },
           {
             text: "Ngày tạo",
             value: "date_created",
             align: "center",
-            sorable:true
+            sorable: true
           }
         ]
       },
@@ -226,35 +227,43 @@ export default {
         itemsPerPage: 10,
         rowsPerPage: 10,
         totalRecords: 0,
-        sortBy: "name",
+        sortBy: "",
         descending: false
       },
       datasourceFiltered: [],
       isLoading: -1,
-      name:"",
-      phone:"",
-      groupId:null,
-      sourceId:null,
-      code:"",
-      priorityId:null,
-      statusId:null,
-      visit:null,
-      userId:null,
-      productGroupId:null,
-      fromDate:Date,
-      toDate:Date,
-      users:[],
-      customerGroups:[],
-      productGroup:[],
-      sources:[],
-      priorities:[],
-      statuses:[],
-      visit:[{id:null,name:"Tất cả",id:0,name:"Chưa đến",id:1,name:"Đã đến"}]
+      name: "",
+      phone: "",
+      groupId: null,
+      sourceId: null,
+      code: "",
+      priorityId: null,
+      statusId: null,
+      visit: null,
+      userId: null,
+      productGroupId: null,
+      fromDate: Date,
+      toDate: Date,
+      users: [],
+      customerGroups: [],
+      productGroup: [],
+      sources: [],
+      priorities: [],
+      statuses: [],
+      visit: [
+        {
+          id: null,
+          name: "Tất cả",
+          id: 0,
+          name: "Chưa đến",
+          id: 1,
+          name: "Đã đến"
+        }
+      ]
     };
   },
   computed: {},
-  created() {
-  },
+  created() {},
   mounted() {},
   watch: {
     pagination: {
@@ -280,24 +289,27 @@ export default {
         }
         if (this.isLoading == 0) {
           this.isLoading = 1;
-          let rs = await this.GetList([url.crm.route,{
-            Page: page,
-            PageSize: rowsPerPage,
-            ColumnOrder: sortBy,
-            SortDir: descending ? "desc" : "asc",
-            customer: this.name,
-            customer_phone:this.phone,
-            customer_group_id:this.groupId,
-            customer_source_id:this.sourceId,
-            code=this.code,
-            crm_priority_id:this.priorityId,
-            crm_status_id:this.statusId,
-            product_group_id:this.productGroupId,
-            visit:this.visit,
-            user_id:this.userId,
-            from_date:this.fromDate,
-            to_date:this.toDate
-          }]);
+          let rs = await this.GetList([
+            url.crm.route,
+            {
+              Page: page,
+              PageSize: rowsPerPage,
+              ColumnOrder: sortBy,
+              SortDir: descending ? "desc" : "asc",
+              customer: this.name,
+              customer_phone: this.phone,
+              customer_group_id: this.groupId,
+              customer_source_id: this.sourceId,
+              code: this.code,
+              crm_priority_id: this.priorityId,
+              crm_status_id: this.statusId,
+              product_group_id: this.productGroupId,
+              visit: this.visit,
+              user_id: this.userId,
+              from_date: this.fromDate,
+              to_date: this.toDate
+            }
+          ]);
           if (rs != null && rs.data) {
             this.isLoading = -1;
             this.datasourceFiltered = rs.data;
