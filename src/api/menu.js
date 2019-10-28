@@ -39,6 +39,10 @@ const Menu = [
       group: 'CRM',
       name: 'CRMPriority',
     },{
+      title: 'Kiểu chốt',
+      group: 'CRM',
+      name: 'CRMType',
+    },{
       title: 'Nguồn khách hàng',
       group: 'CRM',
       name: 'CustomerSource',

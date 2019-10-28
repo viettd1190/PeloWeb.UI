@@ -1,116 +1,222 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Danh sách CRM</title-page>
+    <title-page>Customer Relationship Management</title-page>
     <v-container>
-      <v-layout row wrap>
-        <v-flex xs12 sm12 md6 lg6>
-          <v-layout row wrap>
-            <v-text-field
-              hide-details
-              label="Tên"
-              v-model="name"
-              append-icon="search"
-              v-on:keyup="inputSearch"
-              :clearable="true"
-            ></v-text-field>
+      <v-expansion-panel expand v-model="panel" :readonly="readonly">
+        <v-expansion-panel-content>
+          <template v-slot:header
+            >Thông tin
+          </template>
+          <v-layout row wrap style="padding:10px">
+            <v-flex xs12 sm12 md6 lg6>
+              <v-layout row wrap>
+                <v-text-field
+                  label="Mã khách hàng"
+                  hide-details
+                  v-model="customer_code"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  label="Tên khách hàng"
+                  hide-details
+                  v-model="name"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Địa chỉ"
+                  v-model="address"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <select2
+                  :options="districts"
+                  :reduce="district => district.id"
+                  placeholder="Quận"
+                  label="name"
+                  v-model="districtId"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Nhu cầu"
+                  v-model="need"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <select2
+                  :options="cmrStatuses"
+                  :reduce="crmStatus => crmStatus.id"
+                  placeholder="Trạng thái"
+                  label="name"
+                  v-model="statusId"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap
+                ><select2
+                  :options="customerSources"
+                  :reduce="customerSource => customerSource.id"
+                  placeholder="Nguồn khách"
+                  label="name"
+                  v-model="sourceId"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap
+                ><v-text-field
+                  hide-details
+                  label="Mã cơ hội"
+                  v-model="code"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <select2
+                  :options="productGroups"
+                  :reduce="productGroup => productGroup.id"
+                  placeholder="Nhóm sản phẩm"
+                  label="name"
+                  v-model="productGroupId"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Ngày liên hệ từ"
+                  v-model="from"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Người tạo"
+                  v-model="user"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+            </v-flex>
+            <v-flex xs1 sm1 md1 lg1> </v-flex>
+            <v-flex xs12 sm12 md5 lg5>
+              <v-layout row wrap
+                ><select2
+                  :options="customerGroups"
+                  :reduce="customerGroup => customerGroup.id"
+                  placeholder="Nhóm khách hàng"
+                  label="name"
+                  v-model="groupId"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Số điện thoại"
+                  v-model="phone"                  
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap
+                ><select2
+                  :options="provinces"
+                  :reduce="province => province.id"
+                  placeholder="Tỉnh thành"
+                  label="name"
+                  v-model="provinceId"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+               <v-layout row wrap
+                ><select2
+                  :options="wards"
+                  :reduce="ward => ward.id"
+                  placeholder="Xã phường"
+                  label="name"
+                  v-model="wardId"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap
+                ><select2
+                  :options="types"
+                  :reduce="type => type.id"
+                  placeholder="Kiểu chốt"
+                  label="name"
+                  v-model="type"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap
+                ><select2
+                  :options="priorities"
+                  :reduce="priority => priority.id"
+                  placeholder="Mức độ khẩn cấp"
+                  label="name"
+                  v-model="priorityId"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap>
+                <select2
+                  :options="users"
+                  :reduce="user => user.id"
+                  placeholder="Người phụ trách"
+                  label="name"
+                  v-model="userId"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap>
+                <select2
+                  :options="visits"
+                  :reduce="visit => visit.id"
+                  placeholder="Đến cửa hàng"
+                  label="name"
+                  v-model="visit"
+                  class="command-control"
+                ></select2
+              ></v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Ngày liên hệ đến"
+                  v-model="to"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Ngày tạo"
+                  v-model="create"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap> </v-layout>
+            </v-flex>
           </v-layout>
-          <v-layout row wrap>
-            <select2
-              :options="cmrStatuses"
-              :reduce="crmStatus => crmStatus.id"
-              placeholder="Trạng thái"
-              label="name"
-              v-model="statusId"
-              class="command-control"
-            ></select2>
-          </v-layout>
-          <v-layout row wrap
-            ><select2
-              :options="customerSources"
-              :reduce="customerSource => customerSource.id"
-              placeholder="Nguồn khách"
-              label="name"
-              v-model="sourceId"
-              class="command-control"
-            ></select2>
-          </v-layout>
-          <v-layout row wrap
-            ><v-text-field
-              hide-details
-              label="Mã cơ hội"
-              v-model="code"
-              append-icon="search"
-              v-on:keyup="inputSearch"
-              :clearable="true"
-            ></v-text-field>
-          </v-layout>
-          <v-layout row wrap>
-            <select2
-              :options="productGroups"
-              :reduce="productGroup => productGroup.id"
-              placeholder="Nhóm sản phẩm"
-              label="name"
-              v-model="productGroupId"
-              class="command-control"
-            ></select2>
-          </v-layout>
-          <v-layout row wrap> </v-layout>
-        </v-flex>
-        <v-flex xs1 sm1 md1 lg1> </v-flex>
-        <v-flex xs12 sm12 md5 lg5>
-          <v-layout row wrap>
-            <v-text-field
-              hide-details
-              label="Số điện thoại"
-              v-model="phone"
-              append-icon="search"
-              v-on:keyup="inputSearch"
-              :clearable="true"
-            ></v-text-field>
-          </v-layout>
-          <v-layout row wrap
-            ><select2
-              :options="priorities"
-              :reduce="priority => priority.id"
-              placeholder="Mức độ khẩn cấp"
-              label="name"
-              v-model="priorityId"
-              class="command-control"
-            ></select2>
-          </v-layout>
-          <v-layout row wrap
-            ><select2
-              :options="customerGroups"
-              :reduce="customerGroup => customerGroup.id"
-              placeholder="Nhóm khách hàng"
-              label="name"
-              v-model="groupId"
-              class="command-control"
-            ></select2>
-          </v-layout>
-          <v-layout row wrap>
-            <select2
-              :options="users"
-              :reduce="user => user.id"
-              placeholder="Người phụ trách"
-              label="name"
-              v-model="userId"
-              class="command-control"
-            ></select2>
-          </v-layout>
-          <v-layout row wrap>
-            <select2
-              :options="visits"
-              :reduce="c => c.id"
-              placeholder="Người phụ trách"
-              label="name"
-              v-model="visit"
-              class="command-control"
-            ></select2
-          ></v-layout>
-          <v-layout row wrap> </v-layout>
-        </v-flex>
-      </v-layout>
+        </v-expansion-panel-content>
+      </v-expansion-panel>
       <v-layout row class="row-command">
         <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
@@ -164,6 +270,10 @@ export default {
   props: {},
   data() {
     return {
+      state: "arrow_drop_down",
+      panel: [false],
+      disabled: false,
+      readonly: false,
       name: "",
       hotline: "",
       address: "",
@@ -227,8 +337,8 @@ export default {
         itemsPerPage: 10,
         rowsPerPage: 10,
         totalRecords: 0,
-        sortBy: "",
-        descending: false
+        sortBy: "next_contact_date",
+        descending: true
       },
       datasourceFiltered: [],
       isLoading: -1,
@@ -239,7 +349,7 @@ export default {
       code: "",
       priorityId: null,
       statusId: null,
-      visit: null,
+      visit: -1,
       userId: null,
       productGroupId: null,
       fromDate: Date,
@@ -250,15 +360,10 @@ export default {
       sources: [],
       priorities: [],
       statuses: [],
-      visit: [
-        {
-          id: null,
-          name: "Tất cả",
-          id: 0,
-          name: "Chưa đến",
-          id: 1,
-          name: "Đã đến"
-        }
+      visits: [
+        { id: -1, name: "Tất cả" },
+        { id: 0, name: "Chưa đến" },
+        { id: 1, name: "Đã đến" }
       ]
     };
   },
@@ -346,4 +451,11 @@ export default {
 </script>
 
 <style>
+.v-expansion-panel__header {
+  max-width: 200px;
+  margin: 0 auto;
+}
+.theme--light.v-expansion-panel .v-expansion-panel__container {
+  background-color: transparent !important;
+}
 </style>
