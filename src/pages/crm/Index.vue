@@ -19,7 +19,7 @@
                 <v-text-field
                   label="Tên khách hàng"
                   hide-details
-                  v-model="name"
+                  v-model="customer"
                   v-on:keyup="inputSearch"
                   :clearable="true"
                 ></v-text-field>
@@ -28,7 +28,7 @@
                 <v-text-field
                   hide-details
                   label="Địa chỉ"
-                  v-model="address"
+                  v-model="customer_address"
                   v-on:keyup="inputSearch"
                   :clearable="true"
                 ></v-text-field>
@@ -39,7 +39,7 @@
                   :reduce="district => district.id"
                   placeholder="Quận"
                   label="name"
-                  v-model="districtId"
+                  v-model="district_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -58,7 +58,7 @@
                   :reduce="crmStatus => crmStatus.id"
                   placeholder="Trạng thái"
                   label="name"
-                  v-model="statusId"
+                  v-model="crm_status_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -68,7 +68,7 @@
                   :reduce="customerSource => customerSource.id"
                   placeholder="Nguồn khách"
                   label="name"
-                  v-model="sourceId"
+                  v-model="customer_source_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -87,7 +87,7 @@
                   :reduce="productGroup => productGroup.id"
                   placeholder="Nhóm sản phẩm"
                   label="name"
-                  v-model="productGroupId"
+                  v-model="product_group_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -95,19 +95,20 @@
                 <v-text-field
                   hide-details
                   label="Ngày liên hệ từ"
-                  v-model="from"
+                  v-model="from_date"
                   v-on:keyup="inputSearch"
                   :clearable="true"
                 ></v-text-field>
               </v-layout>
               <v-layout row wrap>
-                <v-text-field
-                  hide-details
-                  label="Người tạo"
-                  v-model="user"
-                  v-on:keyup="inputSearch"
-                  :clearable="true"
-                ></v-text-field>
+                <select2
+                  :options="users"
+                  :reduce="createUser => createUser.id"
+                  placeholder="Người tạo"
+                  label="name"
+                  v-model="user_created_id"
+                  class="command-control"
+                ></select2>
               </v-layout>
             </v-flex>
             <v-flex xs1 sm1 md1 lg1> </v-flex>
@@ -118,7 +119,7 @@
                   :reduce="customerGroup => customerGroup.id"
                   placeholder="Nhóm khách hàng"
                   label="name"
-                  v-model="groupId"
+                  v-model="customer_group_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -126,7 +127,7 @@
                 <v-text-field
                   hide-details
                   label="Số điện thoại"
-                  v-model="phone"
+                  v-model="customer_phone"
                   v-on:keyup="inputSearch"
                   :clearable="true"
                 ></v-text-field>
@@ -137,7 +138,7 @@
                   :reduce="province => province.id"
                   placeholder="Tỉnh thành"
                   label="name"
-                  v-model="provinceId"
+                  v-model="province_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -147,7 +148,7 @@
                   :reduce="ward => ward.id"
                   placeholder="Xã phường"
                   label="name"
-                  v-model="wardId"
+                  v-model="ward_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -157,7 +158,7 @@
                   :reduce="type => type.id"
                   placeholder="Kiểu chốt"
                   label="name"
-                  v-model="type"
+                  v-model="crm_type_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -167,7 +168,7 @@
                   :reduce="priority => priority.id"
                   placeholder="Mức độ khẩn cấp"
                   label="name"
-                  v-model="priorityId"
+                  v-model="crm_priority_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -177,7 +178,7 @@
                   :reduce="user => user.id"
                   placeholder="Người phụ trách"
                   label="name"
-                  v-model="userId"
+                  v-model="user_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -195,7 +196,7 @@
                 <v-text-field
                   hide-details
                   label="Ngày liên hệ đến"
-                  v-model="to"
+                  v-model="to_date"
                   v-on:keyup="inputSearch"
                   :clearable="true"
                 ></v-text-field>
@@ -204,7 +205,7 @@
                 <v-text-field
                   hide-details
                   label="Ngày tạo"
-                  v-model="create"
+                  v-model="date_created"
                   v-on:keyup="inputSearch"
                   :clearable="true"
                 ></v-text-field>
@@ -277,9 +278,6 @@ export default {
       disabled: false,
       readonly: false,
       icon: "arrow_drop_down",
-      name: "",
-      hotline: "",
-      address: "",
       table: {
         headers: [
           {
@@ -325,7 +323,6 @@ export default {
             text: "Ngày liên hệ tiếp",
             value: "next_contact_date",
             align: "center",
-            sorable: true
           },
           {
             text: "Ngày tạo",
@@ -340,37 +337,51 @@ export default {
         itemsPerPage: 10,
         rowsPerPage: 10,
         totalRecords: 0,
-        sortBy: "next_contact_date",
+        sortBy: "",
         descending: true
       },
       datasourceFiltered: [],
       isLoading: -1,
-      name: "",
-      phone: "",
-      groupId: null,
-      sourceId: null,
+      customer: "",
+      customer_code: "",
+      customer_address: "",
+      province_id: null,
+      district_id: null,
+      ward_id: null,
+      need: "",
+      crm_type_id: null,
+      customer_phone: "",
+      customer_group_id: null,
+      customer_source_id: null,
       code: "",
-      priorityId: null,
-      statusId: null,
+      crm_priority_id: null,
+      crm_status_id: null,
+      product_group_id: null,
       visit: -1,
-      userId: null,
-      productGroupId: null,
-      fromDate: Date,
-      toDate: Date,
-      users: [],
+      user_created_id: null,
+      user_id: null,
+      date_created: null,
+      from_date: null,
+      to_date: null,
+      users: [],      
       customerGroups: [],
-      productGroup: [],
-      sources: [],
+      customerSources: [],
+      productGroups: [],
       priorities: [],
-      statuses: [],
+      cmrStatuses: [],
+      selectDistricts: [],
+      selectWards: [],
       visits: [
         { id: -1, name: "Tất cả" },
         { id: 0, name: "Chưa đến" },
         { id: 1, name: "Đã đến" }
-      ]
+      ],
+      types:[],
     };
   },
-  computed: {},
+  computed: {
+      ...mapGetters(["provinces", "districts", "wards"])
+  },
   created() {},
   mounted() {},
   watch: {
@@ -379,6 +390,18 @@ export default {
         this.search();
       },
       deep: true
+    },
+    districts() {
+      this.selectDistricts = this.districts;
+    },
+    wards() {
+      this.selectWards = this.wards;
+    },
+    province_id() {
+      this.changeProvince();
+    },
+    district_id() {
+      this.changeDistrict();
     }
   },
   methods: {
@@ -404,18 +427,27 @@ export default {
               PageSize: rowsPerPage,
               ColumnOrder: sortBy,
               SortDir: descending ? "desc" : "asc",
-              customer: this.name,
-              customer_phone: this.phone,
-              customer_group_id: this.groupId,
-              customer_source_id: this.sourceId,
+              customer: this.customer,
+              customer_code: this.customer_code,
+              province_id: this.province_id,
+              district_id: this.district_id,
+              ward_id: this.ward_id,
+              customer_address: this.customer_address,
+              need:this.need,
+              crm_type_id:this.crm_type_id,
+              customer_phone: this.customer_phone,
+              customer_group_id: this.customer_group_id,
+              customer_source_id: this.customer_source_id,
               code: this.code,
-              crm_priority_id: this.priorityId,
-              crm_status_id: this.statusId,
-              product_group_id: this.productGroupId,
+              crm_priority_id: this.crm_priority_id,
+              crm_status_id: this.crm_status_id,
+              product_group_id: this.product_group_id,
               visit: this.visit,
-              user_id: this.userId,
-              from_date: this.fromDate,
-              to_date: this.toDate
+              user_id: this.user_id,
+              user_created_id:this.user_created_id,
+              from_date: this.from_date,
+              to_date: this.to_date,
+              date_created:this.date_created
             }
           ]);
           if (rs != null && rs.data) {
@@ -464,5 +496,4 @@ export default {
 </script>
 
 <style>
-
 </style>
