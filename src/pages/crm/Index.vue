@@ -4,10 +4,7 @@
     <v-container>
       <v-expansion-panel expand v-model="panel" :readonly="readonly">
         <v-expansion-panel-content>
-          <template v-slot:header
-            >Thông tin
-          </template>
-          <v-layout row wrap style="padding:10px">
+          <v-layout row wrap>
             <v-flex xs12 sm12 md6 lg6>
               <v-layout row wrap>
                 <v-text-field
@@ -129,7 +126,7 @@
                 <v-text-field
                   hide-details
                   label="Số điện thoại"
-                  v-model="phone"                  
+                  v-model="phone"
                   v-on:keyup="inputSearch"
                   :clearable="true"
                 ></v-text-field>
@@ -144,7 +141,7 @@
                   class="command-control"
                 ></select2>
               </v-layout>
-               <v-layout row wrap
+              <v-layout row wrap
                 ><select2
                   :options="wards"
                   :reduce="ward => ward.id"
@@ -215,7 +212,13 @@
               <v-layout row wrap> </v-layout>
             </v-flex>
           </v-layout>
+          <!-- <template v-slot:header
+            ><span></span>
+          </template> -->
         </v-expansion-panel-content>
+        <v-btn @click="expanse()"
+          ><v-icon>{{ icon }}</v-icon></v-btn
+        >
       </v-expansion-panel>
       <v-layout row class="row-command">
         <v-btn color="#666EE8" class="white--text" @click="search()">
@@ -270,10 +273,10 @@ export default {
   props: {},
   data() {
     return {
-      state: "arrow_drop_down",
       panel: [false],
       disabled: false,
       readonly: false,
+      icon: "arrow_drop_down",
       name: "",
       hotline: "",
       address: "",
@@ -445,17 +448,21 @@ export default {
       if (e.keyCode === 13) {
         this.search();
       }
+    },
+    expanse() {
+      //this.panel[0] = !this.panel[0];
+      if (this.panel[0]) {
+        this.panel = [false];
+        this.icon = "arrow_drop_down";
+      } else {
+        this.panel = [true];
+        this.icon = "arrow_drop_up";
+      }
     }
   }
 };
 </script>
 
 <style>
-.v-expansion-panel__header {
-  max-width: 200px;
-  margin: 0 auto;
-}
-.theme--light.v-expansion-panel .v-expansion-panel__container {
-  background-color: transparent !important;
-}
+
 </style>

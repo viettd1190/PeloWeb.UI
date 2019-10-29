@@ -2,69 +2,76 @@
   <div style="min-height:400px">
     <title-page>Người dùng</title-page>
     <v-container>
-      <v-layout row wrap>
-        <v-flex xs12 sm12 md6 lg6>
+      <v-expansion-panel expand v-model="panel" :readonly="readonly">
+        <v-expansion-panel-content>
           <v-layout row wrap>
-            <v-text-field
-              hide-details
-              label="Tên đăng nhập"
-              v-model="userName"
-              v-on:keyup="inputSearch"
-              :clearable="true"
-            ></v-text-field>
+            <v-flex xs12 sm12 md6 lg6>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Tên đăng nhập"
+                  v-model="userName"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Tên hiển thị"
+                  v-model="displayName"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <select2
+                  :options="branchs"
+                  :reduce="branch => branch.id"
+                  placeholder="Chi nhánh"
+                  label="name"
+                  v-model="selectedbranch"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+            </v-flex>
+            <v-flex xs1 sm1 md1 lg1></v-flex>
+            <v-flex xs12 sm12 md5 lg5>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Tên đầy đủ"
+                  v-model="fullName"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Điện thoại"
+                  v-model="phone"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row wrap>
+                <select2
+                  :options="roles"
+                  :reduce="role => role.id"
+                  placeholder="Quyền"
+                  label="name"
+                  v-model="selectedrole"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+            </v-flex>
           </v-layout>
-          <v-layout row wrap>
-            <v-text-field
-              hide-details
-              label="Tên hiển thị"
-              v-model="displayName"
-              v-on:keyup="inputSearch"
-              :clearable="true"
-            ></v-text-field>
-          </v-layout>
-          <v-layout row wrap>
-            <select2
-              :options="branchs"
-              :reduce="branch => branch.id"
-              placeholder="Chi nhánh"
-              label="name"
-              v-model="selectedbranch"
-              class="command-control"
-            ></select2>
-          </v-layout>
-        </v-flex>
-        <v-flex xs1 sm1 md1 lg1></v-flex>
-        <v-flex xs12 sm12 md5 lg5>
-          <v-layout row wrap>
-            <v-text-field
-              hide-details
-              label="Tên đầy đủ"
-              v-model="fullName"
-              v-on:keyup="inputSearch"
-              :clearable="true"
-            ></v-text-field>
-          </v-layout>
-          <v-layout row wrap>
-            <v-text-field
-              hide-details
-              label="Điện thoại"
-              v-model="phone"
-              v-on:keyup="inputSearch"
-              :clearable="true"
-            ></v-text-field>
-          </v-layout>
-          <v-layout row wrap>
-            <select2
-              :options="roles"
-              :reduce="role => role.id"
-              placeholder="Quyền"
-              label="name"
-              v-model="selectedrole"
-              class="command-control"
-            ></select2>
-          </v-layout>
-        </v-flex>
-      </v-layout>
+        </v-expansion-panel-content>
+        <v-btn @click="expanse()"
+          ><v-icon>{{ icon }}</v-icon></v-btn
+        >
+      </v-expansion-panel>
       <v-layout row class="row-command">
         <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
@@ -89,7 +96,11 @@
           <tr class="table-row">
             <td nowrap>
               <v-avatar size="48">
-                <img v-if="props.item.avatar != null" :src="props.item.avatar" @error="errorImgUrl" />
+                <img
+                  v-if="props.item.avatar != null"
+                  :src="props.item.avatar"
+                  @error="errorImgUrl"
+                />
                 <img v-else src="/static/avatar/no-avatar.jpg" />
               </v-avatar>
             </td>
@@ -102,7 +113,8 @@
               <a
                 style="text-decoration: none;"
                 :href="`tel:${props.item.phone_number}`"
-              >{{ props.item.phone_number }}</a>
+                >{{ props.item.phone_number }}</a
+              >
             </td>
             <td nowrap>{{ props.item.branch }}</td>
             <td nowrap>{{ props.item.role }}</td>
@@ -127,6 +139,10 @@ export default {
   props: {},
   data() {
     return {
+      panel: [false],
+      disabled: false,
+      readonly: false,
+      icon: "arrow_drop_down",
       userName: "",
       displayName: "",
       fullName: "",
@@ -269,6 +285,16 @@ export default {
     },
     errorImgUrl(event) {
       event.target.src = this.imageerror;
+    },
+    expanse() {
+      //this.panel[0] = !this.panel[0];
+      if (this.panel[0]) {
+        this.panel = [false];
+        this.icon = "arrow_drop_down";
+      } else {
+        this.panel = [true];
+        this.icon = "arrow_drop_up";
+      }
     }
   }
 };

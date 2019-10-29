@@ -2,32 +2,30 @@
   <div class="text-xs-center">
     <v-card>
       <title-page>Cập nhật trạng thái khẩn cấp</title-page>
-      <v-form ref="form" v-model="valid">
-        <v-container>
+      <v-container>
+        <v-form ref="form" v-model="valid">
           <v-layout row justify-center>
-            <v-flex xs12 sm12 md8 lg8>
-              <v-text-field
-                hide-details
-                label="Tên"
-                v-model="form.name"
-                class="ma-2"
-                append-icon="search"
-                v-on:keyup="validateForm"
-                :rule="rules"
-              ></v-text-field>
-            </v-flex>
+            <v-text-field
+              hide-details
+              label="Tên"
+              v-model="form.name"
+              class="ma-2"
+              append-icon="search"
+              v-on:keyup="validateForm"
+              :rule="rules"
+            ></v-text-field>
           </v-layout>
           <v-layout row justify-center>
             <v-card-title primary-title>Màu sắc</v-card-title>
           </v-layout>
-          <v-layout row justify-center>
+          <v-layout row justify-center style="padding-bottom:20px">
             <color-picker
-            v-if="form.color!=''"
+              v-if="form.color != ''"
               :color="form.color"
               :sucker-hide="false"
               :sucker-canvas="suckerCanvas"
               :sucker-area="suckerArea"
-              @changeColor="changeColor"
+              @changeColor="changecolor"
               @openSucker="openSucker"
             />
           </v-layout>
@@ -44,8 +42,8 @@
               </v-btn>
             </v-card-actions>
           </v-layout>
-        </v-container>
-      </v-form>
+        </v-form>
+      </v-container>
     </v-card>
     <dialog-confirm v-if="isRemove" @comfirm="confirmDelete"></dialog-confirm>
   </div>
@@ -171,23 +169,18 @@ export default {
       }
       this.isRemove = false;
     },
-    updateColor(color) {
-      this.form.color = color;
-    },
-    changeColor(color) {
-      this.form.color = this.rGBToHex(color.rgba);
+    changecolor(color) {
+      this.form.color = this.rGBToHex(color.rgba);;
     },
     rGBToHex(rgba) {
       let r = rgba.r.toString(16);
       let g = rgba.g.toString(16);
       let b = rgba.b.toString(16);
       let a = Math.round(rgba.a * 255).toString(16);
-
       if (r.length == 1) r = "0" + r;
       if (g.length == 1) g = "0" + g;
       if (b.length == 1) b = "0" + b;
       if (a.length == 1) a = "0" + a;
-
       return "#" + r + g + b + a;
     },
     openSucker(isOpen) {

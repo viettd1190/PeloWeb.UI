@@ -2,43 +2,51 @@
   <div style="min-height:400px">
     <title-page>Danh sách xã phường</title-page>
     <v-container>
-      <v-layout row wrap>
-        <v-flex xs12 sm12 md6 lg6>
-        <v-layout row wrap>
-          <v-text-field
-            hide-details
-            label="Tên"
-            v-model="name"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
-        </v-layout>
-      </v-flex>
-      <v-flex xs1 sm1 md1 lg1></v-flex>
-      <v-flex xs12 sm12 md5 lg5>
-        <v-layout row wrap>
-          <select2
-            :options="provinces"
-            :reduce="province => province.id"
-            placeholder="Tỉnh thành"
-            label="name"
-            v-model="selectedProvince"
-            class="command-control"
-          ></select2>
-        </v-layout>
-        <v-layout row wrap>
-          <select2
-            :options="districts"
-            :reduce="district => district.id"
-            placeholder="Quận huyện"
-            label="name"
-            v-model="selectedDistrict"
-            class="command-control"
-            :loading="districts.length == 0 && selectedProvince != null"
-          ></select2>
-        </v-layout>
-      </v-flex>
-      </v-layout>
+      <v-expansion-panel expand v-model="panel" :readonly="readonly">
+        <v-expansion-panel-content>
+          <v-layout row wrap>
+            <v-flex xs12 sm12 md6 lg6>
+              <v-layout row wrap>
+                <v-text-field
+                  hide-details
+                  label="Tên"
+                  v-model="name"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
+              </v-layout>
+            </v-flex>
+            <v-flex xs1 sm1 md1 lg1></v-flex>
+            <v-flex xs12 sm12 md5 lg5>
+              <v-layout row wrap>
+                <select2
+                  :options="provinces"
+                  :reduce="province => province.id"
+                  placeholder="Tỉnh thành"
+                  label="name"
+                  v-model="selectedProvince"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap>
+                <select2
+                  :options="districts"
+                  :reduce="district => district.id"
+                  placeholder="Quận huyện"
+                  label="name"
+                  v-model="selectedDistrict"
+                  class="command-control"
+                  :loading="districts.length == 0 && selectedProvince != null"
+                ></select2>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+        </v-expansion-panel-content>
+        <v-btn @click="expanse()"
+          ><v-icon>{{ icon }}</v-icon></v-btn
+        >
+      </v-expansion-panel>
+
       <v-layout row class="row-command">
         <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
@@ -87,6 +95,10 @@ export default {
   props: {},
   data() {
     return {
+      panel: [false],
+      disabled: false,
+      readonly: false,
+      icon: "arrow_drop_down",
       name: "",
       table: {
         headers: [
@@ -208,6 +220,16 @@ export default {
     },
     changeProvince() {
       this.GetDistricts({ ProvinceId: this.selectedProvince });
+    },
+    expanse() {
+      //this.panel[0] = !this.panel[0];
+      if (this.panel[0]) {
+        this.panel = [false];
+        this.icon = "arrow_drop_down";
+      } else {
+        this.panel = [true];
+        this.icon = "arrow_drop_up";
+      }
     }
   }
 };

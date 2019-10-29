@@ -3,8 +3,8 @@
   <div class="text-xs-center">
     <v-card>
       <title-page>Thêm trạng thái khẩn cấp</title-page>
-      <v-form ref="form" v-model="valid">
-        <v-container>
+      <v-container>
+        <v-form ref="form" v-model="valid">
           <v-layout row justify-center>
             <v-text-field
               hide-details
@@ -17,16 +17,21 @@
             ></v-text-field>
           </v-layout>
           <v-layout row justify-center style="padding-bottom:20px">
-            <pick-color :selectColor="color" @updateColor="updateColor"></pick-color>
+            <color-picker
+              :selectColor="form.color"
+              @updateColor="updateColor"
+            ></color-picker>
           </v-layout>
           <v-layout row justify-center>
             <v-card-actions>
               <v-btn class="default" @click="close()">Trở lại</v-btn>
-              <v-btn class="primary" :disabled="!valid" @click="validate()">Thêm mới</v-btn>
+              <v-btn class="primary" :disabled="!valid" @click="validate()"
+                >Thêm mới</v-btn
+              >
             </v-card-actions>
           </v-layout>
-        </v-container>
-      </v-form>
+        </v-form>
+      </v-container>
     </v-card>
   </div>
 </template>
@@ -36,15 +41,15 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
 import { messageResult, url } from "@/utils/index";
-import PickColor from "@/components/PickColor";
+import ColorPicker from "@/components/ColorPicker";
 export default {
-  components: { TitlePage, PickColor },
+  components: { TitlePage, ColorPicker },
   props: {},
   data() {
     return {
       form: {
         name: "",
-        color: "#59c7f9",
+        color: "#59c7f9"
       },
       rules: [value => !!value || "Thông tin không được trống"],
       valid: true
@@ -72,7 +77,7 @@ export default {
       }
       let p = {
         name: this.form.name,
-        color: this.color
+        color: this.form.color
       };
       this.add(p);
     },
@@ -96,7 +101,7 @@ export default {
       window.location.href = "#/CRM/CRMPriority";
     },
     updateColor(color) {
-      this.color = color;
+      this.form.color = color;
     }
   }
 };

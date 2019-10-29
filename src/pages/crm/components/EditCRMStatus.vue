@@ -2,11 +2,10 @@
   <div class="text-xs-center">
     <v-card>
       <title-page>Cập nhật trạng thái CRM</title-page>
-      <v-form ref="form" v-model="valid">
-        <v-container>
+      <v-container>
+        <v-form ref="form" v-model="valid">
           <v-layout row justify-center>
-            <v-flex xs12 sm12 md8 lg8>
-              <v-text-field
+            <v-text-field
                 hide-details
                 label="Tên"
                 v-model="form.name"
@@ -15,14 +14,28 @@
                 v-on:keyup="validateForm"
                 :rule="rules"
               ></v-text-field>
-            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-checkbox
+              label="Gửi Sms"
+              v-model="form.is_send_sms"
+              :value="form.is_send_sms"
+            ></v-checkbox>
+          </v-layout>
+          <v-layout row wrap>
+            <v-textarea
+              v-model="form.sms_content"
+              type="text"
+              name="input-10-1"
+              label="Nội dung sms"
+            ></v-textarea>
           </v-layout>
           <v-layout row justify-center>
             <v-card-title primary-title>Màu sắc</v-card-title>
           </v-layout>
           <v-layout row justify-center>
             <color-picker
-            v-if="form.color!=''"
+              v-if="form.color != ''"
               :color="form.color"
               :sucker-hide="false"
               :sucker-canvas="suckerCanvas"
@@ -44,8 +57,8 @@
               </v-btn>
             </v-card-actions>
           </v-layout>
-        </v-container>
-      </v-form>
+        </v-form>
+      </v-container>
     </v-card>
     <dialog-confirm v-if="isRemove" @comfirm="confirmDelete"></dialog-confirm>
   </div>
@@ -58,7 +71,6 @@ import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
 import ColorPicker from "@caohenghu/vue-colorpicker";
-
 export default {
   components: { TitlePage, DialogConfirm, ColorPicker },
   props: {},
@@ -67,7 +79,9 @@ export default {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
         name: "",
-        color: ""
+        color: "",
+        sms_content: "",
+        is_send_sms: false
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
@@ -109,7 +123,9 @@ export default {
       let p = {
         id: this.form.id,
         name: this.form.name,
-        color: this.form.color
+        color: this.form.color,
+        is_send_sms: this.form.is_send_sms,
+        sms_content: this.form.sms_content
       };
       this.update(p);
     },
@@ -158,6 +174,8 @@ export default {
           this.form.id = rs.id;
           this.form.name = rs.name;
           this.form.color = rs.color;
+          this.form.is_send_sms = rs.is_send_sms;
+          this.form.sms_content = rs.sms_content;
         } else {
           window.location.href = "#/404";
         }
@@ -182,12 +200,10 @@ export default {
       let g = rgba.g.toString(16);
       let b = rgba.b.toString(16);
       let a = Math.round(rgba.a * 255).toString(16);
-
       if (r.length == 1) r = "0" + r;
       if (g.length == 1) g = "0" + g;
       if (b.length == 1) b = "0" + b;
       if (a.length == 1) a = "0" + a;
-
       return "#" + r + g + b + a;
     },
     openSucker(isOpen) {

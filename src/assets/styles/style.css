@@ -40,3 +40,15 @@ input::placeholder {
 .select2-form-control input{
   padding-left: 0 !important;
 }
+.v-expansion-panel{
+  box-shadow: none !important;
+  padding:10px 24px
+}
+.v-expansion-panel__header {
+  display: inline-block;
+  margin: 0 auto;
+}
+.theme--light.v-expansion-panel .v-expansion-panel__container {
+  background-color: transparent !important;
+  text-align: center !important;
+}
