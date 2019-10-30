@@ -1,28 +1,63 @@
+
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm quốc gia</title-page>
+      <title-page>Thông tin khách hàng</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
-            <v-flex xs12 sm12 md8 lg8>
+            <v-flex xs12 sm12 md10 lg10>
               <v-text-field
                 v-model="form.name"
-                :rules="[rules.required]"
                 type="text"
-                name="input-10-1"
-                label="Tên"
-                counter
-                @click:append="show1 = !show1"
+                label="Tên khách hàng"
                 :clearable="true"
-              ></v-text-field>              
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs11 sm11 md9 lg9>
+              <v-text-field
+                v-model="form.phone"
+                type="phone"
+                label="Số điện thoại"
+                :clearable="true"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs1 sm1 md1 lg1>
+              <v-btn
+                class="primary"
+                :disabled="form.phone == ''"
+                @click="findInfo()"
+                >Tìm</v-btn
+              >
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs12 sm12 md10 lg10>
+              <v-text-field
+                v-model="form.address"
+                type="text"
+                label="Địa chỉ"
+                :clearable="true"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs12 sm12 md10 lg10>
+              <v-text-field
+                v-model="form.desciption"
+                type="text"
+                label="Ghi chú"
+                :clearable="true"
+              ></v-text-field>
             </v-flex>
           </v-layout>
           <v-layout row justify-center>
             <v-card-actions>
               <v-btn class="default" @click="close()">Trở lại</v-btn>
               <v-btn class="primary" :disabled="!valid" @click="validate()"
-                >Thêm mới</v-btn
+                >Tiếp tục thêm mới</v-btn
               >
             </v-card-actions>
           </v-layout>
@@ -44,12 +79,9 @@ export default {
     return {
       form: {
         name: "",
-        type: "",
-        sortOrder: 0
+        color: "#59c7f9"
       },
-      rules: {
-        required: value => !!value || "Bắt buộc nhập."
-      },
+      rules: [value => !!value || "Thông tin không được trống"],
       valid: true
     };
   },
@@ -70,19 +102,18 @@ export default {
       }
     },
     save() {
-      if (this.form.name == "") {
+      if (this.form.name == "" || this.color == "") {
         return;
       }
       let p = {
         name: this.form.name,
-        type:this.form.type,
-        sortOrder:this.form.sortOrder
+        color: this.color
       };
       this.add(p);
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.country.route, model]);
+        let rs = await this.Create([url.crm.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -90,14 +121,17 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/Country";
+          window.location.href = "#/CRM/Index";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Setting/Country";
+      window.location.href = "#/CRM/Index";
+    },
+    updateColor(color) {
+      this.color = color;
     }
   }
 };

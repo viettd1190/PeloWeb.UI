@@ -71,12 +71,26 @@ export default [
   },
   //Crm
   {
-    path: '/CRM/Index',
+    path: '/CRM',
     meta: {
       breadcrumb: true
     },
     name: 'CRM/Index',
     component: () => import(`@/pages/crm/index.vue`)
+  },{
+    path: '/CRM/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/Index',
+    component: () => import(`@/pages/crm/components/AddCRM.vue`)
+  },{
+    path: '/CRM/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/Index',
+    component: () => import(`@/pages/crm/components/EditCRM.vue`)
   },{
     path: '/CRM/KhachChuaXuLyTrongNgay',
     meta: {
@@ -205,7 +219,29 @@ export default [
     },
     name: 'CRM/CustomerSource',
     component: () => import(`@/pages/crm/components/EditCustomerSource.vue`)
+  },{
+    path: '/CRM/Country',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/Country',
+    component: () => import(`@/pages/crm/Country.vue`)
   },
+  {
+    path: '/CRM/Country/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/Country',
+    component: () => import(`@/pages/crm/components/AddCountry.vue`)
+  },{
+    path: '/CRM/Country/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'CRM/Country',
+    component: () => import(`@/pages/crm/components/EditCountry.vue`)
+  }
   //end Crm
   //product
   ,{
@@ -215,6 +251,20 @@ export default [
     },
     name: 'Product/Index',
     component: () => import(`@/pages/product/Index.vue`)
+  },{
+    path: '/Product/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/Index',
+    component: () => import(`@/pages/product/components/AddProduct.vue`)
+  },{
+    path: '/Product/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Product/Index',
+    component: () => import(`@/pages/product/components/EditProduct.vue`)
   },
   ,{
     path: '/Product/ProductGroup',
@@ -500,28 +550,6 @@ export default [
     },
     name: 'Setting/Ward',
     component: () => import(`@/pages/setting/components/EditWard.vue`)
-  },{
-    path: '/Setting/Country',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/Country',
-    component: () => import(`@/pages/setting/Country.vue`)
-  },
-  {
-    path: '/Setting/Country/Add',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/Country',
-    component: () => import(`@/pages/setting/components/AddCountry.vue`)
-  },{
-    path: '/Setting/Country/Edit/:id',
-    meta: {
-      breadcrumb: true
-    },
-    name: 'Setting/Country',
-    component: () => import(`@/pages/setting/components/EditCountry.vue`)
   },
   //end Setting
   //Recruitment

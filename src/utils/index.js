@@ -148,6 +148,11 @@ export let url = {
     route: 'crm_type',
     all: 'crm_type/all',
     id: 'crm_type/'
+  },
+  product: {
+    route: 'product',
+    all: 'product/all',
+    id: 'product/'
   }
 };
 export let pagination = {

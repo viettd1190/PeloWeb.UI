@@ -46,7 +46,11 @@ const Menu = [
       title: 'Nguồn khách hàng',
       group: 'CRM',
       name: 'CustomerSource',
-    }]
+    },{
+      title: 'Xuất xứ',
+      group: 'CRM',
+      name: 'Country',
+    },]
   },
   {
     title:'Sản phẩm',
@@ -237,11 +241,7 @@ const Menu = [
       title: 'Xã phường',
       group: 'Setting',
       name: 'Ward',
-    },{
-      title: 'Quốc gia',
-      group: 'Setting',
-      name: 'Country',
-    },]
+    }]
   },
 ];
 

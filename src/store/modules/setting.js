@@ -27,6 +27,9 @@ const setting = {
     STATE_UPDATE_ROLES: (state, data) => {
       state.roles = data;//.map(x => {return {id:x.id, text: x.name}});
     },
+    STATE_COUNTRY: (state, data) => {
+      state.countries = data;//.map(x => {return {id:x.id, text: x.name}});
+    },
   },
   actions: {    
     ///province
@@ -129,11 +132,11 @@ const setting = {
       if(state.countries==null){
         return await new Promise((resolve, reject) => {
           API.setting
-            .getRolehAll()
+            .getCountries()
             .then(response => {
               let result = response.data;
               if (result.isSuccess) {
-                commit('STATE_UPDATE_ROLES', result.data);
+                commit('STATE_COUNTRY', result.data);
                 resolve(result.data);
               } else {
                 reject(result.Message);

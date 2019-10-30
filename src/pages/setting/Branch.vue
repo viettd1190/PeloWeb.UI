@@ -1,6 +1,6 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Chi nhánh</title-page>
+    <title-page>Danh sách chi nhánh</title-page>
     <v-expansion-panel expand v-model="panel" :readonly="readonly">
       <v-expansion-panel-content>
         <v-layout row wrap>

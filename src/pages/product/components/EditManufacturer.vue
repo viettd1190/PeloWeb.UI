@@ -11,7 +11,6 @@
                 label="Tên"
                 v-model="form.name"
                 class="ma-2"
-                append-icon="search"
                 v-on:keyup="validateForm"
                 :rule="rules"
               ></v-text-field>

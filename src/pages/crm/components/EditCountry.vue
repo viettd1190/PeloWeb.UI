@@ -106,14 +106,14 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/Country";
+          window.location.href = "#/CRM/Country";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Setting/Country";
+      window.location.href = "#/CRM/Country";
     },
     removeData() {
       this.isRemove = true;
@@ -128,7 +128,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Setting/Country";
+          window.location.href = "#/CRM/Country";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);

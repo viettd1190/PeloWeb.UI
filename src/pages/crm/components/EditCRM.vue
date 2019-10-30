@@ -2,7 +2,7 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm cơ hội bán hàng</title-page>
+      <title-page>Thêm CRM</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>

@@ -27,21 +27,20 @@
               <v-layout row wrap>
                 <v-text-field
                   hide-details
-                  label="Địa chỉ"
-                  v-model="customer_address"
+                  label="Số điện thoại"
+                  v-model="customer_phone"
                   v-on:keyup="inputSearch"
                   :clearable="true"
                 ></v-text-field>
               </v-layout>
               <v-layout row wrap>
-                <select2
-                  :options="districts"
-                  :reduce="district => district.id"
-                  placeholder="Quận"
-                  label="name"
-                  v-model="district_id"
-                  class="command-control"
-                ></select2>
+                <v-text-field
+                  hide-details
+                  label="Địa chỉ"
+                  v-model="customer_address"
+                  v-on:keyup="inputSearch"
+                  :clearable="true"
+                ></v-text-field>
               </v-layout>
               <v-layout row wrap>
                 <v-text-field
@@ -123,15 +122,6 @@
                   class="command-control"
                 ></select2>
               </v-layout>
-              <v-layout row wrap>
-                <v-text-field
-                  hide-details
-                  label="Số điện thoại"
-                  v-model="customer_phone"
-                  v-on:keyup="inputSearch"
-                  :clearable="true"
-                ></v-text-field>
-              </v-layout>
               <v-layout row wrap
                 ><select2
                   :options="provinces"
@@ -139,6 +129,16 @@
                   placeholder="Tỉnh thành"
                   label="name"
                   v-model="province_id"
+                  class="command-control"
+                ></select2>
+              </v-layout>
+              <v-layout row wrap>
+                <select2
+                  :options="districts"
+                  :reduce="district => district.id"
+                  placeholder="Quận"
+                  label="name"
+                  v-model="district_id"
                   class="command-control"
                 ></select2>
               </v-layout>
@@ -226,7 +226,7 @@
           <v-icon>sort</v-icon>Lọc
         </v-btn>
         <v-btn color="orange" class="white--text" @click="add()">
-          <v-icon>add</v-icon>Thêm mới
+          <v-icon>add</v-icon>Thêm cơ hội bán hàng
         </v-btn>
       </v-layout>
       <v-data-table
@@ -244,15 +244,65 @@
       >
         <template slot="items" slot-scope="props">
           <tr class="table-row">
+            <td nowrap>
+              <v-layout
+                justify-center
+                class="white--text mark-content"
+                :style="{ background: props.item.crm_status_color }"
+                wrap
+                >{{ props.item.crm_status }}</v-layout
+              >
+            </td>
+            <td nowrap justify-center>
+              <v-layout
+                justify-center
+                class="white--text mark-content"
+                :style="{ background: props.item.crm_priority_color }"
+                wrap
+                >{{ props.item.crm_priority }}</v-layout
+              >
+            </td>
             <td nowrap style="cursor:pointer" @click="select(props.item)">
-              <a>{{ props.item.name }}</a>
+              <v-layout justify-center
+                ><a>{{ props.item.code }}</a></v-layout
+              >
             </td>
             <td nowrap>
-              <span
-                :style="{ background: `${props.item.color}` }"
-                style="color:white;padding:5px"
-                >{{ props.item.color }}</span
+              <v-layout>{{ props.item.customer }}</v-layout>
+              <v-layout
+                ><a
+                  style="text-decoration: none;"
+                  :href="`tel:${props.item.customer_phone}`"
+                  >{{ props.item.customer_phone }}</a
+                ></v-layout
               >
+              <v-layout style="text-transform:capitalize;">{{
+                props.item.customer_address
+              }}</v-layout>
+              <v-layout
+                >Nhóm khách hàng: &nbsp;
+                <p class="darken-4">
+                  {{ props.item.customer_group }}
+                </p></v-layout
+              >
+            </td>
+            <td nowrap>
+              <v-layout
+                >Nhu cầu: &nbsp;
+                <p class="darken-4">{{ props.item.need }}</p></v-layout
+              >
+            </td>
+            <td nowrap>
+              <v-layout>{{ props.item.customer_source }}</v-layout>
+            </td>
+            <td><v-layout wrap> </v-layout></td>
+            <td nowrap>
+              <v-layout>{{
+                formatDate(props.item.contact_date)
+              }}</v-layout>
+            </td>
+            <td nowrap>
+              <v-layout>{{ formatDate(props.item.date_created) }}</v-layout>
             </td>
           </tr>
         </template>
@@ -267,6 +317,7 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
 import TitlePage from "@/components/TitlePage";
+
 export default {
   components: {
     TitlePage
@@ -283,25 +334,26 @@ export default {
           {
             text: "Trạng thái",
             value: "crm_status",
-            align: "center",
-            sorable: true
+            sorable: true,
+            class: "blue--text text--lighten-1"
           },
           {
             text: "Mức độ khẩn cấp",
             value: "crm_priority",
             align: "center",
-            sorable: true
+            sorable: true,
+            class: "blue--text text--lighten-1"
           },
           {
             text: "Mã cơ hội",
             value: "code",
             align: "center",
-            sorable: true
+            sorable: true,
+            class: "blue--text text--lighten-1"
           },
           {
             text: "Khách hàng",
-            value: "customer",
-            align: "center"
+            value: "customer"
           },
           {
             text: "Nhu cầu",
@@ -309,10 +361,11 @@ export default {
             align: "center"
           },
           {
-            text: "Nguồn",
+            text: "Nguồn khách hàng",
             value: "customer_source",
             align: "center",
-            sorable: true
+            sorable: true,
+            class: "blue--text text--lighten-1"
           },
           {
             text: "Phụ trách",
@@ -321,14 +374,17 @@ export default {
           },
           {
             text: "Ngày liên hệ tiếp",
-            value: "next_contact_date",
+            value: "contact_date",
             align: "center",
+            sorable: true,
+            class: "blue--text text--lighten-1"
           },
           {
             text: "Ngày tạo",
             value: "date_created",
             align: "center",
-            sorable: true
+            sorable: true,
+            class: "blue--text text--lighten-1"
           }
         ]
       },
@@ -337,7 +393,7 @@ export default {
         itemsPerPage: 10,
         rowsPerPage: 10,
         totalRecords: 0,
-        sortBy: "",
+        sortBy: "date_created",
         descending: true
       },
       datasourceFiltered: [],
@@ -363,7 +419,7 @@ export default {
       date_created: null,
       from_date: null,
       to_date: null,
-      users: [],      
+      users: [],
       customerGroups: [],
       customerSources: [],
       productGroups: [],
@@ -376,11 +432,11 @@ export default {
         { id: 0, name: "Chưa đến" },
         { id: 1, name: "Đã đến" }
       ],
-      types:[],
+      types: []
     };
   },
   computed: {
-      ...mapGetters(["provinces", "districts", "wards"])
+    ...mapGetters(["provinces", "districts", "wards"])
   },
   created() {},
   mounted() {},
@@ -405,7 +461,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetList"]),
+    ...mapActions(["GetList","GetAll"]),
     async getList() {
       try {
         const {
@@ -433,8 +489,8 @@ export default {
               district_id: this.district_id,
               ward_id: this.ward_id,
               customer_address: this.customer_address,
-              need:this.need,
-              crm_type_id:this.crm_type_id,
+              need: this.need,
+              crm_type_id: this.crm_type_id,
               customer_phone: this.customer_phone,
               customer_group_id: this.customer_group_id,
               customer_source_id: this.customer_source_id,
@@ -444,10 +500,10 @@ export default {
               product_group_id: this.product_group_id,
               visit: this.visit,
               user_id: this.user_id,
-              user_created_id:this.user_created_id,
+              user_created_id: this.user_created_id,
               from_date: this.from_date,
               to_date: this.to_date,
-              date_created:this.date_created
+              date_created: this.date_created
             }
           ]);
           if (rs != null && rs.data) {
@@ -490,10 +546,17 @@ export default {
         this.panel = [true];
         this.icon = "arrow_drop_up";
       }
+    },
+    formatDate(date) {
+      return moment(date).format("YYYY-MM-DD HH:mm:ss");
     }
   }
 };
 </script>
 
 <style>
+.mark-content {
+  width: fit-content;
+  padding: 5px;
+}
 </style>
