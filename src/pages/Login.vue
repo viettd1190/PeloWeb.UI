@@ -9,7 +9,7 @@
                                 <div class="layout column align-center">
                                     <br>
                                     <img
-                                        src="/static/logo.png"
+                                        :src="image"
                                         alt="Vue Material Admin"
                                     >
                                     <h2 class="flex my-4 primary--text"></h2>
@@ -59,9 +59,12 @@
 
 <script>
 import { mapActions } from 'vuex';
+import image from "@/assets/logo.png";
+
 export default {
   data: () => ({
     loading: false,
+    image: image,
     model: {
       username: '',
       password: ''
