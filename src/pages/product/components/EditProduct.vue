@@ -46,7 +46,7 @@
                 :reduce="manufacturer => manufacturer.id"
                 placeholder="Thương hiệu"
                 label="name"
-                v-model="manufacturer_id"
+                v-model="form.manufacturer_id"
                 class="select2-form-control"
               ></select2>
             </v-flex>
@@ -58,7 +58,7 @@
                 :reduce="productGroup => productGroup.id"
                 placeholder="Nhóm sản phẩm"
                 label="name"
-                v-model="product_group_id"
+                v-model="form.product_group_id"
                 class="select2-form-control"
               ></select2>
             </v-flex>
@@ -70,7 +70,7 @@
                 :reduce="productUnit => productUnit.id"
                 placeholder="Đơn vị tính"
                 label="name"
-                v-model="product_unit_id"
+                v-model="form.product_unit_id"
                 class="select2-form-control"
               ></select2>
             </v-flex>
@@ -82,7 +82,7 @@
                 :reduce="productStatus => productStatus.id"
                 placeholder="Trạng thái sản phẩm"
                 label="name"
-                v-model="product_status_id"
+                v-model="form.product_status_id"
                 class="select2-form-control"
               ></select2>
             </v-flex>
@@ -90,11 +90,11 @@
           <v-layout row justify-center>
             <v-flex xs12 sm12 md10 lg10>
               <select2
-                :options="selectCountries"
+                :options="countries"
                 :reduce="country => country.id"
                 placeholder="Xuất xứ"
                 label="name"
-                v-model="country_id"
+                v-model="form.country_id"
                 class="select2-form-control"
               ></select2>
             </v-flex>
@@ -126,7 +126,7 @@
             <v-card-actions>
               <v-btn class="default" @click="close()">Trở lại</v-btn>
               <v-btn class="primary" :disabled="!valid" @click="validate()"
-                >Thêm mới</v-btn
+                >Cập nhật</v-btn
               >
             </v-card-actions>
           </v-layout>
@@ -225,14 +225,14 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Product/Index";
+          window.location.href = "#/Product";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Product/Index";
+      window.location.href = "#/Product";
     },
     removeData() {
       this.isRemove = true;
