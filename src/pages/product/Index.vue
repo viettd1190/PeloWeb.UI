@@ -44,6 +44,7 @@
                 label="name"
                 v-model="product_unit_id"
                 class="command-control"
+                text="Đơn vị tính"
               ></select2>
             </v-layout>
             <v-layout row wrap>

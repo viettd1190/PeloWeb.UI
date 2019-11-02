@@ -41,6 +41,28 @@
           </v-layout>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md10 lg10>
+              <v-text-field
+                hide-details
+                label="Số lượng tồn kho nhiều nhất"
+                type="number"
+                v-model="form.max_count"
+                v-on:keyup="validateForm"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs12 sm12 md10 lg10>
+              <v-text-field
+                hide-details
+                label="Số lượng tồn kho ít nhất"
+                type="number"
+                v-model="form.min_count"
+                v-on:keyup="validateForm"
+              ></v-text-field>
+            </v-flex>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-flex xs12 sm12 md10 lg10>
               <select2
                 :options="manufacturers"
                 :reduce="manufacturer => manufacturer.id"
@@ -156,7 +178,9 @@ export default {
         product_status_id: 0,
         warranty_month: 0,
         sell_price: 0,
-        import_price: 0
+        import_price: 0,
+        min_count: 0,
+        max_count: 0
       },
       rules: [value => !!value || "Thông tin không được trống"],
       valid: true,
@@ -192,13 +216,15 @@ export default {
         name: this.form.name,
         description: this.form.description,
         country_id: this.form.country_id,
-        manufacturer_id:this.form.manufacturer_id,
+        manufacturer_id: this.form.manufacturer_id,
         product_unit_id: this.form.product_unit_id,
         product_group_id: this.form.product_group_id,
         product_status_id: this.form.product_status_id,
         warranty_month: this.form.warranty_month,
         sell_price: this.form.sell_price,
-        import_price: this.form.import_price
+        import_price: this.form.import_price,
+        min_count: this.form.min_count,
+        max_count: this.form.max_count
       };
       this.add(p);
     },
