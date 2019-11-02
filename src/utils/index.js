@@ -153,6 +153,11 @@ export let url = {
     route: 'product',
     all: 'product/all',
     id: 'product/'
+  },
+  pay_method: {
+    route: 'pay_method',
+    all: 'pay_method/all',
+    id: 'pay_method/'
   }
 };
 export let pagination = {

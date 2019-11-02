@@ -712,6 +712,22 @@ export default [
     component: () => import(`@/pages/invoice/PayMethod.vue`)
   }
   ,{
+    path: '/Invoice/PayMethod/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Invoice/PayMethod/Index',
+    component: () => import(`@/pages/invoice/components/AddPayMethod.vue`)
+  }
+  ,{
+    path: '/Invoice/PayMethod/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Invoice/PayMethod/Index',
+    component: () => import(`@/pages/invoice/components/EditPayMethod.vue`)
+  }
+  ,{
     path: '/Invoice/InvoiceStatus',
     meta: {
       breadcrumb: true
