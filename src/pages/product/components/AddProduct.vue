@@ -204,7 +204,7 @@ export default {
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.manufacturer.route, model]);
+        let rs = await this.Create([url.product.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {

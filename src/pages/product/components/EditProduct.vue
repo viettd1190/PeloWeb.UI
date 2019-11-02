@@ -264,6 +264,7 @@ export default {
           this.form.product_unit_id = rs.product_unit_id;
           this.form.product_group_id = rs.product_group_id;
           this.form.product_status_id = rs.product_status_id;
+          this.form.country_id = rs.country_id;
           this.form.warranty_month = rs.warranty_month;
           this.form.sell_price = rs.sell_price;
           this.form.import_price = rs.import_price;
