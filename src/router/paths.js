@@ -71,7 +71,7 @@ export default [
   },
   //Crm
   {
-    path: '/CRM',
+    path: '/CRM/Index',
     meta: {
       breadcrumb: true
     },
@@ -245,7 +245,7 @@ export default [
   //end Crm
   //product
   ,{
-    path: '/Product',
+    path: '/Product/Index',
     meta: {
       breadcrumb: true
     },

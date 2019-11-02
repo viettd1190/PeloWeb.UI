@@ -2,34 +2,80 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm CRM</title-page>
+      <title-page>Cập nhật cơ hội bán hàng</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
-          <v-layout row justify-center>
+          <v-layout row wrap>
+            <v-flex xs12 sm12 md6 lg6>
+              <v-layout row justify-center>
+                <v-text-field
+                  v-model="form.code"
+                  type="text"
+                  required
+                  readonly
+                  name="input-10-1"
+                  label="Mã cơ hội"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row justify-center>
+                <v-text-field
+                  v-model="form.code"
+                  type="text"
+                  required
+                  readonly
+                  name="input-10-1"
+                  label="Tên khách hàng"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row justify-center>
+                <v-text-field
+                  v-model="form.code"
+                  type="text"
+                  required
+                  readonly
+                  name="input-10-1"
+                  label="Mã cơ hội"
+                ></v-text-field>
+              </v-layout>
+              <v-layout row justify-center>
+                <v-text-field
+                  v-model="form.code"
+                  type="text"
+                  required
+                  readonly
+                  name="input-10-1"
+                  label="Mã cơ hội"
+                ></v-text-field>
+              </v-layout>
+            </v-flex>
+          </v-layout>
+          <!-- <v-layout row justify-center>
             <v-flex xs12 sm12 md10 lg10>
               <select2
-              :options="provinces"
-              :reduce="province => province.id"
-              placeholder="Tỉnh thành"
-              label="name"
-              :clearable="false"
-              v-model="selectedprovince"
-              class="select2-form-control"
-            ></select2>
+                :options="provinces"
+                :reduce="province => province.id"
+                placeholder="Tỉnh thành"
+                label="name"
+                :clearable="false"
+                v-model="selectedprovince"
+                class="select2-form-control"
+              ></select2>
             </v-flex>
           </v-layout>
           <v-layout row justify-center>
             <v-flex xs12 sm12 md10 lg10>
-            <select2
-              :options="selectDistricts"
-              :reduce="district => district.id"
-              placeholder="Quận huyện"
-              label="name"
-              :clearable="false"
-              v-model="selecteddistrict"
-              :loading="selectDistricts.length == 0 && selectedprovince != null"
-              class="select2-form-control"
-            ></select2>
+              <select2
+                :options="selectDistricts"
+                :reduce="district => district.id"
+                placeholder="Quận huyện"
+                label="name"
+                :clearable="false"
+                v-model="selecteddistrict"
+                :loading="
+                  selectDistricts.length == 0 && selectedprovince != null
+                "
+                class="select2-form-control"
+              ></select2>
             </v-flex>
           </v-layout>
           <v-layout row justify-center>
@@ -79,11 +125,13 @@
                 :clearable="true"
               ></v-text-field>
             </v-flex>
-          </v-layout>
+          </v-layout> -->
           <v-layout row justify-center>
             <v-card-actions>
               <v-btn class="default" @click="close()">Trở lại</v-btn>
-              <v-btn class="primary" :disabled="!valid" @click="validate()">Thêm mới</v-btn>
+              <v-btn class="primary" :disabled="!valid" @click="validate()"
+                >Thêm mới</v-btn
+              >
             </v-card-actions>
           </v-layout>
         </v-container>
@@ -103,8 +151,9 @@ export default {
   data() {
     return {
       form: {
-        name: "",
-        color: "#59c7f9",
+        code: "",
+        customer_name: "",
+        color: "#59c7f9"
       },
       rules: [value => !!value || "Thông tin không được trống"],
       valid: true
