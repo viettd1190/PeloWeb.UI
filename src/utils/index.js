@@ -158,6 +158,21 @@ export let url = {
     route: 'pay_method',
     all: 'pay_method/all',
     id: 'pay_method/'
+  },
+  task_priority: {
+    route: 'task_priority',
+    all: 'task_priority/all',
+    id: 'task_priority/'
+  },
+  task_status: {
+    route: 'task_status',
+    all: 'task_status/all',
+    id: 'task_status/'
+  },
+  task_type: {
+    route: 'task_type',
+    all: 'task_type/all',
+    id: 'task_type/'
   }
 };
 export let pagination = {

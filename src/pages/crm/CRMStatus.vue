@@ -77,7 +77,7 @@ export default {
           },
           {
             text: "Màu sắc",
-            value: "name",
+            value: "color",
             align: "center"
           }
         ]

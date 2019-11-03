@@ -122,15 +122,15 @@ const Menu = [
     },{
       title: 'Trạng thái',
       group: 'Task',
-      name: 'TaskStatus/Index',
+      name: 'TaskStatus',
     },{
       title: 'Mức độ gấp',
       group: 'Task',
-      name: 'TaskPriority/Index',
+      name: 'TaskPriority',
     },{
       title: 'Loại công việc',
       group: 'Task',
-      name: 'TaskType/Index',
+      name: 'TaskType',
     },{
       title: 'Thời gian lặp lại',
       group: 'Task',

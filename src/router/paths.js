@@ -651,24 +651,68 @@ export default [
     meta: {
       breadcrumb: true
     },
-    name: 'Task/TaskStatus/Index',
+    name: 'Task/TaskStatus',
     component: () => import(`@/pages/task/TaskStatus.vue`)
+  }
+  ,{
+    path: '/Task/TaskStatus/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskStatus',
+    component: () => import(`@/pages/task/components/AddTaskStatus.vue`)
+  }
+  ,{
+    path: '/Task/TaskStatus/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskStatus',
+    component: () => import(`@/pages/task/components/EditTaskStatus.vue`)
   }
   ,{
     path: '/Task/TaskPriority',
     meta: {
       breadcrumb: true
     },
-    name: 'Task/TaskPriority/Index',
+    name: 'Task/TaskPriority',
     component: () => import(`@/pages/task/TaskPriority.vue`)
+  },{
+    path: '/Task/TaskPriority/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskPriority',
+    component: () => import(`@/pages/task/components/AddTaskPriority.vue`)
+  },{
+    path: '/Task/TaskPriority/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskPriority',
+    component: () => import(`@/pages/task/components/EditTaskPriority.vue`)
   }
   ,{
     path: '/Task/TaskType',
     meta: {
       breadcrumb: true
     },
-    name: 'Task/TaskType/Index',
+    name: 'Task/TaskType',
     component: () => import(`@/pages/task/TaskType.vue`)
+  },{
+    path: '/Task/TaskType/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskType',
+    component: () => import(`@/pages/task/components/AddTaskType.vue`)
+  },{
+    path: '/Task/TaskType/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskType',
+    component: () => import(`@/pages/task/components/EditTaskType.vue`)
   }
   ,{
     path: '/Task/TaskLoop',
