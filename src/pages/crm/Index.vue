@@ -60,6 +60,17 @@
                   v-model="crm_status_id"
                   class="command-control"
                 ></select2>
+                <!-- <multiselect
+                  v-model="crm_status"
+                  tag-placeholder="Trạng thái"
+                  placeholder="Trạng thái"
+                  label="name"
+                  track-by="id"
+                  :options="cmrStatuses"
+                  :taggable="true"
+                  :clearOnSelect="true"
+                  :allowEmpty="true"
+                ></multiselect> -->
               </v-layout>
               <v-layout row wrap
                 ><select2
@@ -297,9 +308,7 @@
             </td>
             <td><v-layout wrap> </v-layout></td>
             <td nowrap>
-              <v-layout>{{
-                formatDate(props.item.contact_date)
-              }}</v-layout>
+              <v-layout>{{ formatDate(props.item.contact_date) }}</v-layout>
             </td>
             <td nowrap>
               <v-layout>{{ formatDate(props.item.date_created) }}</v-layout>
@@ -317,10 +326,12 @@ import { mapMutations, mapActions, mapGetters } from "vuex";
 import { log } from "util";
 import moment from "moment";
 import TitlePage from "@/components/TitlePage";
+import Multiselect from "vue-multiselect";
 
 export default {
   components: {
-    TitlePage
+    TitlePage,
+    Multiselect
   },
   props: {},
   data() {
@@ -432,13 +443,16 @@ export default {
         { id: 0, name: "Chưa đến" },
         { id: 1, name: "Đã đến" }
       ],
-      types: []
+      types: [],
+      crm_status: { id: 0 }
     };
   },
   computed: {
     ...mapGetters(["provinces", "districts", "wards"])
   },
-  created() {},
+  created() {
+    this.syncSelect();
+  },
   mounted() {},
   watch: {
     pagination: {
@@ -461,7 +475,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetList","GetAll"]),
+    ...mapActions(["GetList", "GetAll"]),
     async getList() {
       try {
         const {
@@ -549,11 +563,22 @@ export default {
     },
     formatDate(date) {
       return moment(date).format("YYYY-MM-DD HH:mm:ss");
+    },
+    syncSelect() {
+      this.getStatus();
+    },
+    async getStatus() {
+      try {
+        let rs = await this.GetAll(url.crm_status.all);
+        if (typeof rs == "object") {
+          this.cmrStatuses = rs;
+        }
+      } catch (error) {}
     }
   }
 };
 </script>
-
+<style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
 <style>
 .mark-content {
   width: fit-content;

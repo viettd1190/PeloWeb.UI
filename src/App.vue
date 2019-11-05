@@ -19,7 +19,8 @@
               class="text-bold-800 darken-2"
               href="http://vidia.vn"
               target="_blank"
-            >VIDIA</a>, All rights reserved.
+              >VIDIA</a
+            >, All rights reserved.
           </span>
           <v-spacer />
         </v-footer>
@@ -33,7 +34,13 @@
         </keep-alive>
       </transition>
     </template>
-    <v-snackbar :timeout="5000" bottom right :color="snackbar.color" v-model="snackbar.show">
+    <v-snackbar
+      :timeout="5000"
+      bottom
+      right
+      :color="snackbar.color"
+      v-model="snackbar.show"
+    >
       {{ snackbar.text }}
       <v-btn dark flat @click.native="snackbar.show = false" icon>
         <v-icon>close</v-icon>
@@ -43,7 +50,11 @@
       <v-card color="primary" dark>
         <v-card-text>
           Đang tải dữ liệu
-          <v-progress-linear indeterminate color="white" class="mb-0"></v-progress-linear>
+          <v-progress-linear
+            indeterminate
+            color="white"
+            class="mb-0"
+          ></v-progress-linear>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -66,6 +77,11 @@ import ThemeSettings from "@/components/ThemeSettings";
 import UpdatePassword from "@/components/UpdatePassword";
 import AppEvents from "./event";
 import { mapGetters, mapMutations, mapActions } from "vuex";
+import Firebase from "firebase";
+
+Firebase.initializeApp(process.env.CONFIG);
+const database = Firebase.database();
+const notification = database.ref("user_notifications/" + this.id);
 export default {
   components: {
     AppDrawer,
@@ -75,6 +91,9 @@ export default {
     ThemeSettings,
     UpdatePassword
   },
+  // firebase: {
+  //   notifications: notification
+  // },
   data: () => ({
     expanded: true,
     rightDrawer: false,
@@ -84,13 +103,19 @@ export default {
       color: ""
     },
     loadingDialog: false,
-    showUpdatePassword: false 
-    
+    showUpdatePassword: false
+    //id: this.loggedUser == null ? 0 : this.loggedUser.i
   }),
   computed: {
-    ...mapGetters([])
+    ...mapGetters(["loggedUser"])
   },
-  watch: {},
+  watch: {
+    loggedUser() {
+      if (this.loggedUser != null) {
+        //notification.on("value");
+      }
+    }
+  },
   created() {
     AppEvents.forEach(item => {
       this.$on(item.name, item.callback);
@@ -103,6 +128,12 @@ export default {
     this.getProvinceAll();
     this.getRoleAll();
     this.getCountryAll();
+    // notification.once("value", count => {
+    //   console.log(count.val());
+    // });
+    if (this.loggedUser == null || !this.loggedUser.token) {
+      this.logOut();
+    }
   },
   methods: {
     ...mapMutations([]),
@@ -112,7 +143,8 @@ export default {
       "GetProvinceAll",
       "GetBranchAll",
       "GetRoleAll",
-      "GetCountryAll"
+      "GetCountryAll",
+      "LogOut"
     ]),
     openThemeSettings() {
       this.$vuetify.goTo(0);
@@ -164,6 +196,11 @@ export default {
     },
     async getCountryAll() {
       await this.GetCountryAll();
+    },
+    logOut() {
+      // notification.off("value");
+      this.LogOut();
+      this.$router.replace({ path: "/login" });
     }
   }
 };

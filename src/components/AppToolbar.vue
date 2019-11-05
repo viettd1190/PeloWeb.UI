@@ -27,9 +27,12 @@
         :nudge-right="12"
       >
         <v-toolbar-title class="ml-0 logged-user" slot="activator">
+          <v-avatar size="32"
+            ><img :src="loggedUser.a" @error="errorImgUrl"
+          /></v-avatar>
           <span>
             <small v-if="loggedUser">
-              {{ loggedUser.u }}
+              {{ loggedUser == null ? "" : loggedUser.u }}
               <v-icon>expand_more</v-icon>
             </small>
           </span>
@@ -138,7 +141,7 @@ export default {
     },
 
     logout() {
-      window.getApp.$emit("APP_LOGOUT");
+      window.getApp.logOut(); //.$emit("APP_LOGOUT");
     },
     changePassword() {
       window.getApp.updatePassword();
@@ -176,6 +179,9 @@ export default {
             this.loading = false;
           });
       }
+    },
+    errorImgUrl(event) {
+      event.target.src = "/static/logo.png";
     }
   }
 };

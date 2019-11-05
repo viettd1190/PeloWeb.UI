@@ -66,7 +66,8 @@ const user = {
               let loggedUser = {
                 u: result.data.username,
                 d: result.data.displayName,
-                a: result.data.avatar
+                a: result.data.avatar,
+                i:result.data.id
               };
               commit('SET_LOGGED_USER', loggedUser);
               resolve(token);
