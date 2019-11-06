@@ -8,6 +8,7 @@ const getters = {
   branchs: state => state.setting.branchs,
   users:state => state.setting.users,
   roles:state=>state.setting.roles,
-  countries:state=>state.setting.countries
+  countries:state=>state.setting.countries,
+  noticounter:state=>state.user.noticounter,
 };
 export default getters;

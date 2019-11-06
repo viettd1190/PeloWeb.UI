@@ -81,7 +81,7 @@ import Firebase from "firebase";
 
 Firebase.initializeApp(process.env.CONFIG);
 const database = Firebase.database();
-const notification = database.ref("user_notifications/" + this.id);
+const notification = database.ref("user_notifications");
 export default {
   components: {
     AppDrawer,
@@ -112,7 +112,17 @@ export default {
   watch: {
     loggedUser() {
       if (this.loggedUser != null) {
-        //notification.on("value");
+        notification.once("value", users => {
+          users.forEach(user => {
+            if (this.loggedUser != null && user.key == this.loggedUser.i) {
+              console.log(user.key);
+              console.log(user.child("count").val());
+              this.STATE_NOTI_USER(user.child("count").val());
+            }
+          });
+        });
+      } else {
+        this.logOut();
       }
     }
   },
@@ -123,20 +133,25 @@ export default {
     window.getApp = this;
   },
   mounted() {
+    if (this.loggedUser != null) {
+      notification.once("value", users => {
+        users.forEach(user => {
+          if (this.loggedUser != null && user.key == this.loggedUser.i) {
+            console.log(user.key);
+            console.log(user.child("count").val());
+            this.STATE_NOTI_USER(user.child("count").val());
+          }
+        });
+      });
+    }
     this.getUserAll();
     this.getBranchs();
     this.getProvinceAll();
     this.getRoleAll();
     this.getCountryAll();
-    // notification.once("value", count => {
-    //   console.log(count.val());
-    // });
-    if (this.loggedUser == null || !this.loggedUser.token) {
-      this.logOut();
-    }
   },
   methods: {
-    ...mapMutations([]),
+    ...mapMutations(["STATE_NOTI_USER"]),
     ...mapActions([
       "GetUserAll",
       "GetAll",

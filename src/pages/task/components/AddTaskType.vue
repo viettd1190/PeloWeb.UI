@@ -10,7 +10,6 @@
               hide-details
               label="Tên"
               v-model="form.name"
-              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
               :clearable="true"
@@ -21,7 +20,6 @@
               hide-details
               label="Vị trí"
               v-model="form.sort_order"
-              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
               type="number"
@@ -46,9 +44,8 @@ import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
 import { messageResult, url } from "@/utils/index";
-import ColorPicker from "@/components/ColorPicker";
 export default {
-  components: { TitlePage, ColorPicker },
+  components: { TitlePage },
   props: {},
   data() {
     return {
@@ -77,7 +74,7 @@ export default {
       }
     },
     save() {
-      if (this.form.name == "" || this.color == "") {
+      if (this.form.name == "") {
         return;
       }
       let p = {

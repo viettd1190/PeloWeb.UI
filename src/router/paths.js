@@ -721,6 +721,22 @@ export default [
     },
     name: 'Task/TaskLoop/Index',
     component: () => import(`@/pages/task/TaskLoop.vue`)
+  },
+  ,{
+    path: '/Task/TaskLoop/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskLoop/Index',
+    component: () => import(`@/pages/task/components/AddTaskLoop.vue`)
+  }
+  ,{
+    path: '/Task/TaskLoop/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Task/TaskLoop/Index',
+    component: () => import(`@/pages/task/components/EditTaskLoop.vue`)
   }
   ,{
     path: '/Task/TaskStatusPermission',

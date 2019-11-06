@@ -1,7 +1,7 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Cập nhật loại công việc</title-page>
+      <title-page>Cập nhật thời gian lặp lại</title-page>
       <v-container>
         <v-form ref="form" v-model="valid">
           <v-layout row justify-center>
@@ -11,6 +11,16 @@
               v-model="form.name"
               v-on:keyup="validateForm"
               :rule="rules"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-text-field
+              hide-details
+              label="Số ngày"
+              v-model="form.day_count"
+              v-on:keyup="validateForm"
+              :rule="rules"
+              type="number"
             ></v-text-field>
           </v-layout>
           <v-layout row justify-center>
@@ -49,17 +59,17 @@ import { async } from "q";
 import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
-import ColorPicker from "@caohenghu/vue-colorpicker";
 
 export default {
-  components: { TitlePage, DialogConfirm, ColorPicker },
+  components: { TitlePage, DialogConfirm },
   props: {},
   data() {
     return {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
         name: "",
-        sort_order: 0
+        sort_order: 0,
+        day_count: 0
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
@@ -101,13 +111,14 @@ export default {
       let p = {
         id: this.form.id,
         name: this.form.name,
-        sort_order: this.form.sort_order
+        sort_order: this.form.sort_order,
+        day_count: this.form.day_count
       };
       this.update(p);
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.task_type.route, model]);
+        let rs = await this.Update([url.task_loop.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -115,21 +126,21 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Task/TaskType";
+          window.location.href = "#/Task/TaskLoop";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Task/TaskType";
+      window.location.href = "#/Task/TaskLoop";
     },
     removeData() {
       this.isRemove = true;
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.task_type.id, this.form.id]);
+        let rs = await this.DeleteById([url.task_loop.id, this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -137,7 +148,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Task/TaskType";
+          window.location.href = "#/Task/TaskLoop";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -145,11 +156,12 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.task_type.id, id]);
+        let rs = await this.GetById([url.task_loop.id, id]);
         if (typeof rs == "object") {
           this.form.id = rs.id;
           this.form.name = rs.name;
           this.form.sort_order = rs.sort_order;
+          this.form.day_count = rs.day_count;
         } else {
           window.location.href = "#/404";
         }

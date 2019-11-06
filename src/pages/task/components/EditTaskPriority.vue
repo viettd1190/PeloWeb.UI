@@ -9,8 +9,6 @@
               hide-details
               label="Tên"
               v-model="form.name"
-              class="ma-2"
-              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
             ></v-text-field>
@@ -20,7 +18,6 @@
               hide-details
               label="Vị trí"
               v-model="form.sort_order"
-              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
               type="number"

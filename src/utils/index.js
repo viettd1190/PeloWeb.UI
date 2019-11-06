@@ -173,6 +173,10 @@ export let url = {
     route: 'task_type',
     all: 'task_type/all',
     id: 'task_type/'
+  },task_loop: {
+    route: 'task_loop',
+    all: 'task_loop/all',
+    id: 'task_loop/'
   }
 };
 export let pagination = {

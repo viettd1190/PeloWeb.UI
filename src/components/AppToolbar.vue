@@ -21,6 +21,33 @@
         >
       </v-toolbar-items>
       <v-menu
+        v-model="menu"
+        :nudge-width="200"
+        offset-y
+        origin="center center"
+        :nudge-bottom="12"
+        :nudge-right="12"
+      >
+        <template v-slot:activator="{ on }">
+          <v-btn dark icon v-on="on">
+            <v-badge overlap color="red">
+              <template v-slot:badge>
+                <span>{{ noticounter }}</span>
+              </template>
+              <v-icon>
+                notifications
+              </v-icon>
+            </v-badge>
+          </v-btn>
+        </template>
+
+        <v-list class="pa-0">
+          <v-list-tile v-for="(item, i) in items" :key="i">
+            <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          </v-list-tile>
+        </v-list>
+      </v-menu>
+      <v-menu
         offset-y
         origin="center center"
         :nudge-bottom="16"
@@ -28,7 +55,7 @@
       >
         <v-toolbar-title class="ml-0 logged-user" slot="activator">
           <v-avatar size="32"
-            ><img :src="loggedUser.a" @error="errorImgUrl"
+            ><img :src="avatar" @error="errorImgUrl"
           /></v-avatar>
           <span>
             <small v-if="loggedUser">
@@ -83,6 +110,7 @@ export default {
   name: "app-toolbar",
   data: () => ({
     image: image,
+    avatar: image,
     pageTitle: "Vidia Admin",
     menuItems: [
       {
@@ -106,13 +134,24 @@ export default {
       // }
     ],
     searchText: "",
-    loading: false
+    loading: false,
+    items: [
+      { title: "Thông báo 1" },
+      { title: "Thông báo 2" },
+      { title: "Thông báo 3" },
+      { title: "Thông báo 4" }
+    ],
+    fav: true,
+    menu: false,
+    message: false,
+    hints: true,
+    notificationCounter: 0
   }),
   computed: {
     toolbarColor() {
       return this.$vuetify.options.extra.mainNav;
     },
-    ...mapGetters(["loggedUser"])
+    ...mapGetters(["loggedUser", "noticounter"])
   },
   watch: {
     $route(to, from) {
@@ -121,6 +160,14 @@ export default {
       if (item) {
         this.pageTitle = item.title;
       }
+    },
+    loggedUser() {
+      if (this.loggedUser != null) {
+        this.avatar = this.loggedUser.a;
+      }
+    },
+    noticounter() {
+      this.notificationCounter = this.noticounter;
     }
   },
   mounted() {

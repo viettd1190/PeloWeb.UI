@@ -11,7 +11,6 @@
               hide-details
               label="Tên"
               v-model="form.name"
-              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
               :clearable="true"
@@ -22,7 +21,6 @@
               hide-details
               label="Vị trí"
               v-model="form.sort_order"
-              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
               type="number"

@@ -20,6 +20,7 @@ const user = {
       roleId: 0,
       time: new Date()
     },    
+    noticounter:0
   },
 
   mutations: {
@@ -48,6 +49,9 @@ const user = {
     },
     STATE_EDIT_USER:(state,data)=>{
       state.editUser=data;
+    },
+    STATE_NOTI_USER:(state,counter)=>{
+      state.noticounter=counter;
     }
   },
 
