@@ -643,6 +643,20 @@ export default [
     },
     name: 'Receipt/ReceiptDescription/Index',
     component: () => import(`@/pages/receipt/ReceiptDescription.vue`)
+  },{
+    path: '/Receipt/ReceiptDescription/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Receipt/ReceiptDescription/Index',
+    component: () => import(`@/pages/receipt/components/AddReceiptDescription.vue`)
+  },{
+    path: '/Receipt/ReceiptDescription/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Receipt/ReceiptDescription/Index',
+    component: () => import(`@/pages/receipt/components/EditReceiptDescription.vue`)
   }
   //end Receipt
   //Task
@@ -794,6 +808,22 @@ export default [
     },
     name: 'Invoice/InvoiceStatus/Index',
     component: () => import(`@/pages/invoice/InvoiceStatus.vue`)
+  }
+  ,{
+    path: '/Invoice/InvoiceStatus/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Invoice/InvoiceStatus/Index',
+    component: () => import(`@/pages/invoice/components/AddInvoiceStatus.vue`)
+  }
+  ,{
+    path: '/Invoice/InvoiceStatus/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Invoice/InvoiceStatus/Index',
+    component: () => import(`@/pages/invoice/components/EditInvoiceStatus.vue`)
   }
   ,{
     path: '/Invoice/InvoiceStatusInRole',

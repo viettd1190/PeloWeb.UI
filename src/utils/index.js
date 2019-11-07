@@ -177,6 +177,16 @@ export let url = {
     route: 'task_loop',
     all: 'task_loop/all',
     id: 'task_loop/'
+  },
+  invoice_status: {
+    route: 'invoice_status',
+    all: 'invoice_status/all',
+    id: 'invoice_status/'
+  },
+  receipt_description: {
+    route: 'receipt_description',
+    all: 'receipt_description/all',
+    id: 'receipt_description/'
   }
 };
 export let pagination = {
