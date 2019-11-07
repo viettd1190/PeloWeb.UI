@@ -31,7 +31,7 @@
         <template v-slot:activator="{ on }">
           <v-btn dark icon v-on="on">
             <v-badge overlap color="red">
-              <template v-slot:badge>
+              <template v-slot:badge v-if="noticounter > 0">
                 <span>{{ noticounter }}</span>
               </template>
               <v-icon>
