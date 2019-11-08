@@ -1,19 +1,19 @@
+
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm phương thức thanh toán</title-page>
+      <title-page>Thêm mô tả bảo hành</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
-            <v-flex xs12 sm12 md8 lg8>
+            <v-flex xs12 sm12 md10 lg10>
               <v-text-field
-                v-model="form.name"
-                :rules="[rules.required]"
-                type="text"
-                name="input-10-1"
+                hide-details
                 label="Tên"
-                counter
-                :clearable="true"
+                v-model="form.name"
+                class="ma-2"
+                v-on:keyup="validateForm"
+                :rule="rules"
               ></v-text-field>
             </v-flex>
           </v-layout>
@@ -44,9 +44,7 @@ export default {
       form: {
         name: ""
       },
-      rules: {
-        required: value => !!value || "Bắt buộc nhập."
-      },
+      rules: [value => !!value || "Thông tin không được trống"],
       valid: true
     };
   },
@@ -77,7 +75,7 @@ export default {
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.pay_method.route, model]);
+        let rs = await this.Create([url.warranty_description.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -85,14 +83,17 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Invoice/PayMethod";
+          window.location.href = "#/Warranty/WarrantyDescription";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Invoice/PayMethod";
+      window.location.href = "#/Warranty/WarrantyDescription";
+    },
+    updateColor(color) {
+      this.color = color;
     }
   }
 };

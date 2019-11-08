@@ -1,20 +1,56 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Cập nhật dịch vụ</title-page>
-      <v-form ref="form" v-model="valid">
-        <v-container>
+      <title-page>Cập nhật trạng thái bảo hành</title-page>
+      <v-container>
+        <v-form ref="form" v-model="valid">
           <v-layout row justify-center>
-            <v-flex xs12 sm12 md10 lg10>
-              <v-text-field
-                hide-details
-                label="Tên"
-                v-model="form.name"
-                class="ma-2"
-                v-on:keyup="validateForm"
-                :rule="rules"
-              ></v-text-field>
-            </v-flex>
+            <v-text-field
+              hide-details
+              label="Tên"
+              v-model="form.name"
+              v-on:keyup="validateForm"
+              :rule="rules"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-text-field
+              hide-details
+              label="Vị trí"
+              type="number"
+              v-model="form.sort_order"
+              v-on:keyup="validateForm"
+              :rule="rules"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-checkbox
+              label="Gửi Sms"
+              v-model="form.is_send_sms"
+              :value="form.is_send_sms"
+            ></v-checkbox>
+          </v-layout>
+          <v-layout row wrap>
+            <v-textarea
+              v-model="form.sms_content"
+              type="text"
+              name="input-10-1"
+              label="Nội dung sms"
+            ></v-textarea>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-card-title primary-title>Màu sắc</v-card-title>
+          </v-layout>
+          <v-layout row justify-center>
+            <color-picker
+              v-if="form.color != ''"
+              :color="form.color"
+              :sucker-hide="false"
+              :sucker-canvas="suckerCanvas"
+              :sucker-area="suckerArea"
+              @changeColor="changeColor"
+              @openSucker="openSucker"
+            />
           </v-layout>
           <v-layout row justify-center>
             <v-card-actions>
@@ -29,8 +65,8 @@
               </v-btn>
             </v-card-actions>
           </v-layout>
-        </v-container>
-      </v-form>
+        </v-form>
+      </v-container>
     </v-card>
     <dialog-confirm v-if="isRemove" @comfirm="confirmDelete"></dialog-confirm>
   </div>
@@ -42,15 +78,19 @@ import { async } from "q";
 import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
-
+import ColorPicker from "@caohenghu/vue-colorpicker";
 export default {
-  components: { TitlePage, DialogConfirm },
+  components: { TitlePage, DialogConfirm, ColorPicker },
   props: {},
   data() {
     return {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
-        name: ""
+        name: "",
+        color: "",
+        sms_content: "",
+        is_send_sms: false,
+        sort_order: 0
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
@@ -91,13 +131,17 @@ export default {
       }
       let p = {
         id: this.form.id,
-        name: this.form.name
+        name: this.form.name,
+        color: this.form.color,
+        is_send_sms: this.form.is_send_sms,
+        sms_content: this.form.sms_content,
+        sort_order: this.form.sort_order
       };
       this.update(p);
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.receipt_description.route, model]);
+        let rs = await this.Update([url.warranty_status.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -105,24 +149,21 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Receipt/ReceiptDescription";
+          window.location.href = "#/Warranty/WarrantyStatus";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Receipt/ReceiptDescription";
+      window.location.href = "#/Warranty/WarrantyStatus";
     },
     removeData() {
       this.isRemove = true;
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([
-          url.receipt_description.id,
-          this.form.id
-        ]);
+        let rs = await this.DeleteById([url.warranty_status.id, this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -130,7 +171,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Receipt/ReceiptDescription";
+          window.location.href = "#/Warranty/WarrantyStatus";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -138,10 +179,14 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.receipt_description.id, id]);
+        let rs = await this.GetById([url.warranty_status.id, id]);
         if (typeof rs == "object") {
           this.form.id = rs.id;
           this.form.name = rs.name;
+          this.form.color = rs.color;
+          this.form.is_send_sms = rs.is_send_sms;
+          this.form.sms_content = rs.sms_content;
+          this.form.sort_order = rs.sort_order;
         } else {
           window.location.href = "#/404";
         }
@@ -166,12 +211,10 @@ export default {
       let g = rgba.g.toString(16);
       let b = rgba.b.toString(16);
       let a = Math.round(rgba.a * 255).toString(16);
-
       if (r.length == 1) r = "0" + r;
       if (g.length == 1) g = "0" + g;
       if (b.length == 1) b = "0" + b;
       if (a.length == 1) a = "0" + a;
-
       return "#" + r + g + b + a;
     },
     openSucker(isOpen) {

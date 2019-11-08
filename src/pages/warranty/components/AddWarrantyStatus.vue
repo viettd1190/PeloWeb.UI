@@ -2,7 +2,7 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm trạng thái đơn hàng</title-page>
+      <title-page>Thêm trạng thái bảo hành</title-page>
 
       <v-container>
         <v-form ref="form" v-model="valid">
@@ -11,9 +11,20 @@
               hide-details
               label="Tên"
               v-model="form.name"
+              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
               :clearable="true"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-text-field
+              hide-details
+              label="Vị trí"
+              type="number"
+              v-model="form.sort_order"
+              v-on:keyup="validateForm"
+              :rule="rules"
             ></v-text-field>
           </v-layout>
           <v-layout row justify-center>
@@ -66,7 +77,8 @@ export default {
         name: "",
         color: "#59c7f9",
         sendSms: false,
-        sms_content: ""
+        sms_content: "",
+        sort_order: 0
       },
       rules: [value => !!value || "Thông tin không được trống"],
       valid: true
@@ -96,13 +108,14 @@ export default {
         name: this.form.name,
         color: this.form.color,
         is_send_sms: this.form.sendSms,
-        sms_content: this.form.sms_content
+        sms_content: this.form.sms_content,
+        sort_order: this.form.sort_order
       };
       this.add(p);
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.invoice_status.route, model]);
+        let rs = await this.Create([url.warranty_status.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -110,14 +123,14 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Invoice/InvoiceStatus";
+          window.location.href = "#/Warranty/WarrantyStatus";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Invoice/InvoiceStatus";
+      window.location.href = "#/Warranty/WarrantyStatus";
     },
     updateColor(color) {
       this.form.color = color;

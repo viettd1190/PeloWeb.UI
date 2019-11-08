@@ -187,6 +187,31 @@ export let url = {
     route: 'receipt_description',
     all: 'receipt_description/all',
     id: 'receipt_description/'
+  },
+  receipt_status:{
+    route: 'receipt_status',
+    all: 'receipt_status/all',
+    id: 'receipt_status/'
+  },
+  warranty_description:{
+    route: 'warranty_description',
+    all: 'warranty_description/all',
+    id: 'warranty_description/'
+  },
+  warranty_status:{
+    route: 'warranty_status',
+    all: 'warranty_status/all',
+    id: 'warranty_status/'
+  },
+  recruitment_status:{
+    route: 'recruitment_status',
+    all: 'recruitment_status/all',
+    id: 'recruitment_status/'
+  },
+  candidate_status:{
+    route: 'candidate_status',
+    all: 'candidate_status/all',
+    id: 'candidate_status/'
   }
 };
 export let pagination = {

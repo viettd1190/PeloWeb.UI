@@ -568,6 +568,20 @@ export default [
     name: 'Recruitment/CandidateStatus/Index',
     component: () => import(`@/pages/recruitment/CandidateStatus.vue`)
   },{
+    path: '/Recruitment/CandidateStatus/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Recruitment/CandidateStatus/Index',
+    component: () => import(`@/pages/recruitment/components/AddCandidateStatus.vue`)
+  },{
+    path: '/Recruitment/CandidateStatus/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Recruitment/CandidateStatus/Index',
+    component: () => import(`@/pages/recruitment/components/EditCandidateStatus.vue`)
+  },{
     path: '/Recruitment/Index',
     meta: {
       breadcrumb: true
@@ -581,6 +595,20 @@ export default [
     },
     name: 'Recruitment/RecruitmentStatus/Index',
     component: () => import(`@/pages/recruitment/RecruitmentStatus.vue`)
+  },{
+    path: '/Recruitment/RecruitmentStatus/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Recruitment/RecruitmentStatus/Index',
+    component: () => import(`@/pages/recruitment/components/AddRecruitmentStatus.vue`)
+  },{
+    path: '/Recruitment/RecruitmentStatus/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Recruitment/RecruitmentStatus/Index',
+    component: () => import(`@/pages/recruitment/components/EditRecruitmentStatus.vue`)
   },
   //end Recruitment
   //Warranty
@@ -591,6 +619,20 @@ export default [
     },
     name: 'Warranty/WarrantyStatus/Index',
     component: () => import(`@/pages/warranty/WarrantyStatus.vue`)
+  },{
+    path: '/Warranty/WarrantyStatus/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Warranty/WarrantyStatus/Index',
+    component: () => import(`@/pages/warranty/components/AddWarrantyStatus.vue`)
+  },{
+    path: '/Warranty/WarrantyStatus/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Warranty/WarrantyStatus/Index',
+    component: () => import(`@/pages/warranty/components/EditWarrantyStatus.vue`)
   },{
     path: '/Warranty/WarrantyStatusPermission',
     meta: {
@@ -613,6 +655,22 @@ export default [
     name: 'Warranty/WarrantyDescription/Index',
     component: () => import(`@/pages/warranty/WarrantyDescription.vue`)
   },
+  {
+    path: '/Warranty/WarrantyDescription/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Warranty/WarrantyDescription/Index',
+    component: () => import(`@/pages/warranty/components/AddWarrantyDescription.vue`)
+  },
+  {
+    path: '/Warranty/WarrantyDescription/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Warranty/WarrantyDescription/Index',
+    component: () => import(`@/pages/warranty/components/EditWarrantyDescription.vue`)
+  },
   //end Warranty
   //Receipt
   {
@@ -622,6 +680,20 @@ export default [
     },
     name: 'Receipt/ReceiptStatus/Index',
     component: () => import(`@/pages/receipt/ReceiptStatus.vue`)
+  },{
+    path: '/Receipt/ReceiptStatus/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Receipt/ReceiptStatus/Index',
+    component: () => import(`@/pages/receipt/components/AddReceiptStatus.vue`)
+  },{
+    path: '/Receipt/ReceiptStatus/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Receipt/ReceiptStatus/Index',
+    component: () => import(`@/pages/receipt/components/EditReceiptStatus.vue`)
   },{
     path: '/Receipt/ReceiptStatusPermission',
     meta: {

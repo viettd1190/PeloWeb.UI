@@ -1,7 +1,7 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Cập nhật dịch vụ</title-page>
+      <title-page>Cập nhật mô tả bảo hành</title-page>
       <v-form ref="form" v-model="valid">
         <v-container>
           <v-layout row justify-center>
@@ -97,7 +97,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.receipt_description.route, model]);
+        let rs = await this.Update([url.warranty_description.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -105,14 +105,14 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Receipt/ReceiptDescription";
+          window.location.href = "#/Warranty/WarrantyDescription";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Receipt/ReceiptDescription";
+      window.location.href = "#/Warranty/WarrantyDescription";
     },
     removeData() {
       this.isRemove = true;
@@ -120,7 +120,7 @@ export default {
     async remove() {
       try {
         let rs = await this.DeleteById([
-          url.receipt_description.id,
+          url.warranty_description.id,
           this.form.id
         ]);
         if (typeof rs == "string") {
@@ -130,7 +130,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Receipt/ReceiptDescription";
+          window.location.href = "#/Warranty/WarrantyDescription";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -138,7 +138,7 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.receipt_description.id, id]);
+        let rs = await this.GetById([url.warranty_description.id, id]);
         if (typeof rs == "object") {
           this.form.id = rs.id;
           this.form.name = rs.name;

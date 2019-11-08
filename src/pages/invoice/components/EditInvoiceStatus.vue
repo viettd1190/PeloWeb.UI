@@ -6,14 +6,13 @@
         <v-form ref="form" v-model="valid">
           <v-layout row justify-center>
             <v-text-field
-                hide-details
-                label="Tên"
-                v-model="form.name"
-                class="ma-2"
-                append-icon="search"
-                v-on:keyup="validateForm"
-                :rule="rules"
-              ></v-text-field>
+              hide-details
+              label="Tên"
+              v-model="form.name"
+              class="ma-2"
+              v-on:keyup="validateForm"
+              :rule="rules"
+            ></v-text-field>
           </v-layout>
           <v-layout row justify-center>
             <v-checkbox
