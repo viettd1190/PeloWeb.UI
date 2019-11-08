@@ -73,7 +73,9 @@ export default {
           {
             text: "Tên",
             value: "name",
-            align: "center"
+            align: "center",
+            sortable: true,
+            class: "blue--text text--lighten-1"
           },
           {
             text: "Màu sắc",

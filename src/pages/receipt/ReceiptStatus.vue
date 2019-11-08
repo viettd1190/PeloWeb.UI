@@ -80,7 +80,9 @@ export default {
           {
             text: "Tên",
             value: "name",
-            align: "center"
+            align: "center",
+            sortable: true,
+            class: "blue--text text--lighten-1"
           },
           {
             text: "Màu sắc",
@@ -90,7 +92,9 @@ export default {
           {
             text: "Vị trí",
             value: "sort_order",
-            align: "center"
+            align: "center",
+            sortable: true,
+            class: "blue--text text--lighten-1"
           }
         ]
       },

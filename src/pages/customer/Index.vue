@@ -1,82 +1,82 @@
 <template>
   <div style="min-height:400px">
     <title-page>Danh sách khách hàng</title-page>
-      <v-expansion-panel expand v-model="panel" :readonly="readonly">
-        <v-expansion-panel-content>
-          <v-layout row wrap>
-            <v-flex xs12 sm12 md6 lg6>
-              <v-layout row wrap>
-                <v-text-field
-                  hide-details
-                  label="Tên"
-                  v-model="name"
-                  v-on:keyup="inputSearch"
-                  :clearable="true"
-                ></v-text-field>
-              </v-layout>
-              <v-layout row wrap>
-                <v-text-field
-                  hide-details
-                  label="Điện thoại"
-                  v-model="phone"
-                  v-on:keyup="inputSearch"
-                  :clearable="true"
-                ></v-text-field>
-              </v-layout>
-              <v-layout row wrap>
-                <v-text-field
-                  hide-details
-                  label="Địa chỉ"
-                  v-model="address"
-                  v-on:keyup="inputSearch"
-                  :clearable="true"
-                ></v-text-field>
-              </v-layout>
-            </v-flex>
-            <v-flex xs12 sm12 md1 lg1> </v-flex>
-            <v-flex xs12 sm12 md5 lg5>
-              <v-layout row wrap>
-                <select2
-                  :options="provinces"
-                  :reduce="province => province.id"
-                  placeholder="Tỉnh thành"
-                  label="name"
-                  v-model="selectedProvince"
-                  class="command-control"
-                ></select2>
-              </v-layout>
-              <v-layout row wrap>
-                <select2
-                  :options="selectDistricts"
-                  :reduce="district => district.id"
-                  placeholder="Quận huyện"
-                  label="name"
-                  v-model="selectedDistrict"
-                  :loading="
-                    selectDistricts.length == 0 && selectedProvince != null
-                  "
-                  class="command-control"
-                ></select2>
-              </v-layout>
-              <v-layout row wrap>
-                <select2
-                  :options="selectWards"
-                  :reduce="ward => ward.id"
-                  placeholder="Xã phường"
-                  label="name"
-                  v-model="selectedWard"
-                  :loading="selectWards.length == 0 && selectedDistrict != null"
-                  class="command-control"
-                ></select2>
-              </v-layout>
-            </v-flex>
-          </v-layout>
-        </v-expansion-panel-content>
-        <v-btn @click="expanse()"
-          ><v-icon>{{ icon }}</v-icon></v-btn
-        >
-      </v-expansion-panel>
-      <v-container>
+    <v-expansion-panel expand v-model="panel" :readonly="readonly">
+      <v-expansion-panel-content>
+        <v-layout row wrap>
+          <v-flex xs12 sm12 md6 lg6>
+            <v-layout row wrap>
+              <v-text-field
+                hide-details
+                label="Tên"
+                v-model="name"
+                v-on:keyup="inputSearch"
+                :clearable="true"
+              ></v-text-field>
+            </v-layout>
+            <v-layout row wrap>
+              <v-text-field
+                hide-details
+                label="Điện thoại"
+                v-model="phone"
+                v-on:keyup="inputSearch"
+                :clearable="true"
+              ></v-text-field>
+            </v-layout>
+            <v-layout row wrap>
+              <v-text-field
+                hide-details
+                label="Địa chỉ"
+                v-model="address"
+                v-on:keyup="inputSearch"
+                :clearable="true"
+              ></v-text-field>
+            </v-layout>
+          </v-flex>
+          <v-flex xs12 sm12 md1 lg1> </v-flex>
+          <v-flex xs12 sm12 md5 lg5>
+            <v-layout row wrap>
+              <select2
+                :options="provinces"
+                :reduce="province => province.id"
+                placeholder="Tỉnh thành"
+                label="name"
+                v-model="selectedProvince"
+                class="command-control"
+              ></select2>
+            </v-layout>
+            <v-layout row wrap>
+              <select2
+                :options="selectDistricts"
+                :reduce="district => district.id"
+                placeholder="Quận huyện"
+                label="name"
+                v-model="selectedDistrict"
+                :loading="
+                  selectDistricts.length == 0 && selectedProvince != null
+                "
+                class="command-control"
+              ></select2>
+            </v-layout>
+            <v-layout row wrap>
+              <select2
+                :options="selectWards"
+                :reduce="ward => ward.id"
+                placeholder="Xã phường"
+                label="name"
+                v-model="selectedWard"
+                :loading="selectWards.length == 0 && selectedDistrict != null"
+                class="command-control"
+              ></select2>
+            </v-layout>
+          </v-flex>
+        </v-layout>
+      </v-expansion-panel-content>
+      <v-btn @click="expanse()"
+        ><v-icon>{{ icon }}</v-icon></v-btn
+      >
+    </v-expansion-panel>
+    <v-container>
       <v-layout row class="row-command">
         <v-btn color="#666EE8" class="white--text" @click="search()">
           <v-icon>sort</v-icon>Lọc
@@ -103,7 +103,13 @@
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
             </td>
-            <td nowrap>{{ props.item.phone }}</td>
+            <td nowrap style="cursor:pointer">
+              <a
+                style="text-decoration: none;"
+                :href="`tel:${props.item.phone}`"
+                >{{ props.item.phone }}</a
+              >
+            </td>
             <td nowrap>{{ props.item.email }}</td>
             <td nowrap>{{ props.item.address }}</td>
             <td nowrap>{{ props.item.ward }}</td>
@@ -142,7 +148,9 @@ export default {
           {
             text: "Tên",
             value: "name",
-            align: "center"
+            align: "center",
+            sortable: true,
+            class: "blue--text text--lighten-1"
           },
           {
             text: "Số điện thoại",
