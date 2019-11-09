@@ -38,11 +38,15 @@
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
             </td>
-            <td nowrap>
-              {{ props.item.day_count }}
+            <td nowrap justify-center>
+              <v-layout row justify-center>
+                {{ props.item.day_count }}
+              </v-layout>
             </td>
-            <td nowrap>
-              {{ props.item.sort_order }}
+            <td nowrap justify-center>
+              <v-layout row justify-center>
+                {{ props.item.sort_order }}
+              </v-layout>
             </td>
           </tr>
         </template>

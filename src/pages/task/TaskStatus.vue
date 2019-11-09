@@ -45,8 +45,10 @@
                 >{{ props.item.color }}</span
               >
             </td>
-            <td nowrap>
-              {{ props.item.sort_order }}
+            <td nowrap justify-center>
+              <v-layout row justify-center>
+                {{ props.item.sort_order }}
+              </v-layout>
             </td>
           </tr>
         </template>
