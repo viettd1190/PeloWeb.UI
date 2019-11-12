@@ -11,7 +11,6 @@
                 label="Tên"
                 v-model="form.name"
                 class="ma-2"
-                append-icon="search"
                 v-on:keyup="validateForm"
                 :rule="rules"
               ></v-text-field>
@@ -40,7 +39,7 @@
 import axios from "axios";
 import { mapGetters, mapActions, mapMutations, mapState } from "vuex";
 import { async } from "q";
-import { messageResult,url } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
 export default {
@@ -63,8 +62,7 @@ export default {
     ...mapGetters([])
   },
   watch: {},
-  mounted() {
-  },
+  mounted() {},
   created() {
     this.getById(this.form.id);
   },
@@ -95,7 +93,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.productGroup.route,model]);
+        let rs = await this.Update([url.productGroup.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -117,7 +115,7 @@ export default {
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.productGroup.id,this.form.id]);
+        let rs = await this.DeleteById([url.productGroup.id, this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -133,7 +131,7 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.productGroup.id,id]);
+        let rs = await this.GetById([url.productGroup.id, id]);
         if (rs !== "") {
           this.form.id = rs.id;
           this.form.name = rs.name;

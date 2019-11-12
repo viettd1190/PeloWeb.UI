@@ -212,6 +212,11 @@ export let url = {
     route: 'candidate_status',
     all: 'candidate_status/all',
     id: 'candidate_status/'
+  },
+  customer_vip:{
+    route: 'customer_vip',
+    all: 'customer_vip/all',
+    id: 'customer_vip/'
   }
 };
 export let pagination = {

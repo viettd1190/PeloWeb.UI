@@ -103,12 +103,17 @@
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
             </td>
-            <td nowrap style="cursor:pointer">
-              <a
-                style="text-decoration: none;"
-                :href="`tel:${props.item.phone}`"
-                >{{ props.item.phone }}</a
-              >
+            <td
+              nowrap
+              style="cursor:pointer"
+              v-for="(value, index) in props.item.phone"
+              :key="index"
+            >
+              <v-layout row justify-center>
+                <a style="text-decoration: none;" :href="`tel:${value}`">{{
+                  value
+                }}</a>
+              </v-layout>
             </td>
             <td nowrap>{{ props.item.email }}</td>
             <td nowrap>{{ props.item.address }}</td>

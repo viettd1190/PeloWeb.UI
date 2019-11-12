@@ -1,27 +1,16 @@
 <template>
   <div style="min-height:400px">
-    <title-page>Tham số cấu hình</title-page>
+    <title-page>Mức độ thân thiết khách hàng</title-page>
     <v-container>
-      <v-layout row wrap>
-        <v-flex xs12 sm12 md6 lg6>
-          <v-text-field
-            hide-details
-            label="Tên tham số"
-            v-model="name"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
-        </v-flex>
-        <v-flex xs1 sm1 md1 lg1> </v-flex>
-        <v-flex xs12 sm12 md5 lg5>
-          <v-text-field
-            hide-details
-            label="Giá trị"
-            v-model="description"
-            v-on:keyup="inputSearch"
-            :clearable="true"
-          ></v-text-field>
-        </v-flex>
+      <v-layout row>
+        <v-text-field
+          hide-details
+          label="Tên"
+          v-model="name"
+          append-icon="search"
+          v-on:keyup="inputSearch"
+          :clearable="true"
+        ></v-text-field>
       </v-layout>
       <v-layout row class="row-command">
         <v-btn color="#666EE8" class="white--text" @click="search()">
@@ -46,14 +35,25 @@
       >
         <template slot="items" slot-scope="props">
           <tr class="table-row">
-            <td nowrap style="cursor:pointer" @click="selectConfig(props.item)">
+            <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
             </td>
             <td nowrap>
-              <v-layout>{{ props.item.value }}</v-layout>
+              <span
+                :style="{ background: `${props.item.color}` }"
+                style="color:white;padding:5px"
+                >{{ props.item.color }}</span
+              >
             </td>
             <td nowrap>
-              <v-layout>{{ props.item.description }}</v-layout>
+              <v-layout row justify-center>
+                {{ props.item.sort_order }}
+              </v-layout>
+            </td>
+            <td nowrap>
+              <v-layout row justify-center>
+                {{ props.item.profit }}
+              </v-layout>
             </td>
           </tr>
         </template>
@@ -76,7 +76,8 @@ export default {
   data() {
     return {
       name: "",
-      description: "",
+      hotline: "",
+      address: "",
       table: {
         headers: [
           {
@@ -85,14 +86,23 @@ export default {
             align: "center"
           },
           {
-            text: "Giá trị",
-            value: "value",
+            text: "Màu sắc",
+            value: "color",
             align: "center"
           },
           {
-            text: "Ghi chú",
-            value: "description",
-            align: "center"
+            text: "Vị trí",
+            value: "sort_order",
+            align: "center",
+            sortable: true,
+            class: "blue--text text--lighten-1"
+          },
+          {
+            text: "Lợi nhuận",
+            value: "profit",
+            align: "center",
+            sortable: true,
+            class: "blue--text text--lighten-1"
           }
         ]
       },
@@ -101,7 +111,8 @@ export default {
         itemsPerPage: 10,
         rowsPerPage: 10,
         totalRecords: 0,
-        sortBy: "name"
+        sortBy: "name",
+        descending: false
       },
       datasourceFiltered: [],
       isLoading: -1
@@ -120,7 +131,7 @@ export default {
   },
   methods: {
     ...mapActions(["GetList"]),
-    async getAppConfigList() {
+    async getList() {
       try {
         const {
           sortBy,
@@ -135,44 +146,44 @@ export default {
         if (this.isLoading == 0) {
           this.isLoading = 1;
           let rs = await this.GetList([
-            url.config.route,
+            url.customer_vip.route,
             {
               Page: page,
               PageSize: rowsPerPage,
               ColumnOrder: sortBy,
               SortDir: descending ? "desc" : "asc",
-              Name: this.name,
-              Description: this.description
+              name: this.name
             }
           ]);
           if (rs != null && rs.data) {
             this.isLoading = -1;
-            this.isLoading = false;
             this.datasourceFiltered = rs.data;
             this.pagination.totalRecords = rs.totalCount;
             this.pagination.itemsPerPage = rs.pageSize;
           } else {
-            this.isLoading = false;
+            this.isLoading = -1;
             window.getApp.showMessage(rs, "error");
           }
         }
       } catch (error) {
-        this.isLoading = false;
-        window.getApp.showMessage(error, "error");
+        this.isLoading = -1;
       }
     },
     search() {
-      this.getAppConfigList();
+      this.getList();
     },
     add() {
       window.getApp.changeView("/Add");
     },
-    selectConfig(item) {
-      window.getApp.changeView("/Edit/" + item.id);
+    select(item) {
+      this.getById(item.id);
+    },
+    getById(id) {
+      window.getApp.changeView("/Edit/" + id);
     },
     inputSearch(e) {
       if (e.keyCode === 13) {
-        this.getAppConfigList();
+        this.search();
       }
     }
   }

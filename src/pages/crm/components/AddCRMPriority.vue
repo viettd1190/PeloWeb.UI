@@ -10,7 +10,6 @@
               hide-details
               label="Tên"
               v-model="form.name"
-              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
               :clearable="true"

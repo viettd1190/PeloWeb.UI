@@ -948,6 +948,29 @@ export default [
     },
     name: 'Customer/CustomerGroup',
     component: () => import(`@/pages/customer/components/EditCustomerGroup.vue`)
+  },{
+    path: '/Customer/CustomerVip',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Customer/CustomerVip',
+    component: () => import(`@/pages/customer/CustomerVip.vue`)
+  },
+  ,{
+    path: '/Customer/CustomerVip/Add',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Customer/CustomerVip',
+    component: () => import(`@/pages/customer/components/AddCustomerVip.vue`)
+  },
+  ,{
+    path: '/Customer/CustomerVip/Edit/:id',
+    meta: {
+      breadcrumb: true
+    },
+    name: 'Customer/CustomerVip',
+    component: () => import(`@/pages/customer/components/EditCustomerVip.vue`)
   },
   //end Customer
 ];

@@ -10,7 +10,6 @@
               hide-details
               label="Tên"
               v-model="form.name"
-              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
               :clearable="true"
@@ -19,7 +18,9 @@
           <v-layout row justify-center>
             <v-card-actions>
               <v-btn class="default" @click="close()">Trở lại</v-btn>
-              <v-btn class="primary" :disabled="!valid" @click="validate()">Thêm mới</v-btn>
+              <v-btn class="primary" :disabled="!valid" @click="validate()"
+                >Thêm mới</v-btn
+              >
             </v-card-actions>
           </v-layout>
         </v-container>

@@ -2,7 +2,7 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Thêm trạng thái biên nhận</title-page>
+      <title-page>Thêm mức độ thân thiết khách hàng</title-page>
 
       <v-container>
         <v-form ref="form" v-model="valid">
@@ -27,19 +27,15 @@
             ></v-text-field>
           </v-layout>
           <v-layout row justify-center>
-            <v-checkbox
-              label="Gửi Sms"
-              v-model="form.sendSms"
-              :value="form.sendSms"
-            ></v-checkbox>
-          </v-layout>
-          <v-layout row wrap>
-            <v-textarea
-              v-model="form.sms_content"
-              type="text"
-              name="input-10-1"
-              label="Nội dung sms"
-            ></v-textarea>
+            <v-text-field
+              hide-details
+              label="Lợi nhuận"
+              type="number"
+              v-model="form.profit"
+              suffix="VND"
+              v-on:keyup="validateForm"
+              :rule="rules"
+            ></v-text-field>
           </v-layout>
           <v-layout row justify-center style="padding-bottom:20px">
             <color-picker
@@ -75,9 +71,8 @@ export default {
       form: {
         name: "",
         color: "#59c7f9",
-        sendSms: false,
-        sms_content: "",
-        sort_order: 0
+        sort_order: 0,
+        profit: 0
       },
       rules: [value => !!value || "Thông tin không được trống"],
       valid: true
@@ -106,15 +101,14 @@ export default {
       let p = {
         name: this.form.name,
         color: this.form.color,
-        is_send_sms: this.form.sendSms,
-        sms_content: this.form.sms_content,
-        sort_order: this.form.sort_order
+        sort_order: this.form.sort_order,
+        profit: this.form.profit
       };
       this.add(p);
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.receipt_status.route, model]);
+        let rs = await this.Create([url.customer_vip.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -122,14 +116,14 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Receipt/ReceiptStatus";
+          window.location.href = "#/Customer/CustomerVip";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Receipt/ReceiptStatus";
+      window.location.href = "#/Customer/CustomerVip";
     },
     updateColor(color) {
       this.form.color = color;

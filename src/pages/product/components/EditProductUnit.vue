@@ -11,7 +11,6 @@
                 label="Tên"
                 v-model="form.name"
                 class="ma-2"
-                append-icon="search"
                 v-on:keyup="validateForm"
                 :rule="rules"
               ></v-text-field>
@@ -63,8 +62,7 @@ export default {
     ...mapGetters([])
   },
   watch: {},
-  mounted() {
-  },
+  mounted() {},
   created() {
     this.getById(this.form.id);
   },
@@ -95,7 +93,7 @@ export default {
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.product_unit.route,model]);
+        let rs = await this.Update([url.product_unit.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -117,7 +115,7 @@ export default {
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.product_unit.id,this.form.id]);
+        let rs = await this.DeleteById([url.product_unit.id, this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -133,7 +131,7 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.product_unit.id,id]);
+        let rs = await this.GetById([url.product_unit.id, id]);
         if (rs !== "") {
           this.form.id = rs.id;
           this.form.name = rs.name;

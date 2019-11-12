@@ -1,20 +1,53 @@
 <template>
   <div class="text-xs-center">
     <v-card>
-      <title-page>Cập nhật kiểu chốt</title-page>
-      <v-form ref="form" v-model="valid">
-        <v-container>
+      <title-page>Cập nhật mức độ thân thiết khách hàng</title-page>
+      <v-container>
+        <v-form ref="form" v-model="valid">
           <v-layout row justify-center>
-            <v-flex xs12 sm12 md8 lg8>
-              <v-text-field
-                hide-details
-                label="Tên"
-                v-model="form.name"
-                class="ma-2"
-                v-on:keyup="validateForm"
-                :rule="rules"
-              ></v-text-field>
-            </v-flex>
+            <v-text-field
+              hide-details
+              label="Tên"
+              v-model="form.name"
+              class="ma-2"
+              v-on:keyup="validateForm"
+              :rule="rules"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-text-field
+              hide-details
+              label="Vị trí"
+              type="number"
+              v-model="form.sort_order"
+              v-on:keyup="validateForm"
+              :rule="rules"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-text-field
+              hide-details
+              label="Lợi nhuận"
+              type="number"
+              v-model="form.profit"
+              suffix="VND"
+              v-on:keyup="validateForm"
+              :rule="rules"
+            ></v-text-field>
+          </v-layout>
+          <v-layout row justify-center>
+            <v-card-title primary-title>Màu sắc</v-card-title>
+          </v-layout>
+          <v-layout row justify-center>
+            <color-picker
+              v-if="form.color != ''"
+              :color="form.color"
+              :sucker-hide="false"
+              :sucker-canvas="suckerCanvas"
+              :sucker-area="suckerArea"
+              @changeColor="changeColor"
+              @openSucker="openSucker"
+            />
           </v-layout>
           <v-layout row justify-center>
             <v-card-actions>
@@ -29,8 +62,8 @@
               </v-btn>
             </v-card-actions>
           </v-layout>
-        </v-container>
-      </v-form>
+        </v-form>
+      </v-container>
     </v-card>
     <dialog-confirm v-if="isRemove" @comfirm="confirmDelete"></dialog-confirm>
   </div>
@@ -42,15 +75,18 @@ import { async } from "q";
 import { messageResult, url } from "@/utils/index";
 import TitlePage from "@/components/TitlePage";
 import DialogConfirm from "@/components/DialogConfirm";
-
+import ColorPicker from "@caohenghu/vue-colorpicker";
 export default {
-  components: { TitlePage, DialogConfirm },
+  components: { TitlePage, DialogConfirm, ColorPicker },
   props: {},
   data() {
     return {
       form: {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
-        name: ""
+        name: "",
+        color: "",
+        profit: 0,
+        sort_order: 0
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập."
@@ -91,13 +127,16 @@ export default {
       }
       let p = {
         id: this.form.id,
-        name: this.form.name
+        name: this.form.name,
+        color: this.form.color,
+        profit: this.form.profit,
+        sort_order: this.form.sort_order
       };
       this.update(p);
     },
     async update(model) {
       try {
-        let rs = await this.Update([url.crm_type.route, model]);
+        let rs = await this.Update([url.customer_vip.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -105,21 +144,21 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/CRM/CRMType";
+          window.location.href = "#/Customer/CustomerVip";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/CRM/CRMType";
+      window.location.href = "#/Customer/CustomerVip";
     },
     removeData() {
       this.isRemove = true;
     },
     async remove() {
       try {
-        let rs = await this.DeleteById([url.crm_type.id, this.form.id]);
+        let rs = await this.DeleteById([url.customer_vip.id, this.form.id]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
@@ -127,7 +166,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/CRM/CRMType";
+          window.location.href = "#/Customer/CustomerVip";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -135,10 +174,13 @@ export default {
     },
     async getById(id) {
       try {
-        let rs = await this.GetById([url.crm_type.id, id]);
+        let rs = await this.GetById([url.customer_vip.id, id]);
         if (typeof rs == "object") {
           this.form.id = rs.id;
           this.form.name = rs.name;
+          this.form.color = rs.color;
+          this.form.sort_order = rs.sort_order;
+          this.form.profit = rs.profit;
         } else {
           window.location.href = "#/404";
         }
@@ -163,12 +205,10 @@ export default {
       let g = rgba.g.toString(16);
       let b = rgba.b.toString(16);
       let a = Math.round(rgba.a * 255).toString(16);
-
       if (r.length == 1) r = "0" + r;
       if (g.length == 1) g = "0" + g;
       if (b.length == 1) b = "0" + b;
       if (a.length == 1) a = "0" + a;
-
       return "#" + r + g + b + a;
     },
     openSucker(isOpen) {

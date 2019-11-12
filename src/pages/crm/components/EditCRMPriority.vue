@@ -10,7 +10,6 @@
               label="Tên"
               v-model="form.name"
               class="ma-2"
-              append-icon="search"
               v-on:keyup="validateForm"
               :rule="rules"
             ></v-text-field>
@@ -170,7 +169,7 @@ export default {
       this.isRemove = false;
     },
     changecolor(color) {
-      this.form.color = this.rGBToHex(color.rgba);;
+      this.form.color = this.rGBToHex(color.rgba);
     },
     rGBToHex(rgba) {
       let r = rgba.r.toString(16);

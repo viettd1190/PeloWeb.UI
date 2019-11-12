@@ -110,6 +110,10 @@ const Menu = [
       title: 'Nhóm khách hàng',
       group: 'Customer',
       name: 'CustomerGroup',
+    },{
+      title: 'Mức độ thân thiết khách hàng',
+      group: 'Customer',
+      name: 'CustomerVip',
     }]
   },{
     title:'Công việc',

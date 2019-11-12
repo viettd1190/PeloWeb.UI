@@ -11,7 +11,6 @@
                 label="Tên nhóm"
                 v-model="form.name"
                 class="ma-2"
-                append-icon="search"
                 v-on:keyup="validateForm"
                 :rule="rules"
                 :clearable="true"
@@ -36,7 +35,7 @@ import axios from "axios";
 import { mapGetters, mapActions, mapMutations } from "vuex";
 import { async } from "q";
 import TitlePage from "@/components/TitlePage";
-import { messageResult,url } from "@/utils/index";
+import { messageResult, url } from "@/utils/index";
 export default {
   components: { TitlePage },
   props: {},
@@ -52,8 +51,7 @@ export default {
   computed: {},
   watch: {},
   created() {},
-  mounted() {
-  },
+  mounted() {},
   methods: {
     ...mapActions(["Create"]),
     validateForm(e) {
@@ -77,7 +75,7 @@ export default {
     },
     async add(model) {
       try {
-        let rs = await this.Create([url.customer_source.route,model]);
+        let rs = await this.Create([url.customer_source.route, model]);
         if (typeof rs == "string") {
           window.getApp.showMessage(rs, messageResult.Error);
         } else {
