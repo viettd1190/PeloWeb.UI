@@ -908,7 +908,7 @@ export default [
   //end Invoice
   //Customer
   {
-    path: '/Customer/Index',
+    path: '/Customer',
     meta: { breadcrumb: true },
     name: 'Customer/Index',
     component: () => import(`@/pages/customer/index.vue`)
@@ -916,13 +916,13 @@ export default [
   {
     path: '/Customer/Add',
     meta: { breadcrumb: true },
-    name: 'Customer/Add',
+    name: 'Customer/Index',
     component: () => import(`@/pages/customer/components/AddCustomer.vue`)
   },
   {
     path: '/Customer/Edit/:id',
     meta: { breadcrumb: true },
-    name: 'Customer/Edit',
+    name: 'Customer/Index',
     component: () => import(`@/pages/customer/components/EditCustomer.vue`)
   }
   ,{

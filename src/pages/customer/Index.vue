@@ -103,6 +103,7 @@
             <td nowrap style="cursor:pointer" @click="select(props.item)">
               <a>{{ props.item.name }}</a>
             </td>
+            <td nowrap>{{ props.item.customer_vip }}</td>
             <td
               nowrap
               style="cursor:pointer"
@@ -158,6 +159,11 @@ export default {
             class: "blue--text text--lighten-1"
           },
           {
+            text: "Mức độ thân thiết",
+            value: "customer_vip",
+            align: "center"
+          },
+          {
             text: "Số điện thoại",
             value: "phone",
             align: "center"
@@ -207,6 +213,7 @@ export default {
       selectDistricts: [],
       selectWards: [],
       province: { id: 0, name: "", type: "" },
+      district: { id: 0, name: "", type: "" },
       district: { id: 0, name: "", type: "" },
       ward: { id: 0, name: "", type: "" },
       selectedProvince: null,

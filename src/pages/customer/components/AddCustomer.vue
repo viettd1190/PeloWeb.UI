@@ -26,13 +26,23 @@
               ></v-text-field>
               <v-text-field
                 v-model="form.email"
-                :rules="[rules.required,rules.validateEmail]"
+                :rules="[rules.required, rules.validateEmail]"
                 type="text"
                 name="input-10-1"
                 label="Email"
                 counter
                 :clearable="true"
               ></v-text-field>
+              <v-select
+                :items="selectCustomerGroups"
+                item-text="name"
+                item-value="id"
+                v-model="customer_group"
+                label="Nhóm khách hàng"
+                persistent-hint
+                return-object
+                required
+              ></v-select>
               <v-text-field
                 v-model="form.address"
                 type="text"
@@ -50,9 +60,6 @@
                 persistent-hint
                 return-object
                 v-on:change="changeProvince"
-                :error-messages="errors.collect('type')"
-                v-validate="'required'"
-                data-vv-name="type"
                 required
               ></v-select>
               <v-select
@@ -131,9 +138,11 @@ export default {
       selectProvinces: [],
       selectDistricts: [],
       selectWards: [],
+      selectCustomerGroups: [],
       province: { id: 0, name: "", type: "" },
       district: { id: 0, name: "", type: "" },
-      ward: { id: 0, name: "", type: "" }
+      ward: { id: 0, name: "", type: "" },
+      customer_group: { id: 0, name: "" }
     };
   },
   computed: {
@@ -152,7 +161,7 @@ export default {
     this.syncSelect();
   },
   methods: {
-    ...mapActions(["Create", "GetDistricts", "GetWards"]),
+    ...mapActions(["Create", "GetDistricts", "GetWards", "GetAll"]),
     validateForm(e) {
       if (e.keyCode === 13) {
         this.validate();
@@ -175,7 +184,8 @@ export default {
         description: this.form.description,
         provinceId: this.province.id,
         districtId: this.district.id,
-        wardId: this.ward.id
+        wardId: this.ward.id,
+        customer_group_id: this.customer_group.id
       };
       this.add(p);
     },
@@ -201,6 +211,7 @@ export default {
     syncSelect() {
       this.GetDistricts(0);
       this.GetWards(0);
+      this.getAllCustomerGroup();
     },
     changeProvince(e) {
       if (e == undefined) {
@@ -216,6 +227,14 @@ export default {
         ProvinceId: this.province.id,
         DistrictId: this.district.id
       });
+    },
+    async getAllCustomerGroup() {
+      try {
+        let rs = await this.GetAll(url.customer_group.all);
+        if (typeof rs == "object") {
+          this.selectCustomerGroups = rs;
+        }
+      } catch (error) {}
     }
   }
 };
