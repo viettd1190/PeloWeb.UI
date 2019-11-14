@@ -12,7 +12,6 @@
                 type="text"
                 name="input-10-1"
                 label="Tên"
-                counter
                 :clearable="true"
               ></v-text-field>
               <v-text-field
@@ -25,20 +24,56 @@
                 :clearable="true"
               ></v-text-field>
               <v-text-field
+                v-model="form.phone2"
+                type="text"
+                name="input-10-1"
+                label="Điện thoại 2"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.phone3"
+                type="text"
+                name="input-10-1"
+                label="Điện thoại 3"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
                 v-model="form.email"
                 :rules="[rules.required, rules.validateEmail]"
                 type="text"
                 name="input-10-1"
                 label="Email"
-                counter
                 :clearable="true"
+              ></v-text-field>
+              <v-select
+                :items="selectCustomerGroups"
+                item-text="name"
+                item-value="id"
+                v-model="customer_group"
+                label="Nhóm khách hàng"
+                persistent-hint
+                return-object
+                required
+              ></v-select>
+              <v-text-field
+                v-model="form.profit"
+                type="number"
+                name="input-10-1"
+                label="Lợi nhuận"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.profit_update"
+                type="number"
+                name="input-10-1"
+                label="Lợi nhuận cập nhật"
               ></v-text-field>
               <v-text-field
                 v-model="form.address"
                 type="text"
                 name="input-10-1"
                 label="Địa chỉ"
-                counter
                 :clearable="true"
               ></v-text-field>
               <v-select
@@ -88,6 +123,9 @@
               <v-btn class="default" @click="close()">
                 <v-icon>undo</v-icon>Trở lại
               </v-btn>
+              <v-btn class="success" @click="updateProfit_value()">
+                <v-icon>autorenew</v-icon>Cập nhật lợi nhuận
+              </v-btn>
               <v-btn class="primary" :disabled="!valid" @click="validate()">
                 <v-icon>create</v-icon>Cập nhật
               </v-btn>
@@ -118,9 +156,13 @@ export default {
         id: this.$route.params.id != "" ? parseInt(this.$route.params.id) : 0,
         name: "",
         phone: "",
+        phone2: "",
+        phone3: "",
         description: "",
         address: "",
-        email: ""
+        email: "",
+        profit: 0,
+        profit_update: 0
       },
       rules: {
         required: value => !!value || "Bắt buộc nhập.",
@@ -139,10 +181,12 @@ export default {
       province: { id: 0, name: "", type: "" },
       district: { id: 0, name: "", type: "" },
       ward: { id: 0, name: "", type: "" },
+      customer_group: { id: 0, name: "" },
       isRemove: false,
       selectProvinces: [],
       selectDistricts: [],
-      selectWards: []
+      selectWards: [],
+      selectCustomerGroups: []
     };
   },
   computed: {
@@ -169,7 +213,8 @@ export default {
       "DeleteById",
       "GetById",
       "GetDistricts",
-      "GetWards"
+      "GetWards",
+      "GetAll"
     ]),
     validateForm(e) {
       if (e.keyCode === 13) {
@@ -193,11 +238,15 @@ export default {
         address: this.form.address,
         name: this.form.name,
         phone: this.form.phone,
+        phone_2: this.form.phone2,
+        phone_3: this.form.phone3,
         email: this.form.email,
         description: this.form.description,
-        provinceId: this.province.id,
-        districtId: this.district.id,
-        wardId: this.ward.id
+        province_id: this.province.id,
+        district_id: this.district.id,
+        ward_id: this.ward.id,
+        profit_update: this.form.profit_update,
+        customer_group_id: this.customer_group.id
       };
       this.update(p);
     },
@@ -211,7 +260,7 @@ export default {
             messageResult.UpdateSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Customer";
+          window.location.href = "#/Customer/Index";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
@@ -219,7 +268,7 @@ export default {
     },
     close() {
       this.$refs.form.reset();
-      window.location.href = "#/Customer";
+      window.location.href = "#/Customer/Index";
     },
     async remove() {
       try {
@@ -231,7 +280,7 @@ export default {
             messageResult.DeleteSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Customer";
+          window.location.href = "#/Customer/Index";
         }
       } catch (error) {
         window.getApp.showMessage(rs, messageResult.Error);
@@ -243,6 +292,7 @@ export default {
         ProvinceId: this.province.id,
         DistrictId: this.district.id
       });
+      this.getAllCustomerGroup();
     },
     changeProvince(e) {
       if (e == undefined) {
@@ -267,12 +317,17 @@ export default {
         if (typeof rs == "object") {
           this.form.name = rs.name;
           this.form.phone = rs.phone;
+          this.form.phone2 = rs.phone_2;
+          this.form.phone3 = rs.phone_3;
           this.form.address = rs.address;
           this.form.email = rs.email;
           this.form.description = rs.description;
-          this.province.id = rs.provinceId;
-          this.district.id = rs.districtId;
-          this.ward.id = rs.wardId;
+          this.province.id = rs.province_id;
+          this.district.id = rs.district_id;
+          this.ward.id = rs.ward_id;
+          this.customer_group.id = rs.customer_group_id;
+          this.form.profit = rs.profit;
+          this.form.profit_update = rs.profit_update;
           this.selectProvinces = this.provinces;
           this.syncSelect();
         } else {
@@ -290,6 +345,44 @@ export default {
     },
     removeData() {
       this.isRemove = true;
+    },
+    updateProfit_value() {
+      this.updateProfit();
+    },
+    async getAllCustomerGroup() {
+      try {
+        let rs = await this.GetAll(url.customer_group.all);
+        if (typeof rs == "object") {
+          this.selectCustomerGroups = rs;
+        }
+      } catch (error) {}
+    },
+    async getAllCustomerGroup() {
+      try {
+        let rs = await this.GetAll(url.customer_group.all);
+        if (typeof rs == "object") {
+          this.selectCustomerGroups = rs;
+        }
+      } catch (error) {}
+    },
+    async updateProfit() {
+      let model = {
+        id: this.form.id
+      };
+      try {
+        let rs = await this.Update([url.customer.profit, model]);
+        if (typeof rs == "string") {
+          window.getApp.showMessage(rs, messageResult.Error);
+        } else {
+          window.getApp.showMessage(
+            messageResult.UpdateSuccess,
+            messageResult.Success
+          );
+          this.getById();
+        }
+      } catch (error) {
+        window.getApp.showMessage(error, messageResult.Error);
+      }
     }
   }
 };

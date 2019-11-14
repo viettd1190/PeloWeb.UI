@@ -12,7 +12,6 @@
                 type="text"
                 name="input-10-1"
                 label="Tên"
-                counter
                 :clearable="true"
               ></v-text-field>
               <v-text-field
@@ -25,12 +24,27 @@
                 :clearable="true"
               ></v-text-field>
               <v-text-field
+                v-model="form.phone2"
+                type="text"
+                name="input-10-1"
+                label="Điện thoại 2"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
+                v-model="form.phone3"
+                type="text"
+                name="input-10-1"
+                label="Điện thoại 3"
+                counter
+                :clearable="true"
+              ></v-text-field>
+              <v-text-field
                 v-model="form.email"
                 :rules="[rules.required, rules.validateEmail]"
                 type="text"
                 name="input-10-1"
                 label="Email"
-                counter
                 :clearable="true"
               ></v-text-field>
               <v-select
@@ -48,7 +62,6 @@
                 type="text"
                 name="input-10-1"
                 label="Địa chỉ"
-                counter
                 :clearable="true"
               ></v-text-field>
               <v-select
@@ -117,6 +130,8 @@ export default {
       form: {
         name: "",
         phone: "",
+        phone2: "",
+        phone3: "",
         description: "",
         address: "",
         email: ""
@@ -180,11 +195,13 @@ export default {
         address: this.form.address,
         name: this.form.name,
         phone: this.form.phone,
+        phone_2: this.form.phone2,
+        phone_3: this.form.phone3,
         email: this.form.email,
         description: this.form.description,
-        provinceId: this.province.id,
-        districtId: this.district.id,
-        wardId: this.ward.id,
+        province_id: this.province.id,
+        district_id: this.district.id,
+        ward_id: this.ward.id,
         customer_group_id: this.customer_group.id
       };
       this.add(p);
@@ -199,14 +216,14 @@ export default {
             messageResult.InsertSuccess,
             messageResult.Success
           );
-          window.location.href = "#/Customer";
+          window.location.href = "#/Customer/Index";
         }
       } catch (error) {
         window.getApp.showMessage(error, messageResult.Error);
       }
     },
     close() {
-      window.location.href = "#/Customer";
+      window.location.href = "#/Customer/Index";
     },
     syncSelect() {
       this.GetDistricts(0);

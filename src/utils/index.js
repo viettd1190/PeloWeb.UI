@@ -112,7 +112,10 @@ export let url = {
   customer: {
     route: 'customer',
     all: 'customer/all',
-    id: 'customer/'
+    id: 'customer/',
+    phone: 'customer/phone/',
+    profit:'customer/profit/'
+
   },
   product_unit: {
     route: 'product_unit',

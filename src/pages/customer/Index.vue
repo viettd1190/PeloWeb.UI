@@ -32,6 +32,18 @@
                 :clearable="true"
               ></v-text-field>
             </v-layout>
+            <v-layout row wrap>
+              <v-select
+                :items="selectCustomerGroups"
+                item-text="name"
+                item-value="id"
+                v-model="customer_group"
+                label="Nhóm khách hàng"
+                persistent-hint
+                return-object
+                required
+              ></v-select>
+            </v-layout>
           </v-flex>
           <v-flex xs12 sm12 md1 lg1> </v-flex>
           <v-flex xs12 sm12 md5 lg5>
@@ -104,13 +116,14 @@
               <a>{{ props.item.name }}</a>
             </td>
             <td nowrap>{{ props.item.customer_vip }}</td>
-            <td
-              nowrap
-              style="cursor:pointer"
-              v-for="(value, index) in props.item.phone"
-              :key="index"
-            >
-              <v-layout row justify-center>
+            <td nowrap style="cursor:pointer">
+              <v-layout
+                row
+                justify-center
+                style="padding:5px 0"
+                v-for="(value, index) in props.item.phone"
+                :key="index"
+              >
                 <a style="text-decoration: none;" :href="`tel:${value}`">{{
                   value
                 }}</a>
@@ -218,12 +231,15 @@ export default {
       ward: { id: 0, name: "", type: "" },
       selectedProvince: null,
       selectedDistrict: null,
-      selectedWard: null
+      selectedWard: null,
+      customer_group: { id: 0, name: "" },
+      selectCustomerGroups: []
     };
   },
   computed: { ...mapGetters(["provinces", "districts", "wards"]) },
   created() {
     this.syncSelect();
+    this.getAllCustomerGroup();
   },
   mounted() {},
   watch: {
@@ -247,7 +263,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(["GetList", "GetDistricts", "GetWards"]),
+    ...mapActions(["GetList", "GetDistricts", "GetWards", "GetAll"]),
     async getList() {
       try {
         const {
@@ -269,14 +285,15 @@ export default {
               PageSize: rowsPerPage,
               ColumnOrder: sortBy,
               SortDir: descending ? "desc" : "asc",
-              Name: this.name,
-              Phone: this.phone,
-              Email: this.email,
-              ProvinceId: this.selectedProvince,
-              DistrictId: this.selectedDistrict,
-              WardId: this.selectedWard,
-              Address: this.address,
-              Description: this.description
+              name: this.name,
+              phone: this.phone,
+              email: this.email,
+              province_id: this.selectedProvince,
+              district_id: this.selectedDistrict,
+              ward_id: this.selectedWard,
+              address: this.address,
+              description: this.description,
+              customer_group_id: this.customer_group.id
             }
           ]);
           if (rs != null && rs.data) {
@@ -311,7 +328,7 @@ export default {
       }
     },
     async syncSelect() {
-      //this.GetDistricts({ ProvinceId: this.selectedProvince });
+      this.getAllCustomerGroup();
     },
     changeProvince() {
       this.GetDistricts({ ProvinceId: this.selectedProvince });
@@ -333,6 +350,14 @@ export default {
         this.panel = [true];
         this.icon = "arrow_drop_up";
       }
+    },
+    async getAllCustomerGroup() {
+      try {
+        let rs = await this.GetAll(url.customer_group.all);
+        if (typeof rs == "object") {
+          this.selectCustomerGroups = rs;
+        }
+      } catch (error) {}
     }
   }
 };

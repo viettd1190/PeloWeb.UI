@@ -252,14 +252,14 @@ export default [
     name: 'Product/Index',
     component: () => import(`@/pages/product/Index.vue`)
   },{
-    path: '/Product/Add',
+    path: '/Product/Index/Add',
     meta: {
       breadcrumb: true
     },
     name: 'Product/Index',
     component: () => import(`@/pages/product/components/AddProduct.vue`)
   },{
-    path: '/Product/Edit/:id',
+    path: '/Product/Index/Edit/:id',
     meta: {
       breadcrumb: true
     },
@@ -908,19 +908,19 @@ export default [
   //end Invoice
   //Customer
   {
-    path: '/Customer',
+    path: '/Customer/Index',
     meta: { breadcrumb: true },
     name: 'Customer/Index',
     component: () => import(`@/pages/customer/index.vue`)
   },
   {
-    path: '/Customer/Add',
+    path: '/Customer/Index/Add',
     meta: { breadcrumb: true },
     name: 'Customer/Index',
     component: () => import(`@/pages/customer/components/AddCustomer.vue`)
   },
   {
-    path: '/Customer/Edit/:id',
+    path: '/Customer/Index/Edit/:id',
     meta: { breadcrumb: true },
     name: 'Customer/Index',
     component: () => import(`@/pages/customer/components/EditCustomer.vue`)
